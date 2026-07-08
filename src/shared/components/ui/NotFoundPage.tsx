@@ -18,7 +18,8 @@ export function NotFoundPage() {
         Page not found
       </h1>
       <p className="mt-2 text-sm text-muted-foreground max-w-md leading-relaxed">
-        The destination you are trying to access does not exist, has been moved, or we might have pruned it from the system.
+        The destination you are trying to access does not exist, has been moved,
+        or we might have pruned it from the system.
       </p>
 
       <div className="mt-8">
