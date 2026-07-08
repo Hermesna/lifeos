@@ -1,27 +1,57 @@
-import { Wallet } from "lucide-react";
+import { AppCard } from "@/shared/components/ui/AppCard";
+import { useFinanceStore } from "@/features/finance/stores/useFinanceStore";
+import { PiggyBank, TrendingUp } from "lucide-react";
 
-import AppCard from "@/shared/components/ui/AppCard";
+export function SavingsCard() {
+  const savings = useFinanceStore((state) => state.savings);
+  const targetSavings = useFinanceStore((state) => state.targetSavings);
 
-function SavingsCard() {
+  const progressPercentage = Math.min(
+    Math.round((savings / targetSavings) * 100),
+    100,
+  );
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat("de-DE", {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
+
   return (
     <AppCard
-      title="Savings"
-      description="Current balance"
-      icon={<Wallet className="h-5 w-5 text-emerald-500" />}
+      title="Financial Runway"
+      description="Savings target for relocation"
+      icon={<PiggyBank className="h-4 w-4 text-muted-foreground" />}
     >
-      <div className="space-y-3">
-        <p className="text-4xl font-bold">€8,000</p>
+      <div className="space-y-4 pt-2">
+        <div className="flex items-center justify-between">
+          <div className="space-y-0.5">
+            <p className="text-2xl font-bold tracking-tight">
+              {formatCurrency(savings)}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Saved of {formatCurrency(targetSavings)} goal
+            </p>
+          </div>
 
-        <p className="text-sm text-muted-foreground">
-          Goal: €25,000
-        </p>
+          <div className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-500">
+            <TrendingUp className="h-3 w-3" />
+            <span>{progressPercentage}%</span>
+          </div>
+        </div>
 
-        <div className="h-2 overflow-hidden rounded-full bg-slate-200">
-          <div className="h-full w-[32%] rounded-full bg-emerald-500" />
+        {/* Barra de progreso Premium */}
+        <div className="space-y-1">
+          <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
+            <div
+              className="h-full bg-emerald-500 rounded-full transition-all duration-500 ease-in-out"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
         </div>
       </div>
     </AppCard>
   );
 }
-
-export default SavingsCard;

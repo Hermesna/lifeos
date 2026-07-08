@@ -1,5 +1,3 @@
-function DashboardPage() {
+export function SettingsPage() {
   return <h1>Settings</h1>;
 }
-
-export default DashboardPage;

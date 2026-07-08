@@ -1,4 +1,4 @@
-function AppHeader() {
+export function AppHeader() {
   return (
     <header className="flex h-16 items-center justify-between border-b bg-white px-6">
       <h2 className="text-lg font-semibold">Dashboard</h2>
@@ -11,5 +11,3 @@ function AppHeader() {
     </header>
   );
 }
-
-export default AppHeader;

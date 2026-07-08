@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 import { navigation } from "@/shared/constants/navigation";
 
-function AppSidebar() {
+export function AppSidebar() {
   return (
     <aside className="flex h-screen w-64 flex-col border-r bg-white">
       <div className="border-b px-6 py-5">
@@ -36,5 +36,3 @@ function AppSidebar() {
     </aside>
   );
 }
-
-export default AppSidebar;

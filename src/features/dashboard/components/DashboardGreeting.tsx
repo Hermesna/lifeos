@@ -1,4 +1,4 @@
-function DashboardGreeting() {
+export function DashboardGreeting() {
   const hour = new Date().getHours();
 
   let greeting = "Good evening";
@@ -21,5 +21,3 @@ function DashboardGreeting() {
     </div>
   );
 }
-
-export default DashboardGreeting;

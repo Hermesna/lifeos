@@ -8,7 +8,7 @@ interface AppCardProps {
   children: ReactNode;
 }
 
-function AppCard({
+export function AppCard({
   title,
   description,
   icon,
@@ -34,5 +34,3 @@ function AppCard({
     </Card>
   );
 }
-
-export default AppCard;

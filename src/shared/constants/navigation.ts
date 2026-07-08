@@ -1,6 +1,5 @@
 import {
   BookOpen,
-  Briefcase,
   Coins,
   Home,
   Languages,
@@ -14,11 +13,6 @@ export const navigation = [
     title: "Dashboard",
     href: "/",
     icon: Home,
-  },
-  {
-    title: "Career",
-    href: "/career",
-    icon: Briefcase,
   },
   {
     title: "Finance",
