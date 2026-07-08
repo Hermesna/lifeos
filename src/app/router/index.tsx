@@ -7,6 +7,7 @@ import { TravelPage } from "@/features/travel/pages/TravelPage";
 import { SettingsPage } from "@/features/settings/pages/SettingsPage";
 import FinancePage from "@/features/finance/pages/FinancePage";
 import HabitsPage from "@/features/habits/pages/HabitsPage";
+import { NotFoundPage } from "@/shared/components/ui/NotFoundPage";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: "/settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
       },
     ],
   },
