@@ -1,6 +1,6 @@
 import { BooksPage } from "@/features/books/pages/BooksPage";
 import { SavingsCard } from "@/features/dashboard/components/SavingsCard";
-import { HabitsPage } from "@/features/habits/pages/HabitsPage";
+import HabitsPage from "@/features/habits/pages/HabitsPage";
 import { LanguagesPage } from "@/features/languages/pages/LanguagesPage";
 import { TravelPage } from "@/features/travel/pages/TravelPage";
 

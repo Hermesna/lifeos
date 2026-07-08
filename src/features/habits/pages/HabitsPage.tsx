@@ -1,58 +1,27 @@
-import { AppCard } from "@/shared/components/ui/AppCard";
-import { useHabitsStore } from "../stores/useHabitsStore";
-import { CheckCircle2, Flame } from "lucide-react";
+import { HabitsWidget } from "@/features/habits/pages/HabitsWidget";
+import { HabitForm } from "@/features/habits/pages/HabitForm";
 
-export function HabitsPage() {
-  const habits = useHabitsStore((state) => state.habits);
-  const toggleHabitToday = useHabitsStore((state) => state.toggleHabitToday);
-
+export default function HabitsPage() {
   return (
-    <AppCard
-      title="Daily Disciplines"
-      description="Consistency tracker"
-      icon={<CheckCircle2 className="h-4 w-4 text-muted-foreground" />}
-    >
-      <div className="space-y-4 pt-2">
-        {habits.map((habit) => (
-          <div key={habit.id} className="space-y-1.5">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-medium text-card-foreground">
-                {habit.name}
-              </span>
-              <span className="flex items-center gap-0.5 text-orange-500 font-semibold">
-                <Flame className="h-3 w-3 fill-orange-500" />
-                {habit.streak}d
-              </span>
-            </div>
-
-            <div className="flex gap-1">
-              {habit.history.map((done, index) => {
-                const isToday = index === habit.history.length - 1;
-
-                return (
-                  <button
-                    key={index}
-                    disabled={!isToday}
-                    onClick={() => toggleHabitToday(habit.id)}
-                    className={`h-4 flex-1 rounded-sm border transition-all ${
-                      done
-                        ? "bg-primary border-primary/20"
-                        : "bg-secondary/40 border-border/50"
-                    } ${isToday ? "cursor-pointer hover:scale-105 ring-1 ring-primary/30" : "cursor-default"}`}
-                    title={
-                      isToday
-                        ? "Click to toggle today's progress"
-                        : done
-                          ? "Completed"
-                          : "Missed"
-                    }
-                  />
-                );
-              })}
-            </div>
-          </div>
-        ))}
+    <div className="space-y-6 p-6 max-w-4xl mx-auto">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Disciplines & Habits</h1>
+        <p className="text-sm text-muted-foreground">
+          Track your micro-actions and protect your streaks to achieve your mid-term goals.
+        </p>
       </div>
-    </AppCard>
+
+      <div className="grid gap-6 md:grid-cols-5">
+        {/* Columna izquierda: Listado e interacción (3/5 del ancho) */}
+        <div className="md:col-span-3">
+          <HabitsWidget />
+        </div>
+
+        {/* Columna derecha: Creador de nuevos hábitos (2/5 del ancho) */}
+        <div className="md:col-span-2 space-y-4">
+          <HabitForm />
+        </div>
+      </div>
+    </div>
   );
 }

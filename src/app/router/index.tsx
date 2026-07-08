@@ -3,10 +3,10 @@ import DashboardPage from "@/features/dashboard/pages/DashboardPage";
 import { AppLayout } from "@/app/layout/AppLayout";
 import { LanguagesPage } from "@/features/languages/pages/LanguagesPage";
 import { BooksPage } from "@/features/books/pages/BooksPage";
-import { HabitsPage } from "@/features/habits/pages/HabitsPage";
 import { TravelPage } from "@/features/travel/pages/TravelPage";
 import { SettingsPage } from "@/features/settings/pages/SettingsPage";
 import FinancePage from "@/features/finance/pages/FinancePage";
+import HabitsPage from "@/features/habits/pages/HabitsPage";
 
 export const router = createBrowserRouter([
   {
