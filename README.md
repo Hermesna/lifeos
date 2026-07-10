@@ -1,75 +1,38 @@
-# React + TypeScript + Vite
+# LifeOS · Personal Productivity Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **Frontend Architecture Log** · Personal project focused on building a standardized and ultra-efficient ecosystem for managing habits, finances, and languages.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Current Status & Focus
 
-## React Compiler
+<div align="center">
+  <img src="https://img.shields.io/badge/Status-In%20Active%20Development-blue?style=for-the-badge&logo=react&logoColor=white" alt="In Progress Badge" />
+</div>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+<br />
 
-## Expanding the ESLint configuration
+Currently iterating on the system's foundation, migrating components towards a unified global state and refining the user experience with seamless design transitions.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### On the radar:
+* **LifeOS Core:** Consolidating a clean *Feature-First* architecture to vertically isolate each functionality (Habits, Travel, Languages).
+* **Theme Engine:** Adaptive global system (Light/Dark Mode) with native detection of operating system preferences and local persistence without "flash" effects.
+* **Validación Estricta:** Implementation of data guardrails at the customer input using controlled forms and typed schemas.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Stack Tecnológico
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+At the architectural level, a lightweight, server-agnostic (pure SPA) approach has been prioritized, maximizing performance on the client side:
 
-```
+* **Core:** `React` · `TypeScript`
+* **State Management:** `Zustand` (with local persistence middleware)
+* **Routing:** `React Router v6` (Layout strategy and 404 view injection)
+* **Styling:** `Tailwind CSS` (Dynamic design token strategy using semantic classes)
+* **Validation:** `Zod` · `React Hook Form`
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=Hermesna&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub Stats" />
+</div>
