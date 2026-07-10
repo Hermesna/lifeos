@@ -34,5 +34,5 @@ At the architectural level, a lightweight, server-agnostic (pure SPA) approach h
 ---
 
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Hermesna&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub Stats" />
+  <img src="https://github-stats-extended.vercel.app/api?username=Hermesna&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub Stats" />
 </div>
