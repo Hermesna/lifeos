@@ -4,7 +4,6 @@ import {
   Home,
   Languages,
   Plane,
-  Settings,
   Trophy,
 } from "lucide-react";
 
@@ -38,10 +37,5 @@ export const navigation = [
     title: "Travel",
     href: "/travel",
     icon: Plane,
-  },
-  {
-    title: "Settings",
-    href: "/settings",
-    icon: Settings,
-  },
+  }
 ];

@@ -1,17 +1,89 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-interface FinanceState {
-  savings: number;
-  targetSavings: number;
-  addSavings: (amount: number) => void;
-  setSavings: (amount: number) => void;
+export interface Transaction {
+  id: string;
+  description: string;
+  amount: number;
+  type: "income" | "expense";
+  category: string;
+  date: string;
 }
 
-export const useFinanceStore = create<FinanceState>((set) => ({
-  savings: 8000,
-  targetSavings: 15000,
+export interface SavingsFund {
+  id: string;
+  name: string;
+  target: number;
+  current: number;
+}
 
-  addSavings: (amount) => set((state) => ({ savings: state.savings + amount })),
+interface FinanceState {
+  transactions: Transaction[];
+  funds: SavingsFund[];
+  addTransaction: (tx: Omit<Transaction, "id" | "date">) => void;
+  deleteTransaction: (id: string) => void;
+  addFundsToFund: (fundId: string, amount: number) => void;
+  createFund: (fund: Omit<SavingsFund, "id" | "current">) => void;
+  getBalance: () => number;
+}
 
-  setSavings: (amount) => set(() => ({ savings: amount })),
-}));
+export const useFinanceStore = create<FinanceState>()(
+  persist(
+    (set, get) => ({
+      transactions: [],
+      funds: [
+        {
+          id: "japan-fund",
+          name: "Expedición Japón 🇯🇵",
+          target: 3500,
+          current: 1225,
+        },
+      ],
+
+      addTransaction: (tx) =>
+        set((state) => ({
+          transactions: [
+            {
+              ...tx,
+              id: crypto.randomUUID(),
+              date: new Date().toISOString().split("T")[0],
+            },
+            ...state.transactions,
+          ],
+        })),
+
+      deleteTransaction: (id) =>
+        set((state) => ({
+          transactions: state.transactions.filter((t) => t.id !== id),
+        })),
+
+      createFund: (fund) =>
+        set((state) => ({
+          funds: [
+            ...state.funds,
+            { ...fund, id: crypto.randomUUID(), current: 0 },
+          ],
+        })),
+
+      addFundsToFund: (fundId, amount) =>
+        set((state) => {
+          return {
+            funds: state.funds.map((f) =>
+              f.id === fundId
+                ? { ...f, current: Math.max(0, f.current + amount) }
+                : f,
+            ),
+          };
+        }),
+
+      getBalance: () => {
+        return get().transactions.reduce((acc, tx) => {
+          return tx.type === "income" ? acc + tx.amount : acc - tx.amount;
+        }, 0);
+      },
+    }),
+    {
+      name: "lifeos-finance-storage",
+    },
+  ),
+);

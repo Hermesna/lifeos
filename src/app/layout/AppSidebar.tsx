@@ -3,11 +3,14 @@ import { navigation } from "@/shared/constants/navigation";
 
 export function AppSidebar() {
   return (
-    <aside className="flex h-screen w-64 flex-col border-r bg-card text-foreground transition-colors duration-200">
-      <div className="border-b px-6 py-5">
-        <h1 className="text-2xl font-bold tracking-tight">LifeOS</h1>
+    <aside className="flex h-screen w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-colors duration-200">
+      <div className="border-b border-sidebar-border px-6 py-5">
+        <h1 className="text-2xl font-bold tracking-tight text-sidebar-primary">
+          LifeOS
+        </h1>
       </div>
 
+      {/* Navegación */}
       <nav className="flex flex-1 flex-col gap-1 p-3">
         {navigation.map((item) => {
           const Icon = item.icon;
@@ -20,12 +23,12 @@ export function AppSidebar() {
                 [
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200",
                   isActive
-                    ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 font-medium shadow-sm"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-md shadow-primary/10"
+                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-primary",
                 ].join(" ")
               }
             >
-              <Icon size={20} />
+              <Icon size={20} className="shrink-0" />
               <span>{item.title}</span>
             </NavLink>
           );

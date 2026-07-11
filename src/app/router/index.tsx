@@ -4,10 +4,9 @@ import { AppLayout } from "@/app/layout/AppLayout";
 import { LanguagesPage } from "@/features/languages/pages/LanguagesPage";
 import { BooksPage } from "@/features/books/pages/BooksPage";
 import { TravelPage } from "@/features/travel/pages/TravelPage";
-import { SettingsPage } from "@/features/settings/pages/SettingsPage";
-import FinancePage from "@/features/finance/pages/FinancePage";
 import HabitsPage from "@/features/habits/pages/HabitsPage";
 import { NotFoundPage } from "@/shared/components/ui/NotFoundPage";
+import { FinancePage } from "@/features/finance/pages/FinancePage";
 
 export const router = createBrowserRouter([
   {
@@ -36,10 +35,6 @@ export const router = createBrowserRouter([
       {
         path: "/travel",
         element: <TravelPage />,
-      },
-      {
-        path: "/settings",
-        element: <SettingsPage />,
       },
       {
         path: "*",
