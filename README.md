@@ -17,7 +17,7 @@ Currently iterating on the system's foundation, migrating components towards a u
 ### On the radar:
 * **LifeOS Core:** Consolidating a clean *Feature-First* architecture to vertically isolate each functionality (Habits, Travel, Languages).
 * **Theme Engine:** Adaptive global system (Light/Dark Mode) with native detection of operating system preferences and local persistence without "flash" effects.
-* **Validación Estricta:** Implementation of data guardrails at the customer input using controlled forms and typed schemas.
+* **Strict Validation:** Implementation of data guardrails at the customer input using controlled forms and typed schemas.
 
 ---
 
