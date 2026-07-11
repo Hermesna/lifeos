@@ -1,25 +1,46 @@
-import { useThemeStore } from "@/shared/stores/useThemeStore";
-import { Sun, Moon } from "lucide-react";
+import { useTheme } from "@/shared/providers/ThemeContext";
+import { Sun, Moon, Monitor } from "lucide-react";
 
 export function ThemeToggle() {
-  const theme = useThemeStore((state) => state.theme);
-  const toggleTheme = useThemeStore((state) => state.toggleTheme);
+  const { theme, setTheme } = useTheme();
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-md border bg-transparent text-muted-foreground shadow-sm transition-all hover:bg-muted hover:text-foreground active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-      title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-    >
-      <div className="relative h-4 w-4">
-        <Sun className={`absolute h-4 w-4 transition-transform duration-300 ${
-          theme === "dark" ? "rotate-90 scale-0" : "rotate-0 scale-100 text-amber-500"
-        }`} />
-        
-        <Moon className={`absolute h-4 w-4 transition-transform duration-300 ${
-          theme === "dark" ? "rotate-0 scale-100 text-indigo-400" : "-rotate-90 scale-0"
-        }`} />
-      </div>
-    </button>
+    <div className="flex items-center gap-1 bg-secondary/50 p-1 rounded-xl border backdrop-blur-sm">
+      <button
+        onClick={() => setTheme("light")}
+        className={`p-2 rounded-lg transition-all ${
+          theme === "light"
+            ? "bg-card text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        title="Modo Claro"
+      >
+        <Sun className="h-4 w-4" />
+      </button>
+
+      <button
+        onClick={() => setTheme("dark")}
+        className={`p-2 rounded-lg transition-all ${
+          theme === "dark"
+            ? "bg-card text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        title="Modo Oscuro"
+      >
+        <Moon className="h-4 w-4" />
+      </button>
+
+      <button
+        onClick={() => setTheme("system")}
+        className={`p-2 rounded-lg transition-all ${
+          theme === "system"
+            ? "bg-card text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        title="Modo Sistema"
+      >
+        <Monitor className="h-4 w-4" />
+      </button>
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-// src/app/layout/AppSidebar.tsx
 import { NavLink } from "react-router-dom";
 import { navigation } from "@/shared/constants/navigation";
 

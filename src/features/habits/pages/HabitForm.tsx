@@ -21,7 +21,7 @@ export function HabitForm() {
   });
 
   const onSubmit = async (data: HabitsFormValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 400)); // Efecto visual premium de carga
+    await new Promise((resolve) => setTimeout(resolve, 400));
     addHabit(data.name, data.category);
     reset();
   };
