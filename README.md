@@ -21,7 +21,7 @@ Currently iterating on the system's foundation, migrating components towards a u
 
 ---
 
-## Stack Tecnológico
+## Technology Stack
 
 At the architectural level, a lightweight, server-agnostic (pure SPA) approach has been prioritized, maximizing performance on the client side:
 
