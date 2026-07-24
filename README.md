@@ -32,7 +32,3 @@ At the architectural level, a lightweight, server-agnostic (pure SPA) approach h
 * **Validation:** `Zod` · `React Hook Form`
 
 ---
-
-<div align="center">
-  <img src="https://github-stats-extended.vercel.app/api?username=Hermesna&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub Stats" />
-</div>
