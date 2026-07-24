@@ -50,8 +50,8 @@ export function AppHeader() {
                     {isProfileOpen && (
                         <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-border bg-popover p-1.5 text-popover-foreground shadow-lg transition-all animate-in fade-in slide-in-from-top-2 duration-150 z-50">
                             <div className="px-3 py-2 text-xs border-b border-border/60 mb-1">
-                                <p className="font-medium text-foreground">Héctor</p>
-                                <p className="text-muted-foreground truncate">hector@lifeos.dev</p>
+                                <p className="font-medium text-foreground">Hermes</p>
+                                <p className="text-muted-foreground truncate">hermesnunezalcaraz@gmail.com</p>
                             </div>
 
                             <div className="space-y-0.5">
