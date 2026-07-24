@@ -1,0 +1,54 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "travel": "Travel",
+    "finance": "Finance",
+    "languages": "Languages",
+    "books": "Books",
+    "habits": "Habits"
+  },
+  "header": {
+    "profile": "My Profile",
+    "settings": "Settings",
+    "security": "Security",
+    "logout": "Log Out"
+  },
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode",
+    "system": "System mode"
+  },
+  "travel": {
+    "form": {
+      "title": "Plan New Trip",
+      "subtitle": "Add your next destination to the radar.",
+      "destinationLabel": "Destination / City",
+      "destinationPlaceholder": "Ex: Tokyo, Japan 🇯🇵",
+      "startDateLabel": "Estimated Date",
+      "budgetLabel": "Initial Budget (€)",
+      "submitBtn": "Create Trip"
+    },
+    "validation": {
+      "destinationMin": "Destination must be at least 2 characters.",
+      "startDateRequired": "Please select a start date.",
+      "budgetInvalid": "Please enter a valid budget.",
+      "budgetMin": "Budget must be greater than 0."
+    },
+    "title": "Expeditions",
+    "subtitle": "Plan your routes, budgets and packing lists.",
+    "nextExpedition": "Next Expedition",
+    "deleteTrip": "Delete trip",
+    "targetWindow": "Target Window",
+    "budget": "Assigned Budget",
+    "packingProgress": "Luggage Progress",
+    "packingList": "Packing List",
+    "addItemPlaceholder": "Add item (ex: Power adapter)...",
+    "noTripsTitle": "There are no active expeditions",
+    "noTripsSubtitle": "Start planning your return to Japan or enter any other getaways in the panel on the right.",
+    "emptyPackingList": "There are no items in the list. \nAdd the first one!"
+  },
+  "sidebar": {
+    "expand": "Expand menu",
+    "collapse": "Collapse menu"
+  }
+}

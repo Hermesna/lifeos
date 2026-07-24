@@ -1,0 +1,54 @@
+{
+  "navigation": {
+    "dashboard": "Tableau de bord",
+    "travel": "Voyages",
+    "finance": "Finances",
+    "languages": "Langues",
+    "books": "Livres",
+    "habits": "Habitudes"
+  },
+  "header": {
+    "profile": "Mon Profil",
+    "settings": "Paramètres",
+    "security": "Sécurité",
+    "logout": "Déconnexion"
+  },
+  "theme": {
+    "light": "Mode clair",
+    "dark": "Mode sombre",
+    "system": "Mode système"
+  },
+  "travel": {
+    "form": {
+      "title": "Planifier un nouveau voyage",
+      "subtitle": "Ajoutez votre prochaine destination au radar.",
+      "destinationLabel": "Destination/Ville",
+      "destinationPlaceholder": "Ex : Tokyo, Japon 🇯🇵",
+      "startDateLabel": "Date estimée",
+      "budgetLabel": "Budget initial (€)",
+      "submitBtn": "Créer un voyage"
+    },
+    "validation": {
+      "destinationMin": "La destination doit comporter au moins 2 caractères.",
+      "startDateRequired": "Sélectionnez une date de début.",
+      "budgetInvalid": "Saisissez une citation valide.",
+      "budgetMin": "Le budget doit être supérieur à 0."
+    },
+    "title": "Expéditions",
+    "subtitle": "Planifiez vos itinéraires, vos budgets et vos listes de colisage.",
+    "nextExpedition": "Prochaine expédition",
+    "deleteTrip": "Supprimer le voyage",
+    "targetWindow": "Fenêtre cible",
+    "budget": "Budget assigné",
+    "packingProgress": "Progrès des bagages",
+    "packingList": "Liste de colisage",
+    "addItemPlaceholder": "Ajouter un article (ex : adaptateur secteur)...",
+    "noTripsTitle": "Il n'y a pas d'expéditions actives",
+    "noTripsSubtitle": "Commencez à planifier votre retour au Japon ou entrez toute autre escapade dans le panneau de droite.",
+    "emptyPackingList": "Il n'y a aucun élément dans la liste. Ajoutez le premier !"
+  },
+  "sidebar": {
+    "expand": "Développer le menu",
+    "collapse": "Réduire le menu"
+  }
+}

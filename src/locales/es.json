@@ -1,0 +1,54 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "travel": "Viajes",
+    "finance": "Finanzas",
+    "languages": "Idiomas",
+    "books": "Libros",
+    "habits": "Hábitos"
+  },
+  "header": {
+    "profile": "Mi Perfil",
+    "settings": "Ajustes",
+    "security": "Seguridad",
+    "logout": "Cerrar Sesión"
+  },
+  "theme": {
+    "light": "Modo claro",
+    "dark": "Modo oscuro",
+    "system": "Modo sistema"
+  },
+  "travel": {
+    "form": {
+      "title": "Planear Nuevo Viaje",
+      "subtitle": "Añade tu próximo destino al radar.",
+      "destinationLabel": "Destino / Ciudad",
+      "destinationPlaceholder": "Ej: Tokio, Japón 🇯🇵",
+      "startDateLabel": "Fecha Estimada",
+      "budgetLabel": "Presupuesto Inicial (€)",
+      "submitBtn": "Crear Viaje"
+    },
+    "validation": {
+      "destinationMin": "El destino debe tener al menos 2 caracteres.",
+      "startDateRequired": "Selecciona una fecha de inicio.",
+      "budgetInvalid": "Introduce un presupuesto válido.",
+      "budgetMin": "El presupuesto debe ser mayor a 0."
+    },
+    "title": "Expediciones & Viajes",
+    "subtitle": "Planifica tus rutas, presupuestos y listas de equipaje.",
+    "nextExpedition": "Próxima Expedición",
+    "deleteTrip": "Eliminar viaje",
+    "targetWindow": "Ventana Objetivo",
+    "budget": "Presupuesto Asignado",
+    "packingProgress": "Progreso del Equipaje",
+    "packingList": "Lista de Equipaje (Packing List)",
+    "addItemPlaceholder": "Añadir artículo (ej: Adaptador corriente)...",
+    "noTripsTitle": "No hay expediciones activas",
+    "noTripsSubtitle": "Comienza a planificar tu regreso a Japón o introduce cualquier                 otra escapada en el panel de la derecha.",
+    "emptyPackingList": "No hay elementos en la lista. ¡Añade el primero!"
+  },
+  "sidebar": {
+    "expand": "Expandir menú",
+    "collapse": "Colapsar menú"
+  }
+}
