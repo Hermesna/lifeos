@@ -1,19 +1,35 @@
 import { useState, useRef, useEffect } from "react"
-import { useLocation, Link } from "react-router-dom"
+import { useLocation, Link, useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { navigation } from "@/shared/constants/navigation"
 import { ThemeToggle } from "@/shared/components/ui/ThemeToggle"
 import { LanguageToggle } from "@/shared/components/ui/LanguageToggle"
+import { useAuthStore } from "@/shared/stores/useAuthStore" // <-- 1. Importamos el store
 import { User, Settings, LogOut, Shield } from "lucide-react"
 
 export function AppHeader() {
     const { t } = useTranslation()
     const location = useLocation()
+    const navigate = useNavigate() // <-- 2. Hook para redirigir tras logout
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
+    // 3. Obtenemos el usuario y el metodo logout de Zustand
+    const user = useAuthStore((state) => state.user)
+    const logout = useAuthStore((state) => state.logout)
+
     const currentRoute = navigation.find((item) => item.href === location.pathname)
     const pageTitle = currentRoute ? t(currentRoute.title) : t("navigation.dashboard")
+
+    // Manejador del cierre de sesión
+    const handleLogout = () => {
+        setIsProfileOpen(false)
+        logout()
+        navigate("/login")
+    }
+
+    // Inicial del usuario para el botón del avatar (ej: "H" para Héctor)
+    const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : "U"
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -44,14 +60,18 @@ export function AppHeader() {
                         aria-haspopup="true"
                         aria-expanded={isProfileOpen}
                     >
-                        H
+                        {userInitial}
                     </button>
 
                     {isProfileOpen && (
                         <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-border bg-popover p-1.5 text-popover-foreground shadow-lg transition-all animate-in fade-in slide-in-from-top-2 duration-150 z-50">
                             <div className="px-3 py-2 text-xs border-b border-border/60 mb-1">
-                                <p className="font-medium text-foreground">Hermes</p>
-                                <p className="text-muted-foreground truncate">hermesnunezalcaraz@gmail.com</p>
+                                <p className="font-medium text-foreground">
+                                    {user?.name || "Usuario"}
+                                </p>
+                                <p className="text-muted-foreground truncate">
+                                    {user?.email || "sin_email@lifeos.dev"}
+                                </p>
                             </div>
 
                             <div className="space-y-0.5">
@@ -86,7 +106,7 @@ export function AppHeader() {
                             <div className="my-1 border-t border-border/60" />
 
                             <button
-                                onClick={() => setIsProfileOpen(false)}
+                                onClick={handleLogout}
                                 className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors text-left font-medium"
                             >
                                 <LogOut size={16} />

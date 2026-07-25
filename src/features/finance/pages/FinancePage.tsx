@@ -37,7 +37,6 @@ export function FinancePage() {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto p-4">
-      {/* Header */}
       <div className="border-b pb-4">
         <h1 className="text-2xl font-bold tracking-tight">Panel Financiero</h1>
         <p className="text-sm text-muted-foreground">

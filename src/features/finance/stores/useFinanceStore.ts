@@ -25,6 +25,8 @@ interface FinanceState {
     addFundsToFund: (fundId: string, amount: number) => void
     createFund: (fund: Omit<SavingsFund, "id" | "current">) => void
     getBalance: () => number
+    getTotalSavings: () => number
+    getTargetSavings: () => number
 }
 
 export const useFinanceStore = create<FinanceState>()(
@@ -80,6 +82,13 @@ export const useFinanceStore = create<FinanceState>()(
                 return get().transactions.reduce((acc, tx) => {
                     return tx.type === "income" ? acc + tx.amount : acc - tx.amount
                 }, 0)
+            },
+
+            getTotalSavings: () => {
+                return get().funds.reduce((acc, f) => acc + f.current, 0)
+            },
+            getTargetSavings: () => {
+                return get().funds.reduce((acc, f) => acc + f.target, 0)
             },
         }),
         {

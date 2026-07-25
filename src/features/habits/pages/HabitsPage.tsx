@@ -12,12 +12,10 @@ export default function HabitsPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-5">
-        {/* Columna izquierda: Listado e interacción (3/5 del ancho) */}
         <div className="md:col-span-3">
           <HabitsWidget />
         </div>
 
-        {/* Columna derecha: Creador de nuevos hábitos (2/5 del ancho) */}
         <div className="md:col-span-2 space-y-4">
           <HabitForm />
         </div>

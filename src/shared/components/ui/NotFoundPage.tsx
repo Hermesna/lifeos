@@ -8,12 +8,10 @@ export function NotFoundPage() {
         <FileQuestion className="h-10 w-10 text-primary" />
       </div>
 
-      {/* Código de error */}
       <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 px-2.5 py-1 rounded-full mb-4">
         Error 404
       </span>
 
-      {/* Textos descriptivos */}
       <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
         Page not found
       </h1>

@@ -34,7 +34,6 @@ export function HabitForm() {
       </div>
 
       <div className="space-y-3">
-        {/* Name input */}
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Habit Name</label>
           <input
@@ -46,7 +45,6 @@ export function HabitForm() {
           {errors.name && <p className="text-xs font-medium text-destructive">{errors.name.message}</p>}
         </div>
 
-        {/* Category select */}
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Category</label>
           <select

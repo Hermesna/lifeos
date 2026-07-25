@@ -3,8 +3,8 @@ import { useFinanceStore } from "@/features/finance/stores/useFinanceStore";
 import { PiggyBank, TrendingUp } from "lucide-react";
 
 export function SavingsCard() {
-  const savings = useFinanceStore((state) => state.savings);
-  const targetSavings = useFinanceStore((state) => state.targetSavings);
+  const savings = useFinanceStore((state) => state.getTotalSavings());
+  const targetSavings = useFinanceStore((state) => state.getTargetSavings());
 
   const progressPercentage = Math.min(
     Math.round((savings / targetSavings) * 100),
@@ -42,7 +42,6 @@ export function SavingsCard() {
           </div>
         </div>
 
-        {/* Barra de progreso Premium */}
         <div className="space-y-1">
           <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
             <div

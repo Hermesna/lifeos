@@ -7,38 +7,49 @@ import { TravelPage } from "@/features/travel/pages/TravelPage"
 import HabitsPage from "@/features/habits/pages/HabitsPage"
 import { NotFoundPage } from "@/shared/components/ui/NotFoundPage"
 import { FinancePage } from "@/features/finance/pages/FinancePage"
+import { LoginPage } from "@/features/auth/pages/LoginPage"
+import { ProtectedRoute } from "@/shared/components/ProtectedRoute"
 
 export const router = createBrowserRouter([
     {
-        element: <AppLayout />,
+        path: "/login",
+        element: <LoginPage />,
+    },
+    {
+        element: <ProtectedRoute />,
         children: [
             {
-                path: "/",
-                element: <DashboardPage />,
-            },
-            {
-                path: "/finance",
-                element: <FinancePage />,
-            },
-            {
-                path: "/languages",
-                element: <LanguagesPage />,
-            },
-            {
-                path: "/books",
-                element: <BooksPage />,
-            },
-            {
-                path: "/habits",
-                element: <HabitsPage />,
-            },
-            {
-                path: "/travel",
-                element: <TravelPage />,
-            },
-            {
-                path: "*",
-                element: <NotFoundPage />,
+                element: <AppLayout />,
+                children: [
+                    {
+                        path: "/",
+                        element: <DashboardPage />,
+                    },
+                    {
+                        path: "/finance",
+                        element: <FinancePage />,
+                    },
+                    {
+                        path: "/languages",
+                        element: <LanguagesPage />,
+                    },
+                    {
+                        path: "/books",
+                        element: <BooksPage />,
+                    },
+                    {
+                        path: "/habits",
+                        element: <HabitsPage />,
+                    },
+                    {
+                        path: "/travel",
+                        element: <TravelPage />,
+                    },
+                    {
+                        path: "*",
+                        element: <NotFoundPage />,
+                    },
+                ],
             },
         ],
     },

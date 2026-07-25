@@ -47,7 +47,6 @@ export function LanguagesPage() {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto p-4">
-      {/* Header */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b pb-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -63,7 +62,6 @@ export function LanguagesPage() {
         </div>
       </div>
 
-      {/* Grid de Métricas */}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="p-4 rounded-xl border bg-card shadow-sm flex items-center gap-4">
           <div className="p-3 bg-orange-500/10 rounded-lg text-orange-500">
@@ -100,9 +98,7 @@ export function LanguagesPage() {
         </div>
       </div>
 
-      {/* Sección Inferior Split */}
       <div className="grid gap-6 md:grid-cols-5 items-start">
-        {/* Historial (3/5) */}
         <div className="md:col-span-3 space-y-3">
           <div className="border rounded-xl bg-card p-5 shadow-sm">
             <h3 className="font-semibold text-base mb-4">
@@ -159,7 +155,6 @@ export function LanguagesPage() {
           </div>
         </div>
 
-        {/* Formulario (2/5) */}
         <div className="md:col-span-2">
           <LanguageForm />
         </div>
