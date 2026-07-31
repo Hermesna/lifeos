@@ -1,6 +1,15 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
+import { db } from "@/shared/lib/firebase"
+import { 
+    collection, 
+    doc, 
+    setDoc, 
+    deleteDoc, 
+    onSnapshot, 
+    query 
+} from "firebase/firestore"
 
 export type ActivityCategory =
     | "sightseeing"
@@ -38,20 +47,21 @@ export interface Trip {
 interface TravelState {
     trips: Trip[]
     activeTripId: string | null
+    subscribeToTrips: () => () => void
     addTrip: (
         trip: Omit<Trip, "id" | "userId" | "itinerary" | "packingList">,
-    ) => string | null
-    deleteTrip: (id: string) => void
+    ) => Promise<string | null>
+    deleteTrip: (id: string) => Promise<void>
     setActiveTrip: (id: string | null) => void
     addItineraryItem: (
         tripId: string,
         day: number,
         activity: string,
         extra?: Omit<ItineraryItem, "id" | "day" | "activity">,
-    ) => void
-    deleteItineraryItem: (tripId: string, itemId: string) => void
-    togglePackingItem: (tripId: string, itemId: string) => void
-    addPackingItem: (tripId: string, name: string) => void
+    ) => Promise<void>
+    deleteItineraryItem: (tripId: string, itemId: string) => Promise<void>
+    togglePackingItem: (tripId: string, itemId: string) => Promise<void>
+    addPackingItem: (tripId: string, name: string) => Promise<void>
     getUserTrips: (userId?: string) => Trip[]
 }
 
@@ -61,37 +71,55 @@ export const useTravelStore = create<TravelState>()(
             trips: [],
             activeTripId: null,
 
-            addTrip: (newTrip) => {
-                let createdId: string | null = null
+            subscribeToTrips: () => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return () => {}
 
-                set((state) => {
-                    const currentUserId = useAuthStore.getState().user?.id
-                    if (!currentUserId) return state
+                const tripsRef = collection(db, "users", userId, "trips")
+                const q = query(tripsRef)
 
-                    const id = crypto.randomUUID()
-                    createdId = id
+                const unsubscribe = onSnapshot(q, (snapshot) => {
+                    const tripsData = snapshot.docs.map((docSnap) => ({
+                        ...(docSnap.data() as Trip),
+                        id: docSnap.id,
+                    }))
 
-                    const defaultPacking: PackingItem[] = []
-
-                    return {
-                        trips: [
-                            {
-                                ...newTrip,
-                                id,
-                                userId: currentUserId,
-                                itinerary: [],
-                                packingList: defaultPacking,
-                            },
-                            ...state.trips,
-                        ],
-                        activeTripId: id,
-                    }
+                    set({
+                        trips: tripsData,
+                        activeTripId: get().activeTripId ?? tripsData[0]?.id ?? null,
+                    })
                 })
 
-                return createdId
+                return unsubscribe
             },
 
-            deleteTrip: (id) =>
+            addTrip: async (newTrip) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return null
+
+                const id = crypto.randomUUID()
+                const tripRef = doc(db, "users", userId, "trips", id)
+
+                const tripData: Trip = {
+                    ...newTrip,
+                    id,
+                    userId,
+                    itinerary: [],
+                    packingList: [],
+                }
+
+                await setDoc(tripRef, tripData)
+                set({ activeTripId: id })
+                return id
+            },
+
+            deleteTrip: async (id) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const tripRef = doc(db, "users", userId, "trips", id)
+                await deleteDoc(tripRef)
+
                 set((state) => {
                     const remainingTrips = state.trips.filter((t) => t.id !== id)
                     return {
@@ -101,76 +129,81 @@ export const useTravelStore = create<TravelState>()(
                                 ? remainingTrips[0]?.id || null
                                 : state.activeTripId,
                     }
-                }),
+                })
+            },
 
             setActiveTrip: (id) => set({ activeTripId: id }),
 
-            addItineraryItem: (tripId, day, activity, extra = {}) =>
-                set((state) => ({
-                    trips: state.trips.map((t) => {
-                        if (t.id !== tripId) return t
+            addItineraryItem: async (tripId, day, activity, extra = {}) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
 
-                        const currentItinerary = t.itinerary ?? []
-                        const newItem: ItineraryItem = {
-                            id: crypto.randomUUID(),
-                            day,
-                            activity,
-                            ...extra,
-                        }
+                const trip = get().trips.find((t) => t.id === tripId)
+                if (!trip) return
 
-                        return {
-                            ...t,
-                            itinerary: [...currentItinerary, newItem].sort(
-                                (a, b) => a.day - b.day,
-                            ),
-                        }
-                    }),
-                })),
+                const newItem: ItineraryItem = {
+                    id: crypto.randomUUID(),
+                    day,
+                    activity,
+                    ...extra,
+                }
 
-            deleteItineraryItem: (tripId, itemId) =>
-                set((state) => ({
-                    trips: state.trips.map((t) =>
-                        t.id === tripId
-                            ? {
-                                ...t,
-                                itinerary: (t.itinerary ?? []).filter(
-                                    (item) => item.id !== itemId,
-                                ),
-                            }
-                            : t,
-                    ),
-                })),
+                const updatedItinerary = [...(trip.itinerary ?? []), newItem].sort(
+                    (a, b) => a.day - b.day,
+                )
 
-            addPackingItem: (tripId, name) =>
-                set((state) => ({
-                    trips: state.trips.map((t) =>
-                        t.id === tripId
-                            ? {
-                                ...t,
-                                packingList: [
-                                    ...(t.packingList ?? []),
-                                    { id: crypto.randomUUID(), name, packed: false },
-                                ],
-                            }
-                            : t,
-                    ),
-                })),
+                const tripRef = doc(db, "users", userId, "trips", tripId)
+                await setDoc(tripRef, { itinerary: updatedItinerary }, { merge: true })
+            },
 
-            togglePackingItem: (tripId, itemId) =>
-                set((state) => ({
-                    trips: state.trips.map((t) =>
-                        t.id === tripId
-                            ? {
-                                ...t,
-                                packingList: (t.packingList ?? []).map((item) =>
-                                    item.id === itemId
-                                        ? { ...item, packed: !item.packed }
-                                        : item,
-                                ),
-                            }
-                            : t,
-                    ),
-                })),
+            deleteItineraryItem: async (tripId, itemId) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const trip = get().trips.find((t) => t.id === tripId)
+                if (!trip) return
+
+                const updatedItinerary = (trip.itinerary ?? []).filter(
+                    (item) => item.id !== itemId,
+                )
+
+                const tripRef = doc(db, "users", userId, "trips", tripId)
+                await setDoc(tripRef, { itinerary: updatedItinerary }, { merge: true })
+            },
+
+            addPackingItem: async (tripId, name) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const trip = get().trips.find((t) => t.id === tripId)
+                if (!trip) return
+
+                const newItem: PackingItem = {
+                    id: crypto.randomUUID(),
+                    name,
+                    packed: false,
+                }
+
+                const updatedPackingList = [...(trip.packingList ?? []), newItem]
+
+                const tripRef = doc(db, "users", userId, "trips", tripId)
+                await setDoc(tripRef, { packingList: updatedPackingList }, { merge: true })
+            },
+
+            togglePackingItem: async (tripId, itemId) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const trip = get().trips.find((t) => t.id === tripId)
+                if (!trip) return
+
+                const updatedPackingList = (trip.packingList ?? []).map((item) =>
+                    item.id === itemId ? { ...item, packed: !item.packed } : item,
+                )
+
+                const tripRef = doc(db, "users", userId, "trips", tripId)
+                await setDoc(tripRef, { packingList: updatedPackingList }, { merge: true })
+            },
 
             getUserTrips: (userId) => {
                 const targetUserId = userId ?? useAuthStore.getState().user?.id

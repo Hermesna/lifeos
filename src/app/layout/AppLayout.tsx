@@ -4,17 +4,41 @@ import { AppHeader } from "@/app/layout/AppHeader"
 import { AppSidebar } from "@/app/layout/AppSidebar"
 import { useThemeStore } from "@/shared/stores/useThemeStore"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
+import { useTravelStore } from "@/features/travel/stores/useTravelStore"
+import { useBooksStore } from "@/features/books/stores/useBooksStore"
+import { useHabitsStore } from "@/features/habits/stores/useHabitsStore"
+import { useFinanceStore } from "@/features/finance/stores/useFinanceStore"
+import { useLanguagesStore } from "@/features/languages/stores/useLanguagesStore"
 
 export function AppLayout() {
     const initTheme = useThemeStore((state) => state.initTheme)
     const initAuth = useAuthStore((state) => state.initAuth)
     const isLoading = useAuthStore((state) => state.isLoading)
+    const user = useAuthStore((state) => state.user)
     const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
     useEffect(() => {
         initTheme()
         initAuth()
     }, [initTheme, initAuth])
+
+    useEffect(() => {
+        if (!user) return
+
+        const unsubscribeTravel = useTravelStore.getState().subscribeToTrips()
+        const unsubscribeBooks = useBooksStore.getState().subscribeToBooks()
+        const unsubscribeHabits = useHabitsStore.getState().subscribeToHabits()
+        const unsubscribeFinance = useFinanceStore.getState().subscribeToFinance()
+        const unsubscribeLanguages = useLanguagesStore.getState().subscribeToLanguages()
+
+        return () => {
+            unsubscribeTravel()
+            unsubscribeBooks()
+            unsubscribeHabits()
+            unsubscribeFinance()
+            unsubscribeLanguages()
+        }
+    }, [user])
 
     if (isLoading) {
         return (

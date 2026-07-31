@@ -1,5 +1,16 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
+import { useAuthStore } from "@/shared/stores/useAuthStore"
+import { db } from "@/shared/lib/firebase"
+import { 
+    collection, 
+    doc, 
+    setDoc, 
+    deleteDoc, 
+    onSnapshot, 
+    query,
+    type Unsubscribe 
+} from "firebase/firestore"
 
 export interface Transaction {
     id: string
@@ -20,10 +31,11 @@ export interface SavingsFund {
 interface FinanceState {
     transactions: Transaction[]
     funds: SavingsFund[]
-    addTransaction: (tx: Omit<Transaction, "id" | "date">) => void
-    deleteTransaction: (id: string) => void
-    addFundsToFund: (fundId: string, amount: number) => void
-    createFund: (fund: Omit<SavingsFund, "id" | "current">) => void
+    subscribeToFinance: () => Unsubscribe
+    addTransaction: (tx: Omit<Transaction, "id" | "date">) => Promise<void>
+    deleteTransaction: (id: string) => Promise<void>
+    createFund: (fund: Omit<SavingsFund, "id" | "current">) => Promise<void>
+    addFundsToFund: (fundId: string, amount: number) => Promise<void>
     getBalance: () => number
     getTotalSavings: () => number
     getTargetSavings: () => number
@@ -33,50 +45,89 @@ export const useFinanceStore = create<FinanceState>()(
     persist(
         (set, get) => ({
             transactions: [],
-            funds: [
-                {
-                    id: "japan-fund",
-                    name: "Expedición Japón 🇯🇵",
-                    target: 3500,
-                    current: 1225,
-                },
-            ],
+            funds: [],
 
-            addTransaction: (tx) =>
-                set((state) => ({
-                    transactions: [
-                        {
-                            ...tx,
-                            id: crypto.randomUUID(),
-                            date: new Date().toISOString().split("T")[0],
-                        },
-                        ...state.transactions,
-                    ],
-                })),
+            subscribeToFinance: () => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return () => {}
 
-            deleteTransaction: (id) =>
-                set((state) => ({
-                    transactions: state.transactions.filter((t) => t.id !== id),
-                })),
+                const transactionsRef = collection(db, "users", userId, "transactions")
+                const fundsRef = collection(db, "users", userId, "funds")
 
-            createFund: (fund) =>
-                set((state) => ({
-                    funds: [
-                        ...state.funds,
-                        { ...fund, id: crypto.randomUUID(), current: 0 },
-                    ],
-                })),
+                const unsubscribeTransactions = onSnapshot(query(transactionsRef), (snapshot) => {
+                    const transactionsData = snapshot.docs.map((docSnap) => ({
+                        ...(docSnap.data() as Transaction),
+                        id: docSnap.id,
+                    }))
+                    set({ transactions: transactionsData })
+                })
 
-            addFundsToFund: (fundId, amount) =>
-                set((state) => {
-                    return {
-                        funds: state.funds.map((f) =>
-                            f.id === fundId
-                                ? { ...f, current: Math.max(0, f.current + amount) }
-                                : f,
-                        ),
-                    }
-                }),
+                const unsubscribeFunds = onSnapshot(query(fundsRef), (snapshot) => {
+                    const fundsData = snapshot.docs.map((docSnap) => ({
+                        ...(docSnap.data() as SavingsFund),
+                        id: docSnap.id,
+                    }))
+                    set({ funds: fundsData })
+                })
+
+                return () => {
+                    unsubscribeTransactions()
+                    unsubscribeFunds()
+                }
+            },
+
+            addTransaction: async (tx) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const id = crypto.randomUUID()
+                const txRef = doc(db, "users", userId, "transactions", id)
+
+                const transactionData: Transaction = {
+                    ...tx,
+                    id,
+                    date: new Date().toISOString().split("T")[0],
+                }
+
+                await setDoc(txRef, transactionData)
+            },
+
+            deleteTransaction: async (id) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const txRef = doc(db, "users", userId, "transactions", id)
+                await deleteDoc(txRef)
+            },
+
+            createFund: async (fund) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const id = crypto.randomUUID()
+                const fundRef = doc(db, "users", userId, "funds", id)
+
+                const fundData: SavingsFund = {
+                    ...fund,
+                    id,
+                    current: 0,
+                }
+
+                await setDoc(fundRef, fundData)
+            },
+
+            addFundsToFund: async (fundId, amount) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const fund = get().funds.find((f) => f.id === fundId)
+                if (!fund) return
+
+                const newCurrent = Math.max(0, fund.current + amount)
+                const fundRef = doc(db, "users", userId, "funds", fundId)
+
+                await setDoc(fundRef, { current: newCurrent }, { merge: true })
+            },
 
             getBalance: () => {
                 return get().transactions.reduce((acc, tx) => {
@@ -87,12 +138,13 @@ export const useFinanceStore = create<FinanceState>()(
             getTotalSavings: () => {
                 return get().funds.reduce((acc, f) => acc + f.current, 0)
             },
+
             getTargetSavings: () => {
                 return get().funds.reduce((acc, f) => acc + f.target, 0)
             },
         }),
         {
             name: "lifeos-finance-storage",
-        },
-    ),
+        }
+    )
 )

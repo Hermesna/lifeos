@@ -1,4 +1,15 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
+import { useAuthStore } from "@/shared/stores/useAuthStore"
+import { db } from "@/shared/lib/firebase"
+import { 
+    collection, 
+    doc, 
+    setDoc, 
+    deleteDoc, 
+    onSnapshot, 
+    query 
+} from "firebase/firestore"
 
 export interface HabitEvent {
     id: string
@@ -11,58 +22,82 @@ export interface HabitEvent {
 
 interface HabitsState {
     habits: HabitEvent[]
-    addHabit: (event: Omit<HabitEvent, "id" | "completed"> & { id?: string }) => void
-    editHabit: (id: string, updated: Partial<Omit<HabitEvent, "id">>) => void
-    deleteHabit: (id: string) => void
-    toggleHabit: (id: string) => void
+    subscribeToHabits: () => () => void
+    addHabit: (event: Omit<HabitEvent, "id" | "completed"> & { id?: string }) => Promise<void>
+    editHabit: (id: string, updated: Partial<Omit<HabitEvent, "id">>) => Promise<void>
+    deleteHabit: (id: string) => Promise<void>
+    toggleHabit: (id: string) => Promise<void>
 }
 
-export const useHabitsStore = create<HabitsState>((set) => ({
-    habits: [
-        {
-            id: "1",
-            name: "Estudiar Francés",
-            category: "languages",
-            date: new Date().toISOString().split("T")[0],
-            time: "09:00",
-            completed: false,
-        },
-        {
-            id: "2",
-            name: "Gimnasio",
-            category: "health",
-            date: new Date().toISOString().split("T")[0],
-            time: "18:00",
-            completed: true,
-        },
-    ],
+export const useHabitsStore = create<HabitsState>()(
+    persist(
+        (set, get) => ({
+            habits: [],
 
-    addHabit: (data) =>
-        set((state) => ({
-            habits: [
-                ...state.habits,
-                {
+            subscribeToHabits: () => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return () => {}
+
+                const habitsRef = collection(db, "users", userId, "habits")
+                const q = query(habitsRef)
+
+                const unsubscribe = onSnapshot(q, (snapshot) => {
+                    const habitsData = snapshot.docs.map((docSnap) => ({
+                        ...(docSnap.data() as HabitEvent),
+                        id: docSnap.id,
+                    }))
+
+                    set({ habits: habitsData })
+                })
+
+                return unsubscribe
+            },
+
+            addHabit: async (data) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const id = data.id || crypto.randomUUID()
+                const habitRef = doc(db, "users", userId, "habits", id)
+
+                const habitData: HabitEvent = {
                     ...data,
-                    id: data.id || crypto.randomUUID(),
+                    id,
                     completed: false,
-                },
-            ],
-        })),
+                }
 
-    editHabit: (id, updated) =>
-        set((state) => ({
-            habits: state.habits.map((h) => (h.id === id ? { ...h, ...updated } : h)),
-        })),
+                await setDoc(habitRef, habitData)
+            },
 
-    deleteHabit: (id) =>
-        set((state) => ({
-            habits: state.habits.filter((h) => h.id !== id),
-        })),
+            editHabit: async (id, updated) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
 
-    toggleHabit: (id) =>
-        set((state) => ({
-            habits: state.habits.map((h) =>
-                h.id === id ? { ...h, completed: !h.completed } : h
-            ),
-        })),
-}))
+                const habitRef = doc(db, "users", userId, "habits", id)
+                await setDoc(habitRef, updated, { merge: true })
+            },
+
+            deleteHabit: async (id) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const habitRef = doc(db, "users", userId, "habits", id)
+                await deleteDoc(habitRef)
+            },
+
+            toggleHabit: async (id) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const habit = get().habits.find((h) => h.id === id)
+                if (!habit) return
+
+                const habitRef = doc(db, "users", userId, "habits", id)
+                await setDoc(habitRef, { completed: !habit.completed }, { merge: true })
+            },
+        }),
+        {
+            name: "lifeos-habits-storage",
+        }
+    )
+)

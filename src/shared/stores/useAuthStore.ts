@@ -9,7 +9,8 @@ import {
     signInWithPopup,
     type User as FirebaseUser 
 } from "firebase/auth"
-import { auth } from "@/shared/lib/firebase"
+import { auth, db } from "@/shared/lib/firebase"
+import { doc, setDoc, getDoc } from "firebase/firestore"
 
 export interface UserProfile {
     id: string
@@ -29,12 +30,12 @@ interface AuthState {
     register: (email: string, pass: string) => Promise<void>
     loginWithGoogle: () => Promise<void>
     logout: () => Promise<void>
-    updateUser: (updatedData: Partial<UserProfile>) => void
+    updateUser: (updatedData: Partial<UserProfile>) => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             user: null,
             token: null,
             isAuthenticated: false,
@@ -44,12 +45,23 @@ export const useAuthStore = create<AuthState>()(
                 onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
                     if (firebaseUser) {
                         const token = await firebaseUser.getIdToken()
-                        const userProfile: UserProfile = {
-                            id: firebaseUser.uid,
-                            name: firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Usuario",
-                            email: firebaseUser.email || "",
-                            avatarUrl: firebaseUser.photoURL || undefined,
+                        const userRef = doc(db, "users", firebaseUser.uid)
+                        const userSnap = await getDoc(userRef)
+
+                        let userProfile: UserProfile
+
+                        if (userSnap.exists()) {
+                            userProfile = userSnap.data() as UserProfile
+                        } else {
+                            userProfile = {
+                                id: firebaseUser.uid,
+                                name: firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Usuario",
+                                email: firebaseUser.email || "",
+                                avatarUrl: firebaseUser.photoURL || undefined,
+                            }
+                            await setDoc(userRef, userProfile)
                         }
+
                         set({ user: userProfile, token, isAuthenticated: true, isLoading: false })
                     } else {
                         set({ user: null, token: null, isAuthenticated: false, isLoading: false })
@@ -60,23 +72,39 @@ export const useAuthStore = create<AuthState>()(
             login: async (email, pass) => {
                 const credential = await signInWithEmailAndPassword(auth, email, pass)
                 const token = await credential.user.getIdToken()
-                const userProfile: UserProfile = {
-                    id: credential.user.uid,
-                    name: credential.user.displayName || email.split("@")[0],
-                    email: credential.user.email || email,
-                    avatarUrl: credential.user.photoURL || undefined,
+                
+                const userRef = doc(db, "users", credential.user.uid)
+                const userSnap = await getDoc(userRef)
+
+                let userProfile: UserProfile
+                if (userSnap.exists()) {
+                    userProfile = userSnap.data() as UserProfile
+                } else {
+                    userProfile = {
+                        id: credential.user.uid,
+                        name: credential.user.displayName || email.split("@")[0],
+                        email: credential.user.email || email,
+                        avatarUrl: credential.user.photoURL || undefined,
+                    }
+                    await setDoc(userRef, userProfile)
                 }
+
                 set({ user: userProfile, token, isAuthenticated: true })
             },
 
             register: async (email, pass) => {
                 const credential = await createUserWithEmailAndPassword(auth, email, pass)
                 const token = await credential.user.getIdToken()
+                
                 const userProfile: UserProfile = {
                     id: credential.user.uid,
                     name: email.split("@")[0],
                     email: credential.user.email || email,
                 }
+
+                const userRef = doc(db, "users", credential.user.uid)
+                await setDoc(userRef, userProfile)
+
                 set({ user: userProfile, token, isAuthenticated: true })
             },
 
@@ -84,12 +112,23 @@ export const useAuthStore = create<AuthState>()(
                 const provider = new GoogleAuthProvider()
                 const credential = await signInWithPopup(auth, provider)
                 const token = await credential.user.getIdToken()
-                const userProfile: UserProfile = {
-                    id: credential.user.uid,
-                    name: credential.user.displayName || "Usuario",
-                    email: credential.user.email || "",
-                    avatarUrl: credential.user.photoURL || undefined,
+
+                const userRef = doc(db, "users", credential.user.uid)
+                const userSnap = await getDoc(userRef)
+
+                let userProfile: UserProfile
+                if (userSnap.exists()) {
+                    userProfile = userSnap.data() as UserProfile
+                } else {
+                    userProfile = {
+                        id: credential.user.uid,
+                        name: credential.user.displayName || "Usuario",
+                        email: credential.user.email || "",
+                        avatarUrl: credential.user.photoURL || undefined,
+                    }
+                    await setDoc(userRef, userProfile)
                 }
+
                 set({ user: userProfile, token, isAuthenticated: true })
             },
 
@@ -98,10 +137,16 @@ export const useAuthStore = create<AuthState>()(
                 set({ user: null, token: null, isAuthenticated: false })
             },
 
-            updateUser: (updatedData) =>
-                set((state) => ({
-                    user: state.user ? { ...state.user, ...updatedData } : null,
-                })),
+            updateUser: async (updatedData) => {
+                const currentUser = get().user
+                if (!currentUser) return
+
+                const updatedProfile = { ...currentUser, ...updatedData }
+                set({ user: updatedProfile })
+
+                const userRef = doc(db, "users", currentUser.id)
+                await setDoc(userRef, updatedData, { merge: true })
+            },
         }),
         {
             name: "lifeos-auth",
