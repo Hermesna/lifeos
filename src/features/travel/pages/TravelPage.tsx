@@ -221,7 +221,7 @@ export function TravelPage() {
               </div>
             </>
           ) : (
-            <div className="rounded-xl border border-dashed bg-card p-12 text-center flex flex-col items-center justify-center min-h-[350px]">
+            <div className="rounded-xl border border-dashed bg-card p-12 text-center flex flex-col items-center justify-center min-h-87.5">
               <Compass className="h-10 w-10 text-muted-foreground mb-3 animate-pulse" />
               <h3 className="font-semibold text-base mb-1">
                 {t("travel.noTripsTitle")}
