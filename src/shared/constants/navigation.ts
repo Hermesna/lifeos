@@ -1,10 +1,10 @@
 import {
     BookOpen,
+    CalendarCheck,
     Coins,
     Home,
     Languages,
     Plane,
-    Trophy,
 } from "lucide-react"
 
 export const navigation = [
@@ -29,9 +29,9 @@ export const navigation = [
         icon: BookOpen,
     },
     {
-        title: "navigation.habits",
-        href: "/habits",
-        icon: Trophy,
+        title: "navigation.calendar",
+        href: "/calendar",
+        icon: CalendarCheck,
     },
     {
         title: "navigation.travel",

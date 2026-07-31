@@ -5,7 +5,7 @@
     "finance": "Finance",
     "languages": "Languages",
     "books": "Books",
-    "habits": "Habits"
+    "calendar": "Calendar"
   },
   "header": {
     "profile": "My Profile",
@@ -97,6 +97,181 @@
       "category": "Select category.",
       "date": "Select a date.",
       "time": "Select a time."
+    },
+    "calendar": {
+      "today": "Today",
+      "add": "Add task"
+    },
+    "form": {
+      "time": "Hour",
+      "editTitle": "Edit Activity",
+      "newTitle": "New Activity/Habit",
+      "cancel": "Cancel",
+      "name": "Name",
+      "namePlaceholder": "Ex. Train, Study...",
+      "date": "Date",
+      "category": "Category",
+      "updateButton": "Save Changes",
+      "createButton": "Add to Agenda"
+    },
+    "categories": {
+      "lifestyle": "Lifestyle",
+      "work": "Job",
+      "health": "Health",
+      "languages": "Languages"
+    },
+    "page": {
+      "title": "Agenda",
+      "subtitle": "View your month and manage your daily activities."
+    },
+    "sidebar": {
+      "editTask": "Edit Task",
+      "addToSchedule": "Add to Agenda",
+      "cancel": "Cancel",
+      "namePlaceholder": "Ex. Gym, Study...",
+      "save": "Keep",
+      "addTask": "Add Task",
+      "eventsForDate": "Events for {{date}}",
+      "noPlans": "No plans for this day.",
+      "edit": "Edit",
+      "delete": "Eliminate"
     }
+  },
+  "languages": {
+    "categories": {
+      "vocabulary": "Vocabulary",
+      "listening": "Listen",
+      "grammar": "Grammar",
+      "speaking": "Oral"
+    },
+    "targetLanguage": "Target Language",
+    "placeholder": "Ex: Japanese...",
+    "addNew": "Add new language",
+    "level": "Level",
+    "stats": {
+      "timeSpent": "Time Spent",
+      "hoursAbbr": "hrs",
+      "completedBlocks": "Completed Blocks",
+      "skillBalance": "Balance of Skills"
+    },
+    "historyTitle": "Practice History ({{language}})",
+    "noSessions": "You haven't registered a session for {{language}} yet.",
+    "minutesAbbr": "min",
+    "habitName": "Study of ${newSession.language} (${newSession.duration} min)",
+    "habitTitle": "Study of ${newSession.language} (${newSession.duration} min)",
+    "form": {
+      "title": "Register Session",
+      "subtitle": "Time or add manual blocks.",
+      "activeTimer": "Active stopwatch",
+      "stopTimer": "Arrest",
+      "startTimer": "Start",
+      "categoryLabel": "Category",
+      "durationLabel": "Duration",
+      "customMinutesPlaceholder": "Custom minutes",
+      "notesLabel": "Notes (Optional)",
+      "notesPlaceholder": "Ex. Learned 10 words about business...",
+      "submitButton": "Save Block"
+    }
+  },
+  "common": {
+    "save": "Keep",
+    "new": "New",
+    "cancel": "Cancel",
+    "light": "Clear",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "books": {
+    "form": {
+      "editTitle": "Edit book",
+      "addTitle": "Add book",
+      "titleLabel": "Qualification",
+      "titlePlaceholder": "Ex. Clean Architecture",
+      "authorLabel": "Author",
+      "authorPlaceholder": "Ex. Robert C. Martin",
+      "totalPagesLabel": "Total pages",
+      "readPagesLabel": "Pages read",
+      "ratingLabel": "Rating (1 to 10)"
+    },
+    "title": "Bookshop",
+    "subtitle": "Manage your readings and progress",
+    "addBook": "Add book",
+    "filters": {
+      "all": "All",
+      "reading": "Reading",
+      "completed": "Finished",
+      "pending": "Earrings"
+    },
+    "empty": "There are no books in this state.",
+    "status": {
+      "completed": "Finished",
+      "reading": "Reading",
+      "pending": "Earring"
+    }
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Visual theme"
+  },
+  "profile": {
+    "defaultUser": "User",
+    "verifiedAccount": "Verified Account",
+    "username": "User name",
+    "email": "Email",
+    "bio": "Biography/Notes",
+    "bioPlaceholder": "Add a brief personal summary..."
+  },
+  "dashboard": {
+    "title": "LifeOS Dashboard",
+    "subtitle": "General summary of your system and key metrics.",
+    "finishEditing": "Finish editing",
+    "customizeWidgets": "Customize widgets",
+    "customizePrompt": "Activate or hide the modules according to your needs:",
+    "noVisibleWidgets": "There are no widgets visible on your Dashboard.",
+    "enableWidgets": "Activate widgets",
+    "reorderWidget": "Reorder widget"
+  },
+  "habitsWidget": {
+    "routine": "Daily Routine",
+    "title": "Today's Habits",
+    "empty": "There are no habits recorded for today.",
+    "manage": "Manage complete routine"
+  },
+  "booksWidget": {
+    "manage": "Browse full shelf",
+    "pages": "Page {{read}} of {{total}}",
+    "empty": "There are no books on your shelf.",
+    "count": "{{count}} book",
+    "title": "Current Reading",
+    "library": "Library"
+  },
+  "savingsWidget": {
+    "manage": "View transactions and funds",
+    "empty": "There are no savings funds created.",
+    "generalBalance": "Balance Sheet",
+    "status": "Asset",
+    "title": "Financial Health",
+    "finance": "Finance"
+  },
+  "languagesWidget": {
+    "manage": "Manage sessions",
+    "minutes": "{{minutes}}m",
+    "totalMinutes": "{{minutes}} min total",
+    "distribution": "Studio layout",
+    "level": "Level {{level}}",
+    "section": "Languages"
+  },
+  "travelWidget": {
+    "manage": "Manage itinerary and suitcases",
+    "packed": "{{packed}}/{{total}} ready",
+    "luggage": "Luggage",
+    "departure": "Exit",
+    "budget": "Budget",
+    "destination": "Destination",
+    "empty": "There are no registered expeditions.",
+    "today": "It's today!",
+    "daysLeft": "{{days}}d missing",
+    "title": "Next Flight",
+    "boardingPass": "Boarding Pass"
   }
 }

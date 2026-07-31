@@ -5,7 +5,7 @@
     "finance": "Finanzas",
     "languages": "Idiomas",
     "books": "Libros",
-    "habits": "Hábitos"
+    "calendar": "Calendario"
   },
   "header": {
     "profile": "Mi Perfil",
@@ -97,6 +97,181 @@
       "category": "Selecciona categoría.",
       "date": "Selecciona una fecha.",
       "time": "Selecciona una hora."
+    },
+    "calendar": {
+      "today": "Hoy",
+      "add": "Añadir tarea"
+    },
+    "form": {
+      "time": "Hora",
+      "editTitle": "Editar Actividad",
+      "newTitle": "Nueva Actividad / Hábito",
+      "cancel": "Cancelar",
+      "name": "Nombre",
+      "namePlaceholder": "Ej. Entrenar, Estudiar...",
+      "date": "Fecha",
+      "category": "Categoría",
+      "updateButton": "Guardar Cambios",
+      "createButton": "Añadir a la Agenda"
+    },
+    "categories": {
+      "lifestyle": "Estilo de vida",
+      "work": "Trabajo",
+      "health": "Salud & Deporte",
+      "languages": "Idiomas"
+    },
+    "page": {
+      "title": "Agenda & Hábitos",
+      "subtitle": "Visualiza tu mes y gestiona tus actividades del día."
+    },
+    "sidebar": {
+      "editTask": "Editar Tarea",
+      "addToSchedule": "Añadir a la Agenda",
+      "cancel": "Cancelar",
+      "namePlaceholder": "Ej. Gimnasio, Estudiar...",
+      "save": "Guardar",
+      "addTask": "Añadir Tarea",
+      "eventsForDate": "Eventos para {{date}}",
+      "noPlans": "Sin planes para este día.",
+      "edit": "Editar",
+      "delete": "Eliminar"
     }
+  },
+  "languages": {
+    "categories": {
+      "vocabulary": "Vocabulario",
+      "listening": "Escucha",
+      "grammar": "Gramática",
+      "speaking": "Oral"
+    },
+    "targetLanguage": "Idioma Objetivo",
+    "placeholder": "Ej: Japonés...",
+    "addNew": "Añadir nuevo idioma",
+    "level": "Nivel",
+    "stats": {
+      "timeSpent": "Tiempo Invertido",
+      "hoursAbbr": "hrs",
+      "completedBlocks": "Bloques Completados",
+      "skillBalance": "Balance de Habilidades"
+    },
+    "historyTitle": "Historial de Práctica ({{language}})",
+    "noSessions": "No has registrado ninguna sesión para {{language}} todavía.",
+    "minutesAbbr": "min",
+    "habitName": "Estudio de ${newSession.language} (${newSession.duration} min)",
+    "habitTitle": "Estudio de ${newSession.language} (${newSession.duration} min)",
+    "form": {
+      "title": "Registrar Sesión",
+      "subtitle": "Cronometra o añade bloques manuales.",
+      "activeTimer": "Cronómetro activo",
+      "stopTimer": "Detener",
+      "startTimer": "Iniciar",
+      "categoryLabel": "Categoría",
+      "durationLabel": "Duración",
+      "customMinutesPlaceholder": "Minutos personalizados",
+      "notesLabel": "Notas (Opcional)",
+      "notesPlaceholder": "Ej. Aprendidas 10 palabras sobre negocios...",
+      "submitButton": "Guardar Bloque"
+    }
+  },
+  "common": {
+    "save": "Guardar",
+    "new": "Nuevo",
+    "cancel": "Cancelar",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "books": {
+    "form": {
+      "editTitle": "Editar libro",
+      "addTitle": "Añadir libro",
+      "titleLabel": "Título",
+      "titlePlaceholder": "Ej. Clean Architecture",
+      "authorLabel": "Autor",
+      "authorPlaceholder": "Ej. Robert C. Martin",
+      "totalPagesLabel": "Páginas totales",
+      "readPagesLabel": "Páginas leídas",
+      "ratingLabel": "Valoración (1 a 10)"
+    },
+    "title": "Librería",
+    "subtitle": "Gestiona tus lecturas y progreso",
+    "addBook": "Añadir libro",
+    "filters": {
+      "all": "Todos",
+      "reading": "Leyendo",
+      "completed": "Terminados",
+      "pending": "Pendientes"
+    },
+    "empty": "No hay libros en este estado.",
+    "status": {
+      "completed": "Terminado",
+      "reading": "Leyendo",
+      "pending": "Pendiente"
+    }
+  },
+  "settings": {
+    "language": "Idioma",
+    "theme": "Tema visual"
+  },
+  "profile": {
+    "defaultUser": "Usuario",
+    "verifiedAccount": "Cuenta Verificada",
+    "username": "Nombre de usuario",
+    "email": "Correo Electrónico",
+    "bio": "Biografía / Notas",
+    "bioPlaceholder": "Añade un breve resumen personal..."
+  },
+  "dashboard": {
+    "title": "LifeOS Dashboard",
+    "subtitle": "Resumen general de tu sistema y métricas clave.",
+    "finishEditing": "Finalizar edición",
+    "customizeWidgets": "Personalizar widgets",
+    "customizePrompt": "Activa u oculta los módulos según tus necesidades:",
+    "noVisibleWidgets": "No hay widgets visibles en tu Dashboard.",
+    "enableWidgets": "Activar widgets",
+    "reorderWidget": "Reordenar widget"
+  },
+  "habitsWidget": {
+    "routine": "Rutina Diaria",
+    "title": "Hábitos de Hoy",
+    "empty": "No hay hábitos registrados para hoy.",
+    "manage": "Gestionar rutina completa"
+  },
+  "booksWidget": {
+    "manage": "Explorar estantería completa",
+    "pages": "Pág. {{read}} de {{total}}",
+    "empty": "No hay libros en tu estantería.",
+    "count": "{{count}} libro",
+    "title": "Lectura Actual",
+    "library": "Biblioteca"
+  },
+  "savingsWidget": {
+    "manage": "Ver transacciones y fondos",
+    "empty": "No hay fondos de ahorro creados.",
+    "generalBalance": "Balance General",
+    "status": "Activo",
+    "title": "Salud Financiera",
+    "finance": "Finanzas"
+  },
+  "languagesWidget": {
+    "manage": "Gestionar sesiones",
+    "minutes": "{{minutes}}m",
+    "totalMinutes": "{{minutes}} min total",
+    "distribution": "Distribución de estudio",
+    "level": "Nivel {{level}}",
+    "section": "Idiomas"
+  },
+  "travelWidget": {
+    "manage": "Gestionar itinerario y maletas",
+    "packed": "{{packed}}/{{total}} listos",
+    "luggage": "Equipaje",
+    "departure": "Salida",
+    "budget": "Presupuesto",
+    "destination": "Destino",
+    "empty": "No hay expediciones registradas.",
+    "today": "¡Es hoy!",
+    "daysLeft": "Faltan {{days}}d",
+    "title": "Próximo Vuelo",
+    "boardingPass": "Boarding Pass"
   }
 }

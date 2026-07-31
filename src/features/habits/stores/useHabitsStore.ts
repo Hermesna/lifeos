@@ -4,14 +4,14 @@ export interface HabitEvent {
     id: string
     name: string
     category: string
-    date: string // Formato "YYYY-MM-DD"
-    time: string // Formato "HH:mm"
+    date: string
+    time: string
     completed: boolean
 }
 
 interface HabitsState {
     habits: HabitEvent[]
-    addHabit: (event: Omit<HabitEvent, "id" | "completed">) => void
+    addHabit: (event: Omit<HabitEvent, "id" | "completed"> & { id?: string }) => void
     editHabit: (id: string, updated: Partial<Omit<HabitEvent, "id">>) => void
     deleteHabit: (id: string) => void
     toggleHabit: (id: string) => void
@@ -29,7 +29,7 @@ export const useHabitsStore = create<HabitsState>((set) => ({
         },
         {
             id: "2",
-            name: "Gimnasio / Rutina",
+            name: "Gimnasio",
             category: "health",
             date: new Date().toISOString().split("T")[0],
             time: "18:00",
@@ -43,7 +43,7 @@ export const useHabitsStore = create<HabitsState>((set) => ({
                 ...state.habits,
                 {
                     ...data,
-                    id: crypto.randomUUID(),
+                    id: data.id || crypto.randomUUID(),
                     completed: false,
                 },
             ],
@@ -51,20 +51,18 @@ export const useHabitsStore = create<HabitsState>((set) => ({
 
     editHabit: (id, updated) =>
         set((state) => ({
-            habits: state.habits.map((habit) =>
-                habit.id === id ? { ...habit, ...updated } : habit
-            ),
+            habits: state.habits.map((h) => (h.id === id ? { ...h, ...updated } : h)),
         })),
 
     deleteHabit: (id) =>
         set((state) => ({
-            habits: state.habits.filter((habit) => habit.id !== id),
+            habits: state.habits.filter((h) => h.id !== id),
         })),
 
     toggleHabit: (id) =>
         set((state) => ({
-            habits: state.habits.map((habit) =>
-                habit.id === id ? { ...habit, completed: !habit.completed } : habit
+            habits: state.habits.map((h) =>
+                h.id === id ? { ...h, completed: !h.completed } : h
             ),
         })),
 }))

@@ -5,7 +5,7 @@
     "finance": "Finances",
     "languages": "Langues",
     "books": "Livres",
-    "habits": "Habitudes"
+    "calendar": "Calendrier"
   },
   "header": {
     "profile": "Mon Profil",
@@ -97,6 +97,181 @@
       "category": "Sélectionnez la catégorie.",
       "date": "Sélectionnez une date.",
       "time": "Sélectionnez une heure."
+    },
+    "calendar": {
+      "today": "Aujourd'hui",
+      "add": "Ajouter une tâche"
+    },
+    "form": {
+      "time": "Heure",
+      "editTitle": "Modifier l'activité",
+      "newTitle": "Nouvelle activité/habitude",
+      "cancel": "Annuler",
+      "name": "Nom",
+      "namePlaceholder": "Ex. Se former, étudier...",
+      "date": "Date",
+      "category": "Catégorie",
+      "updateButton": "Enregistrer les modifications",
+      "createButton": "Ajouter à l'ordre du jour"
+    },
+    "categories": {
+      "lifestyle": "Mode de vie",
+      "work": "Emploi",
+      "health": "Santé",
+      "languages": "Langues"
+    },
+    "page": {
+      "title": "Ordre du jour",
+      "subtitle": "Consultez votre mois et gérez vos activités quotidiennes."
+    },
+    "sidebar": {
+      "editTask": "Modifier la tâche",
+      "addToSchedule": "Ajouter à l'ordre du jour",
+      "cancel": "Annuler",
+      "namePlaceholder": "Ex. Salle de sport, étude...",
+      "save": "Garder",
+      "addTask": "Ajouter une tâche",
+      "eventsForDate": "Événements pour {{date}}",
+      "noPlans": "Aucun projet pour cette journée.",
+      "edit": "Modifier",
+      "delete": "Éliminer"
     }
+  },
+  "languages": {
+    "categories": {
+      "vocabulary": "Vocabulaire",
+      "listening": "Écouter",
+      "grammar": "Grammaire",
+      "speaking": "Oral"
+    },
+    "targetLanguage": "Langue cible",
+    "placeholder": "Ex : Japonais...",
+    "addNew": "Ajouter une nouvelle langue",
+    "level": "Niveau",
+    "stats": {
+      "timeSpent": "Temps passé",
+      "hoursAbbr": "heures",
+      "completedBlocks": "Blocs terminés",
+      "skillBalance": "Équilibre des compétences"
+    },
+    "historyTitle": "Historique de la pratique ({{langue}})",
+    "noSessions": "Vous n'avez pas encore enregistré de session pour {{langue}}.",
+    "minutesAbbr": "min",
+    "habitName": "Etude de ${newSession.langue} (${newSession.duration} min)",
+    "habitTitle": "Etude de ${newSession.langue} (${newSession.duration} min)",
+    "form": {
+      "title": "Session d'inscription",
+      "subtitle": "Chronométrez ou ajoutez des blocs manuels.",
+      "activeTimer": "Chronomètre actif",
+      "stopTimer": "Arrêter",
+      "startTimer": "Commencer",
+      "categoryLabel": "Catégorie",
+      "durationLabel": "Durée",
+      "customMinutesPlaceholder": "Minutes personnalisées",
+      "notesLabel": "Remarques (facultatif)",
+      "notesPlaceholder": "Ex. J'ai appris 10 mots sur les affaires...",
+      "submitButton": "Enregistrer le bloc"
+    }
+  },
+  "common": {
+    "save": "Garder",
+    "new": "Nouveau",
+    "cancel": "Annuler",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "books": {
+    "form": {
+      "editTitle": "Modifier le livre",
+      "addTitle": "Ajouter un livre",
+      "titleLabel": "Qualification",
+      "titlePlaceholder": "Ex. Architecture propre",
+      "authorLabel": "Auteur",
+      "authorPlaceholder": "Ex. Robert C.Martin",
+      "totalPagesLabel": "Nombre total de pages",
+      "readPagesLabel": "Pages lues",
+      "ratingLabel": "Note (1 à 10)"
+    },
+    "title": "Librairie",
+    "subtitle": "Gérez vos lectures et vos progrès",
+    "addBook": "Ajouter un livre",
+    "filters": {
+      "all": "Tous",
+      "reading": "En lisant",
+      "completed": "Fini",
+      "pending": "Boucles d'oreilles"
+    },
+    "empty": "Il n'y a aucun livre dans cet état.",
+    "status": {
+      "completed": "Fini",
+      "reading": "En lisant",
+      "pending": "Boucle"
+    }
+  },
+  "settings": {
+    "language": "Langue",
+    "theme": "Thème visuel"
+  },
+  "profile": {
+    "defaultUser": "Utilisateur",
+    "verifiedAccount": "Compte vérifié",
+    "username": "Nom d'utilisateur",
+    "email": "E-mail",
+    "bio": "Biographie/Notes",
+    "bioPlaceholder": "Ajoutez un bref résumé personnel..."
+  },
+  "dashboard": {
+    "title": "Tableau de bord LifeOS",
+    "subtitle": "Résumé général de votre système et des indicateurs clés.",
+    "finishEditing": "Terminer la modification",
+    "customizeWidgets": "Personnaliser les widgets",
+    "customizePrompt": "Activez ou masquez les modules selon vos besoins :",
+    "noVisibleWidgets": "Aucun widget n'est visible sur votre tableau de bord.",
+    "enableWidgets": "Activer les widgets",
+    "reorderWidget": "Réorganiser le widget"
+  },
+  "habitsWidget": {
+    "routine": "Routine quotidienne",
+    "title": "Les habitudes d'aujourd'hui",
+    "empty": "Aucune habitude n’a été enregistrée pour aujourd’hui.",
+    "manage": "Gérer une routine complète"
+  },
+  "booksWidget": {
+    "manage": "Parcourir l'étagère complète",
+    "pages": "Page {{lecture}} sur {{total}}",
+    "empty": "Il n'y a aucun livre sur votre étagère.",
+    "count": "{{count}} livre",
+    "title": "Lecture actuelle",
+    "library": "Bibliothèque"
+  },
+  "savingsWidget": {
+    "manage": "Afficher les transactions et les fonds",
+    "empty": "Aucun fonds d'épargne n'est créé.",
+    "generalBalance": "Bilan",
+    "status": "Actif",
+    "title": "Santé financière",
+    "finance": "Finance"
+  },
+  "languagesWidget": {
+    "manage": "Gérer les séances",
+    "minutes": "{{minutes}}min",
+    "totalMinutes": "{{minutes}} minutes au total",
+    "distribution": "Disposition des studios",
+    "level": "Niveau {{niveau}}",
+    "section": "Langues"
+  },
+  "travelWidget": {
+    "manage": "Gérer l'itinéraire et les valises",
+    "packed": "{{packed}}/{{total}} prêt",
+    "luggage": "Bagage",
+    "departure": "Sortie",
+    "budget": "Budget",
+    "destination": "Destination",
+    "empty": "Il n'y a aucune expédition enregistrée.",
+    "today": "C'est aujourd'hui !",
+    "daysLeft": "{{days}}d manquant",
+    "title": "Prochain vol",
+    "boardingPass": "Carte d'embarquement"
   }
 }
