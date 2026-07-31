@@ -50,5 +50,53 @@
   "sidebar": {
     "expand": "Expand menu",
     "collapse": "Collapse menu"
+  },
+  "finance": {
+    "title": "Financial Dashboard",
+    "subtitle": "Control your balance, income, expenses and savings goals.",
+    "totalBalance": "Total Balance",
+    "totalIncomes": "Total Revenue",
+    "totalExpenses": "Total Expenses",
+    "savingsGoals": "Savings Goals",
+    "fundProgress": "{{current}} € from {{target}} €",
+    "addAmountPlaceholder": "Contribute amount (ex. 50)...",
+    "saveButton": "Save",
+    "recentTransactions": "Recent Movements",
+    "noTransactions": "There are no transactions recorded yet.",
+    "deleteTransaction": "Delete motion",
+    "validation": {
+      "descriptionMin": "The description must be at least 3 characters.",
+      "validNumber": "Please enter a valid number.",
+      "amountPositive": "The amount must be greater than zero.",
+      "selectCategory": "Select a category."
+    },
+    "form": {
+      "title": "Register Movement",
+      "expense": "Spent",
+      "income": "Income",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Ex. Supermarket, Payroll...",
+      "amountLabel": "Amount (€)",
+      "amountPlaceholder": "Ex. 500",
+      "categoryLabel": "Category",
+      "submitButton": "Save Transaction"
+    },
+    "categories": {
+      "leisure": "Leisure",
+      "transport": "Transportation/Travel",
+      "housing": "Home",
+      "otherExpenses": "Other Expenses",
+      "salary": "Payroll / Salary",
+      "investments": "Investments",
+      "otherIncome": "Other Income"
+    }
+  },
+  "habits": {
+    "validation": {
+      "nameMin": "Minimum 3 characters.",
+      "category": "Select category.",
+      "date": "Select a date.",
+      "time": "Select a time."
+    }
   }
 }

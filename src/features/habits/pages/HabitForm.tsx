@@ -1,73 +1,196 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { habitsSchema, type HabitsFormValues } from "../schemas/habitsSchema";
-import { useHabitsStore } from "../stores/useHabitsStore";
-import { Plus } from "lucide-react";
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { useHabitsStore, type HabitEvent } from "../stores/useHabitsStore"
+import { Plus, Check, X } from "lucide-react"
+import { useTranslation } from "react-i18next"
+import type { TFunction } from "i18next"
 
-export function HabitForm() {
-  const addHabit = useHabitsStore((state) => state.addHabit);
+const getHabitSchema = (t: TFunction) =>
+    z.object({
+        name: z
+            .string()
+            .min(3, t("habits.validation.nameMin", "Mínimo 3 caracteres.")),
+        category: z.string().min(1, t("habits.validation.category", "Selecciona categoría.")),
+        date: z.string().min(1, t("habits.validation.date", "Selecciona una fecha.")),
+        time: z.string().min(1, t("habits.validation.time", "Selecciona una hora.")),
+    })
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<HabitsFormValues>({
-    resolver: zodResolver(habitsSchema),
-    defaultValues: {
-      name: "",
-      category: "lifestyle",
-    },
-  });
+type HabitSchemaType = ReturnType<typeof getHabitSchema>
+type HabitInput = z.input<HabitSchemaType>
+type HabitOutput = z.output<HabitSchemaType>
 
-  const onSubmit = async (data: HabitsFormValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    addHabit(data.name, data.category);
-    reset();
-  };
+interface HabitFormProps {
+    selectedDate: string
+    editingHabit?: HabitEvent | null
+    onCancelEdit?: () => void
+}
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
-      <div className="space-y-1">
-        <h3 className="text-lg font-semibold tracking-tight">New Discipline</h3>
-        <p className="text-sm text-muted-foreground">Build consistency through small daily actions.</p>
-      </div>
+export function HabitForm({
+    selectedDate,
+    editingHabit,
+    onCancelEdit,
+}: HabitFormProps) {
+    const { t } = useTranslation()
+    const { addHabit, editHabit } = useHabitsStore()
 
-      <div className="space-y-3">
-        <div className="space-y-1.5">
-          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Habit Name</label>
-          <input
-            type="text"
-            placeholder="e.g. Read 10 pages of technical books"
-            {...register("name")}
-            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          />
-          {errors.name && <p className="text-xs font-medium text-destructive">{errors.name.message}</p>}
-        </div>
+    const habitSchema = getHabitSchema(t)
 
-        <div className="space-y-1.5">
-          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Category</label>
-          <select
-            {...register("category")}
-            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          >
-            <option value="lifestyle">Lifestyle / General</option>
-            <option value="languages">Languages</option>
-            <option value="work">Engineering / Focus</option>
-            <option value="health">Health & Fitness</option>
-          </select>
-          {errors.category && <p className="text-xs font-medium text-destructive">{errors.category.message}</p>}
-        </div>
-      </div>
+    const {
+        register,
+        handleSubmit,
+        reset,
+        setValue,
+        formState: { errors, isSubmitting },
+    } = useForm<HabitInput, object, HabitOutput>({
+        resolver: zodResolver(habitSchema),
+        defaultValues: {
+            name: "",
+            category: "lifestyle",
+            date: selectedDate,
+            time: "09:00",
+        },
+    })
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary h-9 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50 cursor-pointer"
-      >
-        <Plus className="h-4 w-4" />
-        {isSubmitting ? "Creating..." : "Create Habit"}
-      </button>
-    </form>
-  );
+    useEffect(() => {
+        if (!editingHabit) {
+            setValue("date", selectedDate)
+        }
+    }, [selectedDate, editingHabit, setValue])
+
+    useEffect(() => {
+        if (editingHabit) {
+            reset({
+                name: editingHabit.name,
+                category: editingHabit.category,
+                date: editingHabit.date,
+                time: editingHabit.time,
+            })
+        }
+    }, [editingHabit, reset])
+
+    const onSubmit = (data: HabitOutput) => {
+        if (editingHabit) {
+            editHabit(editingHabit.id, data)
+            if (onCancelEdit) onCancelEdit()
+        } else {
+            addHabit(data)
+        }
+        reset({
+            name: "",
+            category: data.category,
+            date: selectedDate,
+            time: "09:00",
+        })
+    }
+
+    return (
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4 rounded-xl border bg-card p-5 shadow-sm"
+        >
+            <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold tracking-tight">
+                    {editingHabit
+                        ? t("habits.form.editTitle", "Editar Actividad")
+                        : t("habits.form.newTitle", "Nueva Actividad / Hábito")}
+                </h3>
+                {editingHabit && (
+                    <button
+                        type="button"
+                        onClick={onCancelEdit}
+                        className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
+                    >
+                        <X className="h-3.5 w-3.5" />
+                        {t("habits.form.cancel", "Cancelar")}
+                    </button>
+                )}
+            </div>
+
+            <div className="space-y-3">
+                <div className="space-y-1">
+                    <label className="text-xs font-medium text-muted-foreground uppercase">
+                        {t("habits.form.name", "Nombre")}
+                    </label>
+                    <input
+                        type="text"
+                        placeholder={t("habits.form.namePlaceholder", "Ej. Entrenar pierna, Estudiar...")}
+                        {...register("name")}
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    />
+                    {errors.name && (
+                        <p className="text-xs font-medium text-destructive">
+                            {errors.name.message}
+                        </p>
+                    )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1">
+                        <label className="text-xs font-medium text-muted-foreground uppercase">
+                            {t("habits.form.date", "Fecha")}
+                        </label>
+                        <input
+                            type="date"
+                            {...register("date")}
+                            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        />
+                    </div>
+
+                    <div className="space-y-1">
+                        <label className="text-xs font-medium text-muted-foreground uppercase">
+                            {t("habits.form.time", "Hora")}
+                        </label>
+                        <input
+                            type="time"
+                            {...register("time")}
+                            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-1">
+                    <label className="text-xs font-medium text-muted-foreground uppercase">
+                        {t("habits.form.category", "Categoría")}
+                    </label>
+                    <select
+                        {...register("category")}
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                        <option value="lifestyle">
+                            {t("habits.categories.lifestyle", "Estilo de vida")}
+                        </option>
+                        <option value="work">
+                            {t("habits.categories.work", "Trabajo / Enfoque")}
+                        </option>
+                        <option value="health">
+                            {t("habits.categories.health", "Salud & Deporte")}
+                        </option>
+                        <option value="languages">
+                            {t("habits.categories.languages", "Idiomas")}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <button
+                type="submit"
+                disabled={isSubmitting}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary h-9 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50 cursor-pointer"
+            >
+                {editingHabit ? (
+                    <>
+                        <Check className="h-4 w-4" />
+                        {t("habits.form.updateButton", "Guardar Cambios")}
+                    </>
+                ) : (
+                    <>
+                        <Plus className="h-4 w-4" />
+                        {t("habits.form.createButton", "Añadir a la Agenda")}
+                    </>
+                )}
+            </button>
+        </form>
+    )
 }

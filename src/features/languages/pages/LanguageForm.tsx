@@ -64,10 +64,10 @@ export function LanguageForm() {
             {...register("category")}
             className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
           >
-            <option value="vocabulary">📝 Vocabulario / Anki</option>
+            <option value="vocabulary">📝 Vocabulario</option>
             <option value="listening">🎧 Escucha / Podcasts</option>
             <option value="grammar">📚 Gramática / Teoría</option>
-            <option value="speaking">🗣️ Práctica Oral / Shadowing</option>
+            <option value="speaking">🗣️ Práctica Oral</option>
           </select>
         </div>
 

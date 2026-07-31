@@ -50,5 +50,53 @@
   "sidebar": {
     "expand": "Développer le menu",
     "collapse": "Réduire le menu"
+  },
+  "finance": {
+    "title": "Tableau de bord financier",
+    "subtitle": "Contrôlez votre solde, vos revenus, vos dépenses et vos objectifs d’épargne.",
+    "totalBalance": "Solde total",
+    "totalIncomes": "Revenu total",
+    "totalExpenses": "Dépenses totales",
+    "savingsGoals": "Objectifs d'épargne",
+    "fundProgress": "{{current}} € à partir de {{target}} €",
+    "addAmountPlaceholder": "Montant de la cotisation (ex. 50)...",
+    "saveButton": "Sauvegarder",
+    "recentTransactions": "Mouvements récents",
+    "noTransactions": "Aucune transaction n'a encore été enregistrée.",
+    "deleteTransaction": "Supprimer le mouvement",
+    "validation": {
+      "descriptionMin": "La description doit comporter au moins 3 caractères.",
+      "validNumber": "Veuillez entrer un numéro valide.",
+      "amountPositive": "Le montant doit être supérieur à zéro.",
+      "selectCategory": "Sélectionnez une catégorie."
+    },
+    "form": {
+      "title": "Enregistrer le mouvement",
+      "expense": "Dépensé",
+      "income": "Revenu",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Ex. Supermarché, Paie...",
+      "amountLabel": "Montant (€)",
+      "amountPlaceholder": "Ex. 500",
+      "categoryLabel": "Catégorie",
+      "submitButton": "Enregistrer la transaction"
+    },
+    "categories": {
+      "leisure": "Loisirs",
+      "transport": "Transport/Voyage",
+      "housing": "Maison",
+      "otherExpenses": "Autres dépenses",
+      "salary": "Paie / Salaire",
+      "investments": "Investissements",
+      "otherIncome": "Autres revenus"
+    }
+  },
+  "habits": {
+    "validation": {
+      "nameMin": "Minimum 3 caractères.",
+      "category": "Sélectionnez la catégorie.",
+      "date": "Sélectionnez une date.",
+      "time": "Sélectionnez une heure."
+    }
   }
 }

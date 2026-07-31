@@ -1,72 +1,70 @@
-import { create } from "zustand";
+import { create } from "zustand"
 
-export interface Habit {
-  id: string;
-  name: string;
-  history: number[];
-  streak: number;
+export interface HabitEvent {
+    id: string
+    name: string
+    category: string
+    date: string // Formato "YYYY-MM-DD"
+    time: string // Formato "HH:mm"
+    completed: boolean
 }
 
 interface HabitsState {
-  habits: Habit[];
-  toggleHabitToday: (id: string) => void;
-  addHabit: (name: string, category: string) => void;
+    habits: HabitEvent[]
+    addHabit: (event: Omit<HabitEvent, "id" | "completed">) => void
+    editHabit: (id: string, updated: Partial<Omit<HabitEvent, "id">>) => void
+    deleteHabit: (id: string) => void
+    toggleHabit: (id: string) => void
 }
 
 export const useHabitsStore = create<HabitsState>((set) => ({
-  habits: [
-    {
-      id: "french",
-      name: "French Study",
-      history: [1, 1, 0, 1, 1, 1, 1],
-      streak: 5,
-    },
-    {
-      id: "code",
-      name: "LeetCode / Side Project",
-      history: [1, 0, 1, 1, 0, 1, 1],
-      streak: 2,
-    },
-    {
-      id: "workout",
-      name: "Gym / Workout",
-      history: [0, 1, 0, 1, 0, 1, 0],
-      streak: 1,
-    },
-  ],
-
-  toggleHabitToday: (id) =>
-    set((state) => ({
-      habits: state.habits.map((habit) => {
-        if (habit.id !== id) return habit;
-
-        const newHistory = [...habit.history];
-        const lastIndex = newHistory.length - 1;
-        const currentStatus = newHistory[lastIndex];
-        const newStatus = currentStatus === 1 ? 0 : 1;
-        newHistory[lastIndex] = newStatus;
-
-        const newStreak =
-          newStatus === 1 ? habit.streak + 1 : Math.max(0, habit.streak - 1);
-
-        return {
-          ...habit,
-          history: newHistory,
-          streak: newStreak,
-        };
-      }),
-    })),
-
-  addHabit: (name) =>
-    set((state) => ({
-      habits: [
-        ...state.habits,
+    habits: [
         {
-          id: crypto.randomUUID(),
-          name,
-          history: [0, 0, 0, 0, 0, 0, 0],
-          streak: 0,
+            id: "1",
+            name: "Estudiar Francés",
+            category: "languages",
+            date: new Date().toISOString().split("T")[0],
+            time: "09:00",
+            completed: false,
         },
-      ],
-    })),
-}));
+        {
+            id: "2",
+            name: "Gimnasio / Rutina",
+            category: "health",
+            date: new Date().toISOString().split("T")[0],
+            time: "18:00",
+            completed: true,
+        },
+    ],
+
+    addHabit: (data) =>
+        set((state) => ({
+            habits: [
+                ...state.habits,
+                {
+                    ...data,
+                    id: crypto.randomUUID(),
+                    completed: false,
+                },
+            ],
+        })),
+
+    editHabit: (id, updated) =>
+        set((state) => ({
+            habits: state.habits.map((habit) =>
+                habit.id === id ? { ...habit, ...updated } : habit
+            ),
+        })),
+
+    deleteHabit: (id) =>
+        set((state) => ({
+            habits: state.habits.filter((habit) => habit.id !== id),
+        })),
+
+    toggleHabit: (id) =>
+        set((state) => ({
+            habits: state.habits.map((habit) =>
+                habit.id === id ? { ...habit, completed: !habit.completed } : habit
+            ),
+        })),
+}))

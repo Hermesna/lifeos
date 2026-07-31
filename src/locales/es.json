@@ -50,5 +50,53 @@
   "sidebar": {
     "expand": "Expandir menú",
     "collapse": "Colapsar menú"
+  },
+  "finance": {
+    "title": "Panel Financiero",
+    "subtitle": "Controla tu balance, ingresos, gastos y metas de ahorro.",
+    "totalBalance": "Balance Total",
+    "totalIncomes": "Ingresos Totales",
+    "totalExpenses": "Gastos Totales",
+    "savingsGoals": "Objetivos de Ahorro",
+    "fundProgress": "{{current}} € de {{target}} €",
+    "addAmountPlaceholder": "Aportar importe (ej. 50)...",
+    "saveButton": "Ahorrar",
+    "recentTransactions": "Movimientos Recientes",
+    "noTransactions": "No hay transacciones registradas todavía.",
+    "deleteTransaction": "Eliminar movimiento",
+    "validation": {
+      "descriptionMin": "La descripción debe tener al menos 3 caracteres.",
+      "validNumber": "Introduce un número válido.",
+      "amountPositive": "El importe debe ser mayor que cero.",
+      "selectCategory": "Selecciona una categoría."
+    },
+    "form": {
+      "title": "Registrar Movimiento",
+      "expense": "Gasto",
+      "income": "Ingreso",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Ej. Supermercado, Nómina...",
+      "amountLabel": "Importe (€)",
+      "amountPlaceholder": "Ej. 500",
+      "categoryLabel": "Categoría",
+      "submitButton": "Guardar Transacción"
+    },
+    "categories": {
+      "leisure": "Ocio & Restauración",
+      "transport": "Transporte / Viajes",
+      "housing": "Hogar & Suministros",
+      "otherExpenses": "Otros Gastos",
+      "salary": "Nómina / Salario",
+      "investments": "Inversiones",
+      "otherIncome": "Otros Ingresos"
+    }
+  },
+  "habits": {
+    "validation": {
+      "nameMin": "Mínimo 3 caracteres.",
+      "category": "Selecciona categoría.",
+      "date": "Selecciona una fecha.",
+      "time": "Selecciona una hora."
+    }
   }
 }
