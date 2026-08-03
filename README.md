@@ -1,34 +1,51 @@
 # LifeOS · Personal Productivity Dashboard
 
-> **Frontend Architecture Log** · Personal project focused on building a standardized and ultra-efficient ecosystem for managing habits, finances, and languages.
+> **Frontend Architecture & Engineering** · A standardized, ultra-efficient personal ecosystem designed for managing habits, finances, languages, travel, and personal growth in real-time.
 
 ---
 
 ## Current Status & Focus
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Status-In%20Active%20Development-blue?style=for-the-badge&logo=react&logoColor=white" alt="In Progress Badge" />
+  <img src="https://img.shields.io/badge/Status-Completed%20&%20Responsive-success?style=for-the-badge&logo=firebase&logoColor=white" alt="Completed Badge" />
+  <img src="https://img.shields.io/badge/Live-Deployment-blue?style=for-the-badge&logo=firebase&logoColor=white" alt="Live Demo" />
 </div>
 
 <br />
 
-Currently iterating on the system's foundation, migrating components towards a unified global state and refining the user experience with seamless design transitions.
+> **Live Preview:** [https://lifeos-hnunez.web.app/](https://lifeos-hnunez.web.app/)
 
-### On the radar:
-* **LifeOS Core:** Consolidating a clean *Feature-First* architecture to vertically isolate each functionality (Habits, Travel, Languages).
-* **Theme Engine:** Adaptive global system (Light/Dark Mode) with native detection of operating system preferences and local persistence without "flash" effects.
-* **Strict Validation:** Implementation of data guardrails at the customer input using controlled forms and typed schemas.
+LifeOS is fully developed and production-ready. The core architecture successfully integrates a **Feature-First** structure, real-time cloud persistence via Firebase/Firestore, and a fully polished responsive design optimized for seamless cross-device mobile and desktop experiences.
+
+---
+
+## Key Features & Modules
+
+* **⚡ Real-Time Dashboard & Sync:** Multi-module state management synchronized live with Firestore listeners, allowing instant updates across sessions, data, and user preferences.
+* **🎯 Habit Tracker:** Daily routine management with cross-module integrations (e.g., studying a language automatically logs a corresponding habit entry).
+* **💰 Finance Manager:** Transaction logging (income/expense tracking) and custom savings funds with real-time balance and target calculations.
+* **🗣️ Language Learning Hub:** Specialized tracking for study sessions (vocabulary, listening, grammar, speaking) categorized by target languages and proficiency levels.
+* **✈️ Travel Planner:** Itinerary and trip management for upcoming adventures.
+* **🎨 Adaptive Theme Engine:** Native Dark/Light mode switcher with system preference detection and local persistence to prevent any flash of unstyled content.
+* **🔐 Authentication System:** Secure email/password and Google authentication via Firebase Auth with automated profile provisioning.
 
 ---
 
 ## Technology Stack
 
-At the architectural level, a lightweight, server-agnostic (pure SPA) approach has been prioritized, maximizing performance on the client side:
+Built with a performance-first, server-agnostic (SPA) client-side approach:
 
-* **Core:** `React` · `TypeScript`
-* **State Management:** `Zustand` (with local persistence middleware)
-* **Routing:** `React Router v6` (Layout strategy and 404 view injection)
-* **Styling:** `Tailwind CSS` (Dynamic design token strategy using semantic classes)
-* **Validation:** `Zod` · `React Hook Form`
+* **Core & UI:** `React` · `TypeScript` · `Tailwind CSS` · `Lucide React`
+* **State & Persistence:** `Zustand` (with middleware persistence)
+* **Backend & Database:** `Firebase Auth` & `Cloud Firestore` (Real-time snapshots)
+* **Routing:** `React Router v6` (Nested layout strategies and guarded routes)
+* **Validation & Forms:** `Zod` · `React Hook Form`
+* **Internationalization:** `i18next` (Multi-language support)
 
 ---
+
+## Architectural Highlights
+
+* **Feature-First Structure:** Each domain (`habits`, `finances`, `languages`, `travel`, `auth`) encapsulates its own components, hooks, stores, and types, ensuring high maintainability and decoupled scalability.
+* **Optimized Mobile View:** Fully adapted UI layout featuring collapsible navigation, fluid spacing, and touch-friendly interactive targets for a native-like mobile experience.
+* **Robust Type Safety:** Strict TypeScript interfaces across all data models, stores, and Firestore document references.
