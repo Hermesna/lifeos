@@ -35,12 +35,14 @@ LifeOS is fully developed and production-ready. The core architecture successful
 
 Built with a performance-first, server-agnostic (SPA) client-side approach:
 
-* **Core & UI:** `React` · `TypeScript` · `Tailwind CSS` · `Lucide React`
-* **State & Persistence:** `Zustand` (with middleware persistence)
-* **Backend & Database:** `Firebase Auth` & `Cloud Firestore` (Real-time snapshots)
-* **Routing:** `React Router v6` (Nested layout strategies and guarded routes)
-* **Validation & Forms:** `Zod` · `React Hook Form`
-* **Internationalization:** `i18next` (Multi-language support)
+* **Core & UI:** `React (^19.2.7)` · `TypeScript (~6.0.2)` · `Tailwind CSS (^4.3.2)` · `Lucide React (^1.23.0)`
+* **Build Tool:** `Vite (^8.1.1)`
+* **State & Persistence:** `Zustand (^5.0.14)` (with middleware persistence)
+* **Backend & Database:** `Firebase Auth & Cloud Firestore (^12.16.0)` (Real-time snapshots)
+* **Routing:** `React Router Dom (^7.18.1)` (Nested layout strategies and guarded routes)
+* **Validation & Forms:** `Zod (^4.4.3)` · `React Hook Form (^7.81.0)`
+* **Internationalization:** `i18next (^26.3.6)` (Multi-language support)
+* **Utilities & UI Helpers:** `TanStack React Query (^5.101.2)` · `DnD Kit (^6.3.1)`
 
 ---
 
