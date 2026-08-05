@@ -78,13 +78,13 @@ export default function DashboardPage() {
     const visibleWidgetIds = widgetOrder.filter((id) => activeWidgets.includes(id))
 
     return (
-        <div className="space-y-6 p-6">
+        <div className="space-y-6 px-3 py-6 sm:px-6 max-w-7xl mx-auto pb-12">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4">
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight">
                         {t("dashboard.title", { defaultValue: "LifeOS Dashboard" })}
                     </h1>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground mt-0.5">
                         {t("dashboard.subtitle", { defaultValue: "Resumen general de tu sistema y métricas clave." })}
                     </p>
                 </div>
@@ -92,7 +92,7 @@ export default function DashboardPage() {
                 <button
                     type="button"
                     onClick={() => setIsCustomizing(!isCustomizing)}
-                    className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${isCustomizing
+                    className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-medium transition-colors cursor-pointer shadow-xs ${isCustomizing
                             ? "border-primary bg-primary/10 text-primary"
                             : "border-border hover:bg-accent text-muted-foreground"
                         }`}
@@ -107,7 +107,7 @@ export default function DashboardPage() {
             </div>
 
             {isCustomizing && (
-                <div className="rounded-xl border border-border bg-card p-4 space-y-3 animate-in fade-in duration-150">
+                <div className="rounded-2xl border border-border bg-card p-4 space-y-3 animate-in fade-in duration-150 shadow-xs">
                     <p className="text-xs font-medium text-foreground">
                         {t("dashboard.customizePrompt", { defaultValue: "Activa u oculta los módulos según tus necesidades:" })}
                     </p>
@@ -120,12 +120,12 @@ export default function DashboardPage() {
                                     key={id}
                                     type="button"
                                     onClick={() => toggleWidget(id)}
-                                    className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-all cursor-pointer ${isActive
+                                    className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all cursor-pointer shadow-xs ${isActive
                                             ? "border-primary/50 bg-primary/10 text-primary"
                                             : "border-border bg-background text-muted-foreground opacity-60 hover:opacity-100"
                                         }`}
                                 >
-                                    {isActive ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
+                                    {isActive ? <Eye className="h-3.5 w-3.5 shrink-0" /> : <EyeOff className="h-3.5 w-3.5 shrink-0" />}
                                     <span>{t(widgetMeta.titleKey, { defaultValue: widgetMeta.defaultTitle })}</span>
                                 </button>
                             )
@@ -135,7 +135,7 @@ export default function DashboardPage() {
             )}
 
             {visibleWidgetIds.length === 0 ? (
-                <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border p-12 text-center">
+                <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border p-12 text-center bg-card/50">
                     <p className="text-sm font-medium text-muted-foreground">
                         {t("dashboard.noVisibleWidgets", { defaultValue: "No hay widgets visibles en tu Dashboard." })}
                     </p>
@@ -144,7 +144,7 @@ export default function DashboardPage() {
                         onClick={() => setIsCustomizing(true)}
                         className="mt-3 flex items-center gap-1.5 text-xs text-primary font-medium hover:underline cursor-pointer"
                     >
-                        <Plus className="h-3.5 w-3.5" />
+                        <Plus className="h-3.5 w-3.5 shrink-0" />
                         {t("dashboard.enableWidgets", { defaultValue: "Activar widgets" })}
                     </button>
                 </div>
@@ -191,10 +191,10 @@ function SortableWidgetContainer({ id, isCustomizing, children }: SortableWidget
                 {...attributes}
                 {...listeners}
                 aria-label={t("dashboard.reorderWidget", { defaultValue: "Reordenar widget" })}
-                className={`absolute right-3 top-3 z-10 flex h-6 w-6 items-center justify-center rounded-md border border-border bg-background/80 backdrop-blur-xs text-muted-foreground hover:text-foreground cursor-grab active:cursor-grabbing transition-opacity ${isCustomizing ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                className={`absolute right-3 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-xl border border-border bg-background/80 backdrop-blur-xs text-muted-foreground hover:text-foreground cursor-grab active:cursor-grabbing transition-opacity shadow-xs ${isCustomizing ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                     }`}
             >
-                <GripVertical className="h-3.5 w-3.5" />
+                <GripVertical className="h-3.5 w-3.5 shrink-0" />
             </div>
 
             <div className="h-full [&>*]:h-full">

@@ -54,19 +54,19 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-in fade-in duration-150">
-            <div className="w-full max-w-md rounded-xl border border-border bg-card p-5 shadow-xl space-y-5 animate-in zoom-in-95 duration-150">
+            <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-xl space-y-4 sm:space-y-5 animate-in zoom-in-95 duration-150">
 
                 <div className="flex items-center justify-between border-b border-border pb-3">
                     <div className="flex items-center gap-2">
                         <Settings className="h-4 w-4 text-primary" />
-                        <h3 className="text-sm font-semibold">
+                        <h3 className="text-sm sm:text-base font-semibold">
                             {t("header.settings", { defaultValue: "Ajustes de la aplicación" })}
                         </h3>
                     </div>
                     <button
                         type="button"
                         onClick={onClose}
-                        className="rounded-lg p-1 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors cursor-pointer"
+                        className="rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors cursor-pointer"
                     >
                         <X className="h-4 w-4" />
                     </button>
@@ -83,10 +83,11 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                             <button
                                 type="button"
                                 onClick={() => setSelectedLanguage("es")}
-                                className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-medium transition-all cursor-pointer ${selectedLanguage.startsWith("es")
+                                className={`flex items-center justify-center gap-1.5 rounded-xl border px-2.5 py-2.5 sm:py-2 text-xs font-medium transition-all cursor-pointer ${
+                                    selectedLanguage.startsWith("es")
                                         ? "border-primary bg-primary/10 text-primary"
                                         : "border-border hover:bg-accent text-muted-foreground"
-                                    }`}
+                                }`}
                             >
                                 <span>Español</span>
                             </button>
@@ -94,10 +95,11 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                             <button
                                 type="button"
                                 onClick={() => setSelectedLanguage("en")}
-                                className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-medium transition-all cursor-pointer ${selectedLanguage.startsWith("en")
+                                className={`flex items-center justify-center gap-1.5 rounded-xl border px-2.5 py-2.5 sm:py-2 text-xs font-medium transition-all cursor-pointer ${
+                                    selectedLanguage.startsWith("en")
                                         ? "border-primary bg-primary/10 text-primary"
                                         : "border-border hover:bg-accent text-muted-foreground"
-                                    }`}
+                                }`}
                             >
                                 <span>English</span>
                             </button>
@@ -105,10 +107,11 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                             <button
                                 type="button"
                                 onClick={() => setSelectedLanguage("fr")}
-                                className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-medium transition-all cursor-pointer ${selectedLanguage.startsWith("fr")
+                                className={`flex items-center justify-center gap-1.5 rounded-xl border px-2.5 py-2.5 sm:py-2 text-xs font-medium transition-all cursor-pointer ${
+                                    selectedLanguage.startsWith("fr")
                                         ? "border-primary bg-primary/10 text-primary"
                                         : "border-border hover:bg-accent text-muted-foreground"
-                                    }`}
+                                }`}
                             >
                                 <span>Français</span>
                             </button>
@@ -126,54 +129,57 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                             <button
                                 type="button"
                                 onClick={() => setSelectedTheme("light")}
-                                className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-medium transition-all cursor-pointer ${selectedTheme === "light"
+                                className={`flex items-center justify-center gap-1.5 rounded-xl border px-2.5 py-2.5 sm:py-2 text-xs font-medium transition-all cursor-pointer ${
+                                    selectedTheme === "light"
                                         ? "border-primary bg-primary/10 text-primary"
                                         : "border-border hover:bg-accent text-muted-foreground"
-                                    }`}
+                                }`}
                             >
-                                <Sun className="h-3.5 w-3.5" />
+                                <Sun className="h-3.5 w-3.5 shrink-0" />
                                 <span>{t("common.light", { defaultValue: "Claro" })}</span>
                             </button>
 
                             <button
                                 type="button"
                                 onClick={() => setSelectedTheme("dark")}
-                                className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-medium transition-all cursor-pointer ${selectedTheme === "dark"
+                                className={`flex items-center justify-center gap-1.5 rounded-xl border px-2.5 py-2.5 sm:py-2 text-xs font-medium transition-all cursor-pointer ${
+                                    selectedTheme === "dark"
                                         ? "border-primary bg-primary/10 text-primary"
                                         : "border-border hover:bg-accent text-muted-foreground"
-                                    }`}
+                                }`}
                             >
-                                <Moon className="h-3.5 w-3.5" />
+                                <Moon className="h-3.5 w-3.5 shrink-0" />
                                 <span>{t("common.dark", { defaultValue: "Oscuro" })}</span>
                             </button>
 
                             <button
                                 type="button"
                                 onClick={() => setSelectedTheme("system")}
-                                className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-medium transition-all cursor-pointer ${selectedTheme === "system"
+                                className={`flex items-center justify-center gap-1.5 rounded-xl border px-2.5 py-2.5 sm:py-2 text-xs font-medium transition-all cursor-pointer ${
+                                    selectedTheme === "system"
                                         ? "border-primary bg-primary/10 text-primary"
                                         : "border-border hover:bg-accent text-muted-foreground"
-                                    }`}
+                                }`}
                             >
-                                <Monitor className="h-3.5 w-3.5" />
+                                <Monitor className="h-3.5 w-3.5 shrink-0" />
                                 <span>{t("common.system", { defaultValue: "Sistema" })}</span>
                             </button>
                         </div>
                     </div>
 
-                    <div className="flex justify-end gap-2 pt-3 border-t border-border">
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-2.5 pt-3 border-t border-border">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-3 py-1.5 text-xs rounded-lg border border-border hover:bg-accent transition-colors cursor-pointer"
+                            className="w-full sm:w-auto px-4 py-2 text-xs sm:text-sm rounded-xl border border-border hover:bg-accent transition-colors cursor-pointer font-medium"
                         >
                             {t("common.cancel", { defaultValue: "Cancelar" })}
                         </button>
                         <button
                             type="submit"
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
+                            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-medium bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors cursor-pointer shadow-sm"
                         >
-                            <Save className="h-3.5 w-3.5" />
+                            <Save className="h-4 w-4" />
                             {t("common.save", { defaultValue: "Guardar" })}
                         </button>
                     </div>

@@ -43,10 +43,11 @@ export function LoginPage() {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-background px-4">
-            <div className="w-full max-w-md space-y-6 rounded-xl border border-border bg-card p-6 shadow-md">
+        <div className="flex min-h-screen items-center justify-center bg-background px-4 py-8">
+            <div className="w-full max-w-md max-h-[90vh] overflow-y-auto space-y-5 rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-xl animate-in fade-in zoom-in-95 duration-150">
+                
                 <div className="text-center space-y-1">
-                    <h1 className="text-xl font-bold">
+                    <h1 className="text-lg sm:text-xl font-bold">
                         {isRegistering ? "Crear una cuenta" : "Bienvenido de nuevo"}
                     </h1>
                     <p className="text-xs text-muted-foreground">
@@ -55,13 +56,13 @@ export function LoginPage() {
                 </div>
 
                 {error && (
-                    <div className="p-3 text-xs rounded-lg bg-destructive/10 text-destructive border border-destructive/20">
+                    <div className="p-3 text-xs rounded-xl bg-destructive/10 text-destructive border border-destructive/20">
                         {error}
                     </div>
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-1">
+                    <div className="space-y-1.5">
                         <label className="text-xs font-medium text-muted-foreground">Correo electrónico</label>
                         <input
                             type="email"
@@ -69,10 +70,11 @@ export function LoginPage() {
                             onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                             required
                             placeholder="tu@correo.com"
-                            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                            className="flex h-10 sm:h-9 w-full rounded-xl border border-input bg-background px-3.5 py-2 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                         />
                     </div>
-                    <div className="space-y-1">
+                    
+                    <div className="space-y-1.5">
                         <label className="text-xs font-medium text-muted-foreground">Contraseña</label>
                         <input
                             type="password"
@@ -80,29 +82,29 @@ export function LoginPage() {
                             onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                             required
                             placeholder="••••••••"
-                            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                            className="flex h-10 sm:h-9 w-full rounded-xl border border-input bg-background px-3.5 py-2 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                         />
                     </div>
 
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className="w-full rounded-xl h-10 sm:h-9 cursor-pointer shadow-sm">
                         {isRegistering ? <UserPlus className="h-4 w-4 mr-2" /> : <LogIn className="h-4 w-4 mr-2" />}
                         {isRegistering ? "Registrarse" : "Iniciar Sesión"}
                     </Button>
                 </form>
 
-                <div className="relative flex py-2 items-center">
+                <div className="relative flex py-1 items-center">
                     <div className="grow border-t border-border"></div>
-                    <span className="shrink mx-4 text-xs text-muted-foreground uppercase">O continúa con</span>
+                    <span className="shrink mx-3 text-[11px] text-muted-foreground uppercase tracking-wider">O continúa con</span>
                     <div className="grow border-t border-border"></div>
                 </div>
 
                 <Button 
                     type="button" 
                     variant="outline" 
-                    className="w-full" 
+                    className="w-full rounded-xl h-10 sm:h-9 cursor-pointer" 
                     onClick={handleGoogleLogin}
                 >
-                    <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
+                    <svg className="h-4 w-4 mr-2 shrink-0" viewBox="0 0 24 24">
                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                         <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
@@ -111,15 +113,16 @@ export function LoginPage() {
                     Google
                 </Button>
 
-                <div className="text-center pt-2">
+                <div className="text-center pt-1">
                     <button
                         type="button"
                         onClick={() => setIsRegistering(!isRegistering)}
-                        className="text-xs text-muted-foreground hover:text-foreground underline transition-colors"
+                        className="text-xs text-muted-foreground hover:text-foreground underline transition-colors cursor-pointer"
                     >
                         {isRegistering ? "¿Ya tienes una cuenta? Inicia sesión" : "¿No tienes cuenta? Regístrate"}
                     </button>
                 </div>
+
             </div>
         </div>
     )

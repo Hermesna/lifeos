@@ -109,10 +109,10 @@ export function HabitsSidebar({
         <div className="space-y-4">
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="rounded-xl border bg-card p-4 shadow-sm space-y-3"
+                className="rounded-2xl border border-border bg-card p-4 shadow-xs space-y-3.5"
             >
                 <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-sm">
+                    <h3 className="font-bold text-sm tracking-tight">
                         {editingHabit
                             ? t("habits.sidebar.editTask", "Editar Tarea")
                             : t("habits.sidebar.addToSchedule", "Añadir a la Agenda")}
@@ -121,47 +121,49 @@ export function HabitsSidebar({
                         <button
                             type="button"
                             onClick={onClearEditing}
-                            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer"
+                            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer transition-colors"
                         >
-                            <X className="h-3 w-3" /> {t("habits.sidebar.cancel", "Cancelar")}
+                            <X className="h-3.5 w-3.5 shrink-0" /> {t("habits.sidebar.cancel", "Cancelar")}
                         </button>
                     )}
                 </div>
 
-                <input
-                    type="text"
-                    placeholder={t(
-                        "habits.sidebar.namePlaceholder",
-                        "Ej. Gimnasio, Estudiar..."
+                <div className="space-y-1.5">
+                    <input
+                        type="text"
+                        placeholder={t(
+                            "habits.sidebar.namePlaceholder",
+                            "Ej. Gimnasio, Estudiar..."
+                        )}
+                        {...register("name")}
+                        className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-all"
+                    />
+                    {errors.name && (
+                        <p className="text-[10px] font-medium text-destructive">{errors.name.message}</p>
                     )}
-                    {...register("name")}
-                    className="h-8 w-full rounded-md border border-input bg-transparent px-2.5 text-xs focus:ring-1 focus:ring-ring focus:outline-none transition-all"
-                />
-                {errors.name && (
-                    <p className="text-[10px] text-destructive">{errors.name.message}</p>
-                )}
+                </div>
 
                 <div className="grid grid-cols-2 gap-2">
                     <input
                         type="date"
                         {...register("date")}
-                        className="h-8 rounded-md border border-input bg-transparent px-2 text-xs focus:ring-1 focus:ring-ring"
+                        className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     />
                     <input
                         type="time"
                         {...register("time")}
-                        className="h-8 rounded-md border border-input bg-transparent px-2 text-xs focus:ring-1 focus:ring-ring"
+                        className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     />
                 </div>
 
                 <button
                     type="submit"
-                    className="w-full h-8 bg-primary text-primary-foreground text-xs font-medium rounded-md hover:bg-primary/90 flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary h-9 text-xs font-medium text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 cursor-pointer"
                 >
                     {editingHabit ? (
-                        <Check className="h-3.5 w-3.5" />
+                        <Check className="h-4 w-4 shrink-0" />
                     ) : (
-                        <Plus className="h-3.5 w-3.5" />
+                        <Plus className="h-4 w-4 shrink-0" />
                     )}
                     {editingHabit
                         ? t("habits.sidebar.save", "Guardar")
@@ -169,9 +171,9 @@ export function HabitsSidebar({
                 </button>
             </form>
 
-            <div className="rounded-xl border bg-card p-4 shadow-sm space-y-3">
-                <h4 className="font-semibold text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5" />{" "}
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-xs space-y-3">
+                <h4 className="font-bold text-[10px] text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5 shrink-0" />{" "}
                     {t("habits.sidebar.eventsForDate", "Eventos para {{date}}", {
                         date: selectedDate,
                     })}
@@ -186,43 +188,42 @@ export function HabitsSidebar({
                         {dayEvents.map((item) => (
                             <div
                                 key={item.id}
-                                className="flex items-center justify-between p-2 rounded-lg border bg-background text-xs"
+                                className="flex items-center justify-between p-2.5 rounded-xl border border-border/60 bg-background text-xs shadow-xs"
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2.5 truncate">
                                     <button
                                         onClick={() => toggleHabit(item.id)}
-                                        className="cursor-pointer"
+                                        className="cursor-pointer shrink-0"
                                     >
                                         {item.completed ? (
-                                            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                                            <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
                                         ) : (
-                                            <Circle className="h-4 w-4 text-muted-foreground" />
+                                            <Circle className="h-4 w-4 text-muted-foreground shrink-0" />
                                         )}
                                     </button>
-                                    <span className="font-bold text-primary">{item.time}</span>
+                                    <span className="font-bold text-primary shrink-0">{item.time}</span>
                                     <span
-                                        className={
-                                            item.completed ? "line-through text-muted-foreground" : ""
-                                        }
+                                        className={`truncate ${item.completed ? "line-through text-muted-foreground" : ""
+                                            }`}
                                     >
                                         {item.name}
                                     </span>
                                 </div>
 
-                                <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-1 shrink-0">
                                     <button
                                         onClick={() => onEditHabit(item)}
-                                        className="p-1 text-muted-foreground hover:text-foreground cursor-pointer"
+                                        className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary cursor-pointer transition-colors"
                                         title={t("habits.sidebar.edit", "Editar")}
                                     >
-                                        <Pencil className="h-3 w-3" />
+                                        <Pencil className="h-3.5 w-3.5 shrink-0" />
                                     </button>
                                     <button
                                         onClick={() => deleteHabit(item.id)}
-                                        className="p-1 text-muted-foreground hover:text-destructive cursor-pointer"
+                                        className="p-1 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 cursor-pointer transition-colors"
                                         title={t("habits.sidebar.delete", "Eliminar")}
                                     >
-                                        <Trash2 className="h-3 w-3" />
+                                        <Trash2 className="h-3.5 w-3.5 shrink-0" />
                                     </button>
                                 </div>
                             </div>

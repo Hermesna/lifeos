@@ -12,13 +12,13 @@ export function BooksWidget() {
         : 0
 
     return (
-        <div className="rounded-xl border border-border bg-card overflow-hidden flex flex-col justify-between hover:border-border/80 transition-colors shadow-xs">
+        <div className="rounded-2xl border border-border bg-card overflow-hidden flex flex-col justify-between hover:border-border/85 transition-colors shadow-xs">
             <div className="bg-blue-500/10 dark:bg-blue-500/5 px-4 py-3 border-b border-blue-500/20 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <div className="p-1.5 rounded-md bg-blue-500 text-white shadow-xs">
+                <div className="flex items-center gap-2.5">
+                    <div className="p-1.5 rounded-xl bg-blue-500 text-white shadow-xs shrink-0">
                         <BookOpen className="h-3.5 w-3.5" />
                     </div>
-                    <div>
+                    <div className="space-y-0.5">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                             {t("booksWidget.library", { defaultValue: "Biblioteca" })}
                         </span>
@@ -27,7 +27,7 @@ export function BooksWidget() {
                         </h3>
                     </div>
                 </div>
-                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                <span className="text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0">
                     {t("booksWidget.count", {
                         count: books.length,
                         defaultValue: "{{count}} libro",
@@ -37,47 +37,49 @@ export function BooksWidget() {
             </div>
 
             {!currentBook ? (
-                <div className="p-4 text-center">
+                <div className="p-5 text-center">
                     <p className="text-xs text-muted-foreground py-2">
                         {t("booksWidget.empty", { defaultValue: "No hay libros en tu estantería." })}
                     </p>
                 </div>
             ) : (
                 <div className="p-4 flex gap-3.5 items-center">
-                    <div className="relative shrink-0 w-12 h-16 rounded-md bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-md flex flex-col justify-between p-1.5 border-l-2 border-blue-400/50">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-black/20 rounded-l-md" />
+                    <div className="relative shrink-0 w-12 h-16 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-md flex flex-col justify-between p-1.5 border-l-2 border-blue-400/50">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-black/20 rounded-l-lg" />
                         <span className="text-[8px] font-bold tracking-tighter line-clamp-2 opacity-90">
                             {currentBook.title}
                         </span>
-                        <span className="text-[8px] opacity-75 self-end">
+                        <span className="text-[8px] opacity-75 self-end font-medium">
                             {progress}%
                         </span>
                     </div>
 
-                    <div className="space-y-2 flex-1 min-w-0">
-                        <div>
+                    <div className="space-y-2.5 flex-1 min-w-0">
+                        <div className="space-y-0.5">
                             <p className="text-xs font-bold truncate text-foreground">{currentBook.title}</p>
                             <p className="text-[11px] text-muted-foreground truncate">{currentBook.author}</p>
                         </div>
 
-                        <div className="space-y-1">
-                            <div className="flex justify-between text-[10px] text-muted-foreground">
-                                <span className="flex items-center gap-1">
-                                    <BookmarkCheck className="h-3 w-3 text-blue-500" />
-                                    {t("booksWidget.pages", {
-                                        read: currentBook.readPages,
-                                        total: currentBook.totalPages,
-                                        defaultValue: "Pág. {{read}} de {{total}}",
-                                    })}
+                        <div className="space-y-1.5">
+                            <div className="flex justify-between text-[11px] text-muted-foreground font-medium">
+                                <span className="flex items-center gap-1 min-w-0 truncate">
+                                    <BookmarkCheck className="h-3 w-3 text-blue-500 shrink-0" />
+                                    <span className="truncate">
+                                        {t("booksWidget.pages", {
+                                            read: currentBook.readPages,
+                                            total: currentBook.totalPages,
+                                            defaultValue: "Pág. {{read}} de {{total}}",
+                                        })}
+                                    </span>
                                 </span>
                                 {currentBook.rating && (
-                                    <span className="flex items-center gap-0.5 text-amber-500 font-semibold">
-                                        <Star className="h-2.5 w-2.5 fill-amber-500" />
+                                    <span className="flex items-center gap-0.5 text-amber-500 font-semibold shrink-0 ml-2">
+                                        <Star className="h-2.5 w-2.5 fill-amber-500 shrink-0" />
                                         {currentBook.rating}
                                     </span>
                                 )}
                             </div>
-                            <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                            <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
                                 <div
                                     className="h-full bg-blue-500 rounded-full transition-all duration-500"
                                     style={{ width: `${progress}%` }}
@@ -93,7 +95,7 @@ export function BooksWidget() {
                 className="px-4 py-2.5 bg-accent/20 flex items-center justify-between text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors border-t border-border/40"
             >
                 <span>{t("booksWidget.manage", { defaultValue: "Explorar estantería completa" })}</span>
-                <ArrowRight className="h-3 w-3" />
+                <ArrowRight className="h-3 w-3 shrink-0" />
             </Link>
         </div>
     )

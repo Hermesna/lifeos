@@ -7,9 +7,13 @@ import { LanguageToggle } from "@/shared/components/ui/LanguageToggle"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
 import { ProfileModal } from "./ProfileModal"
 import { SettingsModal } from "./SettingsModal"
-import { User, Settings, LogOut } from "lucide-react"
+import { User, Settings, LogOut, Menu } from "lucide-react"
 
-export function AppHeader() {
+interface AppHeaderProps {
+    onMenuClick?: () => void
+}
+
+export function AppHeader({ onMenuClick }: AppHeaderProps) {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
@@ -55,16 +59,26 @@ export function AppHeader() {
 
     return (
         <>
-            <header className="flex h-16 items-center justify-between border-b border-border bg-header px-6 text-foreground transition-colors duration-200 z-40">
-                <h2 className="text-lg font-semibold text-primary transition-all duration-200">
-                    {pageTitle}
-                </h2>
+            <header className="flex h-16 items-center justify-between border-b border-border bg-header px-4 md:px-6 text-foreground transition-colors duration-200 z-40">
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={onMenuClick}
+                        className="rounded-lg p-2 text-foreground/70 hover:bg-accent hover:text-accent-foreground md:hidden transition-colors cursor-pointer"
+                        title={t("header.menu", { defaultValue: "Abrir menú" })}
+                    >
+                        <Menu size={22} />
+                    </button>
 
-                <div className="flex items-center gap-2.5">
+                    <h2 className="text-base md:text-lg font-semibold text-primary transition-all duration-200 truncate">
+                        {pageTitle}
+                    </h2>
+                </div>
+
+                <div className="flex items-center gap-2">
                     <LanguageToggle />
                     <ThemeToggle />
 
-                    <div className="h-4 w-[1px] bg-border mx-1" />
+                    <div className="h-4 w-[1px] bg-border mx-0.5 md:mx-1" />
 
                     <div className="relative" ref={dropdownRef}>
                         <button

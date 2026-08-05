@@ -1,13 +1,13 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import { 
-    onAuthStateChanged, 
-    signInWithEmailAndPassword, 
-    signOut, 
+import {
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signOut,
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
-    type User as FirebaseUser 
+    type User as FirebaseUser
 } from "firebase/auth"
 import { auth, db } from "@/shared/lib/firebase"
 import { doc, setDoc, getDoc } from "firebase/firestore"
@@ -18,6 +18,7 @@ export interface UserProfile {
     email: string
     avatarUrl?: string
     role?: string
+    bio?: string
 }
 
 interface AuthState {
@@ -58,6 +59,7 @@ export const useAuthStore = create<AuthState>()(
                                 name: firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Usuario",
                                 email: firebaseUser.email || "",
                                 avatarUrl: firebaseUser.photoURL || undefined,
+                                bio: "",
                             }
                             await setDoc(userRef, userProfile)
                         }
@@ -72,7 +74,7 @@ export const useAuthStore = create<AuthState>()(
             login: async (email, pass) => {
                 const credential = await signInWithEmailAndPassword(auth, email, pass)
                 const token = await credential.user.getIdToken()
-                
+
                 const userRef = doc(db, "users", credential.user.uid)
                 const userSnap = await getDoc(userRef)
 
@@ -85,6 +87,7 @@ export const useAuthStore = create<AuthState>()(
                         name: credential.user.displayName || email.split("@")[0],
                         email: credential.user.email || email,
                         avatarUrl: credential.user.photoURL || undefined,
+                        bio: "",
                     }
                     await setDoc(userRef, userProfile)
                 }
@@ -95,11 +98,12 @@ export const useAuthStore = create<AuthState>()(
             register: async (email, pass) => {
                 const credential = await createUserWithEmailAndPassword(auth, email, pass)
                 const token = await credential.user.getIdToken()
-                
+
                 const userProfile: UserProfile = {
                     id: credential.user.uid,
                     name: email.split("@")[0],
                     email: credential.user.email || email,
+                    bio: "",
                 }
 
                 const userRef = doc(db, "users", credential.user.uid)
@@ -125,6 +129,7 @@ export const useAuthStore = create<AuthState>()(
                         name: credential.user.displayName || "Usuario",
                         email: credential.user.email || "",
                         avatarUrl: credential.user.photoURL || undefined,
+                        bio: "",
                     }
                     await setDoc(userRef, userProfile)
                 }

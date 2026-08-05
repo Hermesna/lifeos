@@ -42,25 +42,25 @@ export function LanguagesPage() {
         { label: string; icon: React.ReactNode; color: string; bg: string }
     > = {
         vocabulary: {
-            label: t("languages.categories.vocabulary", "Vocabulario"),
+            label: t("languages.categories.vocabulary", { defaultValue: "Vocabulario" }),
             icon: <BookOpen className="h-3.5 w-3.5" />,
             color: "text-emerald-500",
             bg: "bg-emerald-500/10",
         },
         listening: {
-            label: t("languages.categories.listening", "Escucha"),
+            label: t("languages.categories.listening", { defaultValue: "Escucha" }),
             icon: <Headphones className="h-3.5 w-3.5" />,
             color: "text-blue-500",
             bg: "bg-blue-500/10",
         },
         grammar: {
-            label: t("languages.categories.grammar", "Gramática"),
+            label: t("languages.categories.grammar", { defaultValue: "Gramática" }),
             icon: <GraduationCap className="h-3.5 w-3.5" />,
             color: "text-indigo-500",
             bg: "bg-indigo-500/10",
         },
         speaking: {
-            label: t("languages.categories.speaking", "Oral"),
+            label: t("languages.categories.speaking", { defaultValue: "Oral" }),
             icon: <MessageSquare className="h-3.5 w-3.5" />,
             color: "text-violet-500",
             bg: "bg-violet-500/10",
@@ -88,12 +88,12 @@ export function LanguagesPage() {
     }
 
     return (
-        <div className="h-full w-full flex flex-col gap-2 max-w-7xl mx-auto p-3 overflow-hidden box-border">
+        <div className="w-full flex flex-col gap-3 max-w-7xl mx-auto p-3 box-border">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between border-b pb-1.5 shrink-0">
                 <div>
                     <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary uppercase tracking-wider">
-                            {t("languages.targetLanguage", "Idioma Objetivo")}
+                            {t("languages.targetLanguage", { defaultValue: "Idioma Objetivo" })}
                         </span>
                     </div>
 
@@ -105,7 +105,7 @@ export function LanguagesPage() {
                             >
                                 <input
                                     type="text"
-                                    placeholder={t("languages.placeholder", "Ej: Japonés...")}
+                                    placeholder={t("languages.placeholder", { defaultValue: "Ej: Japonés..." })}
                                     value={newLangInput}
                                     onChange={(e) => setNewLangInput(e.target.value)}
                                     autoFocus
@@ -115,7 +115,7 @@ export function LanguagesPage() {
                                     type="submit"
                                     className="px-2 py-0.5 bg-primary text-primary-foreground text-xs font-medium rounded-md hover:bg-primary/90 transition-colors"
                                 >
-                                    {t("common.save", "Guardar")}
+                                    {t("common.save", { defaultValue: "Guardar" })}
                                 </button>
                                 <button
                                     type="button"
@@ -127,41 +127,47 @@ export function LanguagesPage() {
                             </form>
                         ) : (
                             <>
-                                <select
-                                    value={targetLanguage || ""}
-                                    onChange={(e) => setTargetLanguage(e.target.value)}
-                                    className="text-lg font-extrabold tracking-tight bg-transparent border-b border-dashed border-muted-foreground/40 hover:border-primary focus:outline-none focus:border-primary cursor-pointer pr-1 py-0.5"
-                                >
-                                    {userLanguages?.map((lang) => (
-                                        <option
-                                            key={lang}
-                                            value={lang}
-                                            className="bg-popover text-popover-foreground text-sm font-normal"
-                                        >
-                                            {lang}
-                                        </option>
-                                    ))}
-                                </select>
+                                {(!userLanguages || userLanguages.length === 0) ? (
+                                    <span className="text-lg font-extrabold tracking-tight text-muted-foreground">
+                                        {t("languages.noLanguages", { defaultValue: "Sin idiomas" })}
+                                    </span>
+                                ) : (
+                                    <select
+                                        value={targetLanguage || ""}
+                                        onChange={(e) => setTargetLanguage(e.target.value)}
+                                        className="text-lg font-extrabold tracking-tight bg-transparent border-b border-dashed border-muted-foreground/40 hover:border-primary focus:outline-none focus:border-primary cursor-pointer pr-1 py-0.5"
+                                    >
+                                        {userLanguages.map((lang) => (
+                                            <option
+                                                key={lang}
+                                                value={lang}
+                                                className="bg-popover text-popover-foreground text-sm font-normal"
+                                            >
+                                                {lang}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
                                 <button
                                     onClick={() => setIsCreating(true)}
                                     className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:text-primary/80 bg-primary/10 px-2 py-0.5 rounded-md transition-colors cursor-pointer"
-                                    title={t("languages.addNew", "Añadir nuevo idioma")}
+                                    title={t("languages.addNew", { defaultValue: "Añadir nuevo idioma" })}
                                 >
                                     <Plus className="h-3 w-3" />
-                                    {t("common.new", "Nuevo")}
+                                    {t("common.new", { defaultValue: "Nuevo" })}
                                 </button>
                             </>
                         )}
                     </div>
                 </div>
 
-                <div className="flex items-center gap-2.5 bg-card border px-2.5 py-1 rounded-xl shadow-sm">
+                <div className="flex items-center gap-2.5 bg-card border px-2.5 py-1 rounded-xl shadow-xs">
                     <div className="p-1 bg-yellow-500/10 text-yellow-600 rounded-lg">
                         <Trophy className="h-3.5 w-3.5" />
                     </div>
                     <div>
                         <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-wide">
-                            {t("languages.level", "Nivel")}
+                            {t("languages.level", { defaultValue: "Nivel" })}
                         </p>
                         <select
                             value={currentLevel}
@@ -183,30 +189,30 @@ export function LanguagesPage() {
             </div>
 
             <div className="grid gap-2 sm:grid-cols-3 shrink-0">
-                <div className="p-2 rounded-xl border bg-card shadow-sm flex items-center gap-2.5">
+                <div className="p-2 rounded-xl border bg-card shadow-xs flex items-center gap-2.5">
                     <div className="p-1.5 bg-orange-500/10 rounded-lg text-orange-500">
                         <Clock className="h-3.5 w-3.5" />
                     </div>
                     <div>
                         <p className="text-[10px] text-muted-foreground font-medium">
-                            {t("languages.stats.timeSpent", "Tiempo Invertido")}
+                            {t("languages.stats.timeSpent", { defaultValue: "Tiempo Invertido" })}
                         </p>
                         <h3 className="text-base font-bold leading-tight">
                             {totalHours}{" "}
                             <span className="text-xs font-normal text-muted-foreground">
-                                {t("languages.stats.hoursAbbr", "hrs")}
+                                {t("languages.stats.hoursAbbr", { defaultValue: "hrs" })}
                             </span>
                         </h3>
                     </div>
                 </div>
 
-                <div className="p-2 rounded-xl border bg-card shadow-sm flex items-center gap-2.5">
+                <div className="p-2 rounded-xl border bg-card shadow-xs flex items-center gap-2.5">
                     <div className="p-1.5 bg-blue-500/10 rounded-lg text-blue-500">
                         <Trophy className="h-3.5 w-3.5" />
                     </div>
                     <div>
                         <p className="text-[10px] text-muted-foreground font-medium">
-                            {t("languages.stats.completedBlocks", "Bloques Completados")}
+                            {t("languages.stats.completedBlocks", { defaultValue: "Bloques Completados" })}
                         </p>
                         <h3 className="text-base font-bold leading-tight">
                             {filteredSessions.length}
@@ -214,9 +220,9 @@ export function LanguagesPage() {
                     </div>
                 </div>
 
-                <div className="p-2 rounded-xl border bg-card shadow-sm space-y-0.5">
+                <div className="p-2 rounded-xl border bg-card shadow-xs space-y-0.5">
                     <p className="text-[10px] text-muted-foreground font-medium">
-                        {t("languages.stats.skillBalance", "Balance de Habilidades")}
+                        {t("languages.stats.skillBalance", { defaultValue: "Balance de Habilidades" })}
                     </p>
                     <div className="flex h-1.5 w-full rounded-full overflow-hidden bg-muted">
                         {(Object.keys(categoryConfig) as StudyCategory[]).map((cat) => {
@@ -250,24 +256,27 @@ export function LanguagesPage() {
                 </div>
             </div>
 
-            <div className="grid gap-2.5 md:grid-cols-5 flex-1 min-h-0 items-stretch overflow-hidden">
-                <div className="md:col-span-3 border rounded-xl bg-card p-2.5 shadow-sm flex flex-col min-h-0">
+            <div className="grid gap-2.5 md:grid-cols-5 items-start">
+                <div className="md:col-span-3 border rounded-xl bg-card p-2.5 shadow-xs flex flex-col">
                     <h3 className="font-semibold text-xs mb-1.5 shrink-0">
-                        {t("languages.historyTitle", "Historial de Práctica ({{language}})", {
+                        {t("languages.historyTitle", {
                             language: targetLanguage,
+                            defaultValue: "Historial de Práctica ({{language}})",
                         })}
                     </h3>
 
                     {filteredSessions.length === 0 ? (
-                        <div className="flex-1 flex items-center justify-center text-xs text-muted-foreground">
+                        <div className="py-8 flex items-center justify-center text-xs text-muted-foreground">
                             {t(
                                 "languages.noSessions",
-                                "No has registrado ninguna sesión para {{language}} todavía.",
-                                { language: targetLanguage }
+                                {
+                                    language: targetLanguage,
+                                    defaultValue: "No has registrado ninguna sesión para {{language}} todavía.",
+                                }
                             )}
                         </div>
                     ) : (
-                        <div className="space-y-1 overflow-y-auto flex-1 pr-1">
+                        <div className="space-y-1">
                             {filteredSessions.map((session) => {
                                 const config = categoryConfig[session.category]
                                 return (
@@ -293,7 +302,7 @@ export function LanguagesPage() {
                                         <div className="flex items-center gap-1.5">
                                             <span className="text-[10px] font-semibold bg-secondary px-1.5 py-0.5 rounded">
                                                 +{session.duration}{" "}
-                                                {t("languages.minutesAbbr", "min")}
+                                                {t("languages.minutesAbbr", { defaultValue: "min" })}
                                             </span>
                                             <button
                                                 onClick={() => deleteSession(session.id)}
@@ -309,7 +318,7 @@ export function LanguagesPage() {
                     )}
                 </div>
 
-                <div className="md:col-span-2 min-h-0 flex flex-col overflow-hidden">
+                <div className="md:col-span-2">
                     <LanguageForm />
                 </div>
             </div>

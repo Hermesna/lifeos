@@ -11,7 +11,8 @@
     "profile": "Mi Perfil",
     "settings": "Ajustes",
     "security": "Seguridad",
-    "logout": "Cerrar Sesión"
+    "logout": "Cerrar Sesión",
+    "menu": "Abrir menú"
   },
   "theme": {
     "light": "Modo claro",
@@ -45,7 +46,17 @@
     "addItemPlaceholder": "Añadir artículo (ej: Adaptador corriente)...",
     "noTripsTitle": "No hay expediciones activas",
     "noTripsSubtitle": "Comienza a planificar tu regreso a Japón o introduce cualquier                 otra escapada en el panel de la derecha.",
-    "emptyPackingList": "No hay elementos en la lista. ¡Añade el primero!"
+    "emptyPackingList": "No hay elementos en la lista. ¡Añade el primero!",
+    "itinerary": {
+      "title": "Itinerario / Agenda",
+      "activities": "actividades",
+      "dayLabel": "Día:",
+      "titlePlaceholder": "Actividad o lugar...",
+      "addBtn": "Añadir",
+      "empty": "Aún no has planeado actividades para este viaje.",
+      "dayTag": "Día {{day}}",
+      "delete": "Eliminar"
+    }
   },
   "sidebar": {
     "expand": "Expandir menú",
@@ -171,7 +182,8 @@
       "notesLabel": "Notas (Opcional)",
       "notesPlaceholder": "Ej. Aprendidas 10 palabras sobre negocios...",
       "submitButton": "Guardar Bloque"
-    }
+    },
+    "noLanguages": "Sin idiomas"
   },
   "common": {
     "save": "Guardar",
@@ -179,7 +191,8 @@
     "cancel": "Cancelar",
     "light": "Claro",
     "dark": "Oscuro",
-    "system": "Sistema"
+    "system": "Sistema",
+    "saving": "Guardando..."
   },
   "books": {
     "form": {
@@ -207,7 +220,8 @@
       "completed": "Terminado",
       "reading": "Leyendo",
       "pending": "Pendiente"
-    }
+    },
+    "addBookShort": "Añadir"
   },
   "settings": {
     "language": "Idioma",

@@ -88,10 +88,10 @@ export function HabitForm({
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 rounded-xl border bg-card p-5 shadow-sm"
+            className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-xs"
         >
             <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold tracking-tight">
+                <h3 className="text-sm font-semibold tracking-tight">
                     {editingHabit
                         ? t("habits.form.editTitle", "Editar Actividad")
                         : t("habits.form.newTitle", "Nueva Actividad / Hábito")}
@@ -100,24 +100,24 @@ export function HabitForm({
                     <button
                         type="button"
                         onClick={onCancelEdit}
-                        className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
+                        className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer transition-colors"
                     >
-                        <X className="h-3.5 w-3.5" />
+                        <X className="h-3.5 w-3.5 shrink-0" />
                         {t("habits.form.cancel", "Cancelar")}
                     </button>
                 )}
             </div>
 
-            <div className="space-y-3">
-                <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground uppercase">
+            <div className="space-y-3.5">
+                <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         {t("habits.form.name", "Nombre")}
                     </label>
                     <input
                         type="text"
                         placeholder={t("habits.form.namePlaceholder", "Ej. Entrenar, Estudiar...")}
                         {...register("name")}
-                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     />
                     {errors.name && (
                         <p className="text-xs font-medium text-destructive">
@@ -127,36 +127,36 @@ export function HabitForm({
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
-                    <div className="space-y-1">
-                        <label className="text-xs font-medium text-muted-foreground uppercase">
+                    <div className="space-y-1.5">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                             {t("habits.form.date", "Fecha")}
                         </label>
                         <input
                             type="date"
                             {...register("date")}
-                            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                            className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         />
                     </div>
 
-                    <div className="space-y-1">
-                        <label className="text-xs font-medium text-muted-foreground uppercase">
+                    <div className="space-y-1.5">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                             {t("habits.form.time", "Hora")}
                         </label>
                         <input
                             type="time"
                             {...register("time")}
-                            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                            className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         />
                     </div>
                 </div>
 
-                <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground uppercase">
+                <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         {t("habits.form.category", "Categoría")}
                     </label>
                     <select
                         {...register("category")}
-                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     >
                         <option value="lifestyle">
                             {t("habits.categories.lifestyle", "Estilo de vida")}
@@ -177,16 +177,16 @@ export function HabitForm({
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary h-9 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50 cursor-pointer"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary h-9 text-xs font-medium text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-50 cursor-pointer mt-2"
             >
                 {editingHabit ? (
                     <>
-                        <Check className="h-4 w-4" />
+                        <Check className="h-4 w-4 shrink-0" />
                         {t("habits.form.updateButton", "Guardar Cambios")}
                     </>
                 ) : (
                     <>
-                        <Plus className="h-4 w-4" />
+                        <Plus className="h-4 w-4 shrink-0" />
                         {t("habits.form.createButton", "Añadir a la Agenda")}
                     </>
                 )}

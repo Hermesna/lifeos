@@ -50,28 +50,28 @@ export function LanguageForm() {
     > = {
         vocabulary: {
             label: t("languages.categories.vocabulary", { defaultValue: "Vocabulario" }),
-            icon: <BookOpen className="h-3.5 w-3.5" />,
+            icon: <BookOpen className="h-3.5 w-3.5 shrink-0" />,
             color: "text-emerald-500",
             border: "border-emerald-500/20",
             bg: "bg-emerald-500/10",
         },
         listening: {
             label: t("languages.categories.listening", { defaultValue: "Escucha" }),
-            icon: <Headphones className="h-3.5 w-3.5" />,
+            icon: <Headphones className="h-3.5 w-3.5 shrink-0" />,
             color: "text-blue-500",
             border: "border-blue-500/20",
             bg: "bg-blue-500/10",
         },
         grammar: {
             label: t("languages.categories.grammar", { defaultValue: "Gramática" }),
-            icon: <GraduationCap className="h-3.5 w-3.5" />,
+            icon: <GraduationCap className="h-3.5 w-3.5 shrink-0" />,
             color: "text-indigo-500",
             border: "border-indigo-500/20",
             bg: "bg-indigo-500/10",
         },
         speaking: {
             label: t("languages.categories.speaking", { defaultValue: "Oral" }),
-            icon: <MessageSquare className="h-3.5 w-3.5" />,
+            icon: <MessageSquare className="h-3.5 w-3.5 shrink-0" />,
             color: "text-violet-500",
             border: "border-violet-500/20",
             bg: "bg-violet-500/10",
@@ -140,24 +140,24 @@ export function LanguageForm() {
     }
 
     return (
-        <div className="rounded-xl border bg-card p-3 shadow-sm flex-1 flex flex-col justify-between overflow-y-auto min-h-0">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
             <div>
-                <h3 className="font-semibold text-sm tracking-tight">
+                <h3 className="font-bold text-sm tracking-tight">
                     {t("languages.form.title", { defaultValue: "Registrar Sesión" })}
                 </h3>
-                <p className="text-[11px] text-muted-foreground mb-2">
+                <p className="text-xs text-muted-foreground mt-0.5 mb-3">
                     {t("languages.form.subtitle", {
                         defaultValue: "Cronometra o añade bloques manuales.",
                     })}
                 </p>
             </div>
 
-            <div className="p-2 rounded-lg border bg-muted/40 flex items-center justify-between mb-2 shrink-0">
+            <div className="p-3 rounded-xl border border-border/60 bg-muted/40 flex items-center justify-between mb-3 shadow-xs">
                 <div>
-                    <p className="text-[10px] font-medium text-muted-foreground">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         {t("languages.form.activeTimer", { defaultValue: "Cronómetro activo" })}
                     </p>
-                    <p className="text-lg font-mono font-bold tracking-wider">
+                    <p className="text-lg font-mono font-bold tracking-wider mt-0.5">
                         {formatTimer(seconds)}
                     </p>
                 </div>
@@ -165,18 +165,18 @@ export function LanguageForm() {
                     <button
                         type="button"
                         onClick={stopTimer}
-                        className="flex items-center gap-1 px-2 py-1 rounded-md bg-destructive text-destructive-foreground text-xs font-semibold shadow hover:bg-destructive/90 cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-destructive text-destructive-foreground text-xs font-medium shadow-xs hover:bg-destructive/90 cursor-pointer transition-colors"
                     >
-                        <Square className="h-3 w-3 fill-current" />{" "}
+                        <Square className="h-3.5 w-3.5 fill-current shrink-0" />{" "}
                         {t("languages.form.stopTimer", { defaultValue: "Detener" })}
                     </button>
                 ) : (
                     <button
                         type="button"
                         onClick={() => setIsTimerRunning(true)}
-                        className="flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-600 text-white text-xs font-semibold shadow hover:bg-emerald-700 cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-medium shadow-xs hover:bg-emerald-700 cursor-pointer transition-colors"
                     >
-                        <Play className="h-3 w-3 fill-current" />{" "}
+                        <Play className="h-3.5 w-3.5 fill-current shrink-0" />{" "}
                         {t("languages.form.startTimer", { defaultValue: "Iniciar" })}
                     </button>
                 )}
@@ -184,94 +184,96 @@ export function LanguageForm() {
 
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="space-y-2.5 flex-1 flex flex-col justify-between"
+                className="space-y-3"
             >
-                <div className="space-y-1">
-                    <label className="text-[11px] font-medium text-muted-foreground">
-                        {t("languages.form.categoryLabel", { defaultValue: "Categoría" })}
-                    </label>
-                    <div className="grid grid-cols-2 gap-1.5">
-                        {(Object.keys(categoryConfig) as StudyCategory[]).map((cat) => {
-                            const isSelected = selectedCategory === cat
-                            const cfg = categoryConfig[cat]
-                            return (
+                <div className="space-y-2.5">
+                    <div className="space-y-1.5">
+                        <label className="text-xs font-medium text-muted-foreground">
+                            {t("languages.form.categoryLabel", { defaultValue: "Categoría" })}
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                            {(Object.keys(categoryConfig) as StudyCategory[]).map((cat) => {
+                                const isSelected = selectedCategory === cat
+                                const cfg = categoryConfig[cat]
+                                return (
+                                    <button
+                                        key={cat}
+                                        type="button"
+                                        onClick={() => setValue("category", cat)}
+                                        className={`flex items-center gap-2 p-2 rounded-xl border text-xs font-medium transition-all text-left cursor-pointer shadow-xs ${isSelected
+                                                ? `${cfg.bg} ${cfg.border} ${cfg.color} ring-1 ring-primary/30 font-semibold`
+                                                : "bg-background border-input hover:bg-accent/50 text-muted-foreground"
+                                            }`}
+                                    >
+                                        {cfg.icon}
+                                        <span className="truncate">{cfg.label}</span>
+                                    </button>
+                                )
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                        <label className="text-xs font-medium text-muted-foreground">
+                            {t("languages.form.durationLabel", { defaultValue: "Duración" })}
+                        </label>
+                        <div className="grid grid-cols-4 gap-1.5">
+                            {[15, 25, 45, 60].map((mins) => (
                                 <button
-                                    key={cat}
+                                    key={mins}
                                     type="button"
-                                    onClick={() => setValue("category", cat)}
-                                    className={`flex items-center gap-1.5 p-1.5 rounded-lg border text-xs font-medium transition-all text-left cursor-pointer ${isSelected
-                                            ? `${cfg.bg} ${cfg.border} ${cfg.color} ring-1 ring-primary/30`
-                                            : "bg-background hover:bg-accent/50 text-muted-foreground"
-                                        }`}
+                                    onClick={() => setValue("duration", mins)}
+                                    className="flex items-center justify-center h-8 border border-input rounded-xl text-xs font-medium hover:bg-accent transition-colors cursor-pointer shadow-xs bg-background"
                                 >
-                                    {cfg.icon}
-                                    {cfg.label}
+                                    {mins}
+                                    {t("languages.minutesAbbr", { defaultValue: "m" })}
                                 </button>
-                            )
-                        })}
+                            ))}
+                        </div>
+                        <input
+                            type="number"
+                            {...register("duration", { valueAsNumber: true })}
+                            className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring mt-1.5"
+                            placeholder={t("languages.form.customMinutesPlaceholder", {
+                                defaultValue: "Minutos personalizados",
+                            })}
+                        />
+                        {errors.duration?.message && (
+                            <p className="text-[10px] font-medium text-destructive mt-1">
+                                {t(errors.duration.message)}
+                            </p>
+                        )}
                     </div>
-                </div>
 
-                <div className="space-y-1">
-                    <label className="text-[11px] font-medium text-muted-foreground">
-                        {t("languages.form.durationLabel", { defaultValue: "Duración" })}
-                    </label>
-                    <div className="flex gap-1.5">
-                        {[15, 25, 45, 60].map((mins) => (
-                            <button
-                                key={mins}
-                                type="button"
-                                onClick={() => setValue("duration", mins)}
-                                className="flex-1 py-0.5 border rounded-md text-xs font-medium hover:bg-accent transition-colors cursor-pointer"
-                            >
-                                {mins}
-                                {t("languages.minutesAbbr", { defaultValue: "m" })}
-                            </button>
-                        ))}
+                    <div className="space-y-1.5">
+                        <label className="text-xs font-medium text-muted-foreground">
+                            {t("languages.form.notesLabel", { defaultValue: "Notas (Opcional)" })}
+                        </label>
+                        <textarea
+                            {...register("notes")}
+                            className="flex w-full rounded-xl border border-input bg-background px-3 py-2 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring h-16 resize-none"
+                            placeholder={t("languages.form.notesPlaceholder", {
+                                defaultValue: "Ej. Aprendidas 10 palabras sobre negocios...",
+                            })}
+                        />
+                        {errors.notes?.message && (
+                            <p className="text-[10px] font-medium text-destructive mt-1">
+                                {t(errors.notes.message)}
+                            </p>
+                        )}
                     </div>
-                    <input
-                        type="number"
-                        {...register("duration", { valueAsNumber: true })}
-                        className="w-full rounded-lg border bg-background px-2.5 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 mt-1"
-                        placeholder={t("languages.form.customMinutesPlaceholder", {
-                            defaultValue: "Minutos personalizados",
-                        })}
-                    />
-                    {errors.duration?.message && (
-                        <p className="text-[10px] text-destructive">
-                            {t(errors.duration.message)}
-                        </p>
-                    )}
-                </div>
-
-                <div className="space-y-1">
-                    <label className="text-[11px] font-medium text-muted-foreground">
-                        {t("languages.form.notesLabel", { defaultValue: "Notas (Opcional)" })}
-                    </label>
-                    <textarea
-                        {...register("notes")}
-                        className="w-full rounded-lg border bg-background px-2.5 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 h-10 resize-none"
-                        placeholder={t("languages.form.notesPlaceholder", {
-                            defaultValue: "Ej. Aprendidas 10 palabras sobre negocios...",
-                        })}
-                    />
-                    {errors.notes?.message && (
-                        <p className="text-[10px] text-destructive">
-                            {t(errors.notes.message)}
-                        </p>
-                    )}
                 </div>
 
                 <button
                     type="submit"
                     disabled={isSaving}
-                    className="w-full flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 transition-colors disabled:opacity-50 cursor-pointer mt-auto"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary h-9 text-xs font-medium text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-50 cursor-pointer mt-4"
                 >
                     {isSaving ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        <Loader2 className="h-4 w-4 animate-spin shrink-0" />
                     ) : (
                         <>
-                            <Plus className="h-3.5 w-3.5" />{" "}
+                            <Plus className="h-4 w-4 shrink-0" />{" "}
                             {t("languages.form.submitButton", { defaultValue: "Guardar Bloque" })}
                         </>
                     )}

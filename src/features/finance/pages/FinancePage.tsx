@@ -38,12 +38,12 @@ export function FinancePage() {
     }
 
     return (
-        <div className="space-y-6 max-w-6xl mx-auto p-4">
-            <div className="border-b pb-4">
+        <div className="space-y-6 max-w-7xl mx-auto p-6">
+            <div className="border-b border-border pb-4">
                 <h1 className="text-2xl font-bold tracking-tight">
                     {t("finance.title", "Panel Financiero")}
                 </h1>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground mt-0.5">
                     {t(
                         "finance.subtitle",
                         "Controla tu balance, ingresos, gastos y metas de ahorro."
@@ -52,9 +52,9 @@ export function FinancePage() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
-                <div className="rounded-xl border bg-card p-5 shadow-sm flex items-center justify-between">
+                <div className="rounded-2xl border border-border bg-card p-5 shadow-xs flex items-center justify-between">
                     <div className="space-y-1">
-                        <span className="text-xs font-medium text-muted-foreground uppercase">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                             {t("finance.totalBalance", "Balance Total")}
                         </span>
                         <p
@@ -64,35 +64,35 @@ export function FinancePage() {
                             {balance.toFixed(2)} €
                         </p>
                     </div>
-                    <div className="p-3 bg-secondary rounded-xl text-muted-foreground">
+                    <div className="p-3 bg-secondary rounded-2xl text-muted-foreground shadow-xs shrink-0">
                         <Wallet className="h-5 w-5" />
                     </div>
                 </div>
 
-                <div className="rounded-xl border bg-card p-5 shadow-sm flex items-center justify-between">
+                <div className="rounded-2xl border border-border bg-card p-5 shadow-xs flex items-center justify-between">
                     <div className="space-y-1">
-                        <span className="text-xs font-medium text-muted-foreground uppercase">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                             {t("finance.totalIncomes", "Ingresos Totales")}
                         </span>
                         <p className="text-2xl font-bold tracking-tight text-emerald-500">
                             +{totalIncomes.toFixed(2)} €
                         </p>
                     </div>
-                    <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-500">
+                    <div className="p-3 bg-emerald-500/10 rounded-2xl text-emerald-500 shadow-xs shrink-0">
                         <ArrowUpRight className="h-5 w-5" />
                     </div>
                 </div>
 
-                <div className="rounded-xl border bg-card p-5 shadow-sm flex items-center justify-between">
+                <div className="rounded-2xl border border-border bg-card p-5 shadow-xs flex items-center justify-between">
                     <div className="space-y-1">
-                        <span className="text-xs font-medium text-muted-foreground uppercase">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                             {t("finance.totalExpenses", "Gastos Totales")}
                         </span>
                         <p className="text-2xl font-bold tracking-tight text-destructive">
                             -{totalExpenses.toFixed(2)} €
                         </p>
                     </div>
-                    <div className="p-3 bg-destructive/10 rounded-xl text-destructive">
+                    <div className="p-3 bg-destructive/10 rounded-2xl text-destructive shadow-xs shrink-0">
                         <ArrowDownRight className="h-5 w-5" />
                     </div>
                 </div>
@@ -100,13 +100,13 @@ export function FinancePage() {
 
             <div className="grid gap-6 md:grid-cols-5 items-start">
                 <div className="md:col-span-3 space-y-6">
-                    <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
-                        <h3 className="font-semibold text-base flex items-center gap-2">
-                            <Target className="h-4 w-4 text-primary" />{" "}
+                    <div className="rounded-2xl border border-border bg-card p-5 shadow-xs space-y-4">
+                        <h3 className="font-semibold text-sm flex items-center gap-2">
+                            <Target className="h-4 w-4 text-primary shrink-0" />{" "}
                             {t("finance.savingsGoals", "Objetivos de Ahorro")}
                         </h3>
 
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             {funds.map((fund) => {
                                 const progress = Math.min(
                                     100,
@@ -115,12 +115,12 @@ export function FinancePage() {
                                 return (
                                     <div
                                         key={fund.id}
-                                        className="space-y-2 border p-4 rounded-xl bg-background/40"
+                                        className="space-y-2 border border-border/60 p-4 rounded-xl bg-accent/30"
                                     >
-                                        <div className="flex justify-between items-start">
-                                            <div>
-                                                <p className="text-sm font-semibold">{fund.name}</p>
-                                                <p className="text-xs text-muted-foreground">
+                                        <div className="flex justify-between items-start gap-2">
+                                            <div className="min-w-0">
+                                                <p className="text-xs font-semibold truncate">{fund.name}</p>
+                                                <p className="text-[11px] text-muted-foreground mt-0.5">
                                                     {t(
                                                         "finance.fundProgress",
                                                         "{{current}} € de {{target}} €",
@@ -131,13 +131,13 @@ export function FinancePage() {
                                                     )}
                                                 </p>
                                             </div>
-                                            <span className="text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                                            <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full shrink-0">
                                                 {progress}%
                                             </span>
                                         </div>
                                         <div className="h-2 w-full rounded-full bg-secondary overflow-hidden">
                                             <div
-                                                className="h-full bg-emerald-500 rounded-full transition-all duration-300"
+                                                className="h-full bg-emerald-500 rounded-full transition-all duration-500"
                                                 style={{ width: `${progress}%` }}
                                             />
                                         </div>
@@ -149,12 +149,12 @@ export function FinancePage() {
                         {funds.length > 0 && (
                             <form
                                 onSubmit={handleAddSavings}
-                                className="flex gap-2 pt-2 border-t"
+                                className="flex gap-2 pt-3 border-t border-border/40"
                             >
                                 <select
                                     value={selectedFundId}
                                     onChange={(e) => setSelectedFundId(e.target.value)}
-                                    className="h-9 rounded-md border border-input bg-transparent px-3 text-xs focus:outline-none focus:ring-1 focus:ring-ring"
+                                    className="h-9 rounded-xl border border-input bg-background px-3 text-xs focus:outline-none focus:ring-1 focus:ring-ring shadow-xs"
                                 >
                                     {funds.map((f) => (
                                         <option key={f.id} value={f.id}>
@@ -171,26 +171,26 @@ export function FinancePage() {
                                     )}
                                     value={fundingAmount}
                                     onChange={(e) => setFundingAmount(e.target.value)}
-                                    className="h-9 flex-1 rounded-md border border-input bg-transparent px-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                    className="h-9 flex-1 rounded-xl border border-input bg-background px-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring shadow-xs"
                                 />
                                 <button
                                     type="submit"
-                                    className="h-9 px-3 bg-secondary text-foreground border rounded-md hover:bg-secondary/80 transition-colors flex items-center gap-1 text-xs font-medium"
+                                    className="h-9 px-3.5 bg-secondary text-foreground border border-border rounded-xl hover:bg-secondary/80 transition-colors flex items-center gap-1.5 text-xs font-medium shadow-xs cursor-pointer shrink-0"
                                 >
-                                    <PiggyBank className="h-3.5 w-3.5" />{" "}
+                                    <PiggyBank className="h-3.5 w-3.5 shrink-0" />{" "}
                                     {t("finance.saveButton", "Ahorrar")}
                                 </button>
                             </form>
                         )}
                     </div>
 
-                    <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
-                        <h3 className="font-semibold text-base">
+                    <div className="rounded-2xl border border-border bg-card p-5 shadow-xs space-y-4">
+                        <h3 className="font-semibold text-sm">
                             {t("finance.recentTransactions", "Movimientos Recientes")}
                         </h3>
 
                         {transactions.length === 0 ? (
-                            <div className="text-center py-8 border border-dashed rounded-xl bg-background/20">
+                            <div className="text-center py-8 border border-dashed border-border rounded-xl bg-accent/20">
                                 <p className="text-xs text-muted-foreground">
                                     {t(
                                         "finance.noTransactions",
@@ -199,24 +199,24 @@ export function FinancePage() {
                                 </p>
                             </div>
                         ) : (
-                            <div className="space-y-1.5 max-h-55 overflow-y-auto pr-1">
+                            <div className="space-y-2 max-h-[260px] overflow-y-auto pr-1">
                                 {transactions.map((tx) => (
                                     <div
                                         key={tx.id}
-                                        className="flex items-center justify-between p-3 border rounded-lg bg-background/40 hover:bg-background transition-colors"
+                                        className="flex items-center justify-between p-3 border border-border/60 rounded-xl bg-accent/20 hover:bg-accent/40 transition-colors"
                                     >
-                                        <div className="space-y-0.5">
-                                            <p className="text-sm font-medium">{tx.description}</p>
-                                            <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                                                <span className="bg-secondary px-1.5 py-0.5 rounded font-medium">
+                                        <div className="space-y-0.5 min-w-0 pr-2">
+                                            <p className="text-xs font-medium truncate">{tx.description}</p>
+                                            <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                                                <span className="bg-secondary px-1.5 py-0.5 rounded-md font-medium">
                                                     {tx.category}
                                                 </span>
                                                 <span>{tx.date}</span>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-3">
+                                        <div className="flex items-center gap-3 shrink-0">
                                             <span
-                                                className={`text-sm font-semibold ${tx.type === "income"
+                                                className={`text-xs font-semibold ${tx.type === "income"
                                                         ? "text-emerald-500"
                                                         : "text-destructive"
                                                     }`}
@@ -225,11 +225,12 @@ export function FinancePage() {
                                                 {tx.amount.toFixed(2)} €
                                             </span>
                                             <button
+                                                type="button"
                                                 onClick={() => deleteTransaction(tx.id)}
-                                                className="text-muted-foreground hover:text-destructive p-1 rounded transition-colors"
+                                                className="text-muted-foreground hover:text-destructive p-1.5 rounded-lg hover:bg-destructive/10 transition-colors cursor-pointer"
                                                 title={t("finance.deleteTransaction", "Eliminar movimiento")}
                                             >
-                                                <Trash2 className="h-3.5 w-3.5" />
+                                                <Trash2 className="h-3.5 w-3.5 shrink-0" />
                                             </button>
                                         </div>
                                     </div>

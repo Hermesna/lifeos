@@ -15,7 +15,7 @@ export function AppLayout() {
     const initAuth = useAuthStore((state) => state.initAuth)
     const isLoading = useAuthStore((state) => state.isLoading)
     const user = useAuthStore((state) => state.user)
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     useEffect(() => {
         initTheme()
@@ -52,16 +52,18 @@ export function AppLayout() {
     }
 
     return (
-        <div className="flex h-screen bg-background text-foreground transition-colors duration-200">
+        <div className="flex h-screen bg-background text-foreground transition-colors duration-200 overflow-hidden">
             <AppSidebar
                 isOpen={isSidebarOpen}
                 onToggle={() => setIsSidebarOpen((prev) => !prev)}
             />
 
             <div className="flex flex-1 flex-col overflow-hidden">
-                <AppHeader />
+                <AppHeader 
+                    onMenuClick={() => setIsSidebarOpen((prev) => !prev)} 
+                />
 
-                <main className="flex-1 overflow-y-auto p-6">
+                <main className="flex-1 overflow-y-auto p-4 md:p-6">
                     <Outlet />
                 </main>
             </div>

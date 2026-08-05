@@ -92,7 +92,7 @@ export function LanguageToggle() {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex h-9 items-center gap-2 rounded-lg border border-border bg-card px-2.5 text-xs font-medium text-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
+                className="flex h-9 items-center gap-2 rounded-lg border border-border bg-card px-2.5 text-xs font-medium text-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 cursor-pointer"
                 aria-label="Seleccionar idioma"
             >
                 <ActiveFlag />
@@ -113,10 +113,11 @@ export function LanguageToggle() {
                             return (
                                 <button
                                     key={lang.code}
+                                    type="button"
                                     onClick={() => changeLanguage(lang.code)}
-                                    className={`w-full flex items-center justify-between rounded-lg px-2.5 py-2 text-xs transition-colors ${isSelected
-                                        ? "bg-accent text-accent-foreground font-medium"
-                                        : "hover:bg-accent/50 text-foreground/80"
+                                    className={`w-full flex items-center justify-between rounded-lg px-2.5 py-2 text-xs transition-colors cursor-pointer ${isSelected
+                                            ? "bg-accent text-accent-foreground font-medium"
+                                            : "hover:bg-accent/50 text-foreground/80"
                                         }`}
                                 >
                                     <span className="flex items-center gap-2.5">

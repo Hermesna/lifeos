@@ -11,7 +11,8 @@
     "profile": "My Profile",
     "settings": "Settings",
     "security": "Security",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "menu": "Open menu"
   },
   "theme": {
     "light": "Light mode",
@@ -45,7 +46,17 @@
     "addItemPlaceholder": "Add item (ex: Power adapter)...",
     "noTripsTitle": "There are no active expeditions",
     "noTripsSubtitle": "Start planning your return to Japan or enter any other getaways in the panel on the right.",
-    "emptyPackingList": "There are no items in the list. \nAdd the first one!"
+    "emptyPackingList": "There are no items in the list. \nAdd the first one!",
+    "itinerary": {
+      "title": "Itinerary / Agenda",
+      "activities": "activities",
+      "dayLabel": "Day:",
+      "titlePlaceholder": "Activity or place...",
+      "addBtn": "Add",
+      "empty": "You have not yet planned activities for this trip.",
+      "dayTag": "Day {{day}}",
+      "delete": "Eliminate"
+    }
   },
   "sidebar": {
     "expand": "Expand menu",
@@ -171,7 +182,8 @@
       "notesLabel": "Notes (Optional)",
       "notesPlaceholder": "Ex. Learned 10 words about business...",
       "submitButton": "Save Block"
-    }
+    },
+    "noLanguages": "No languages"
   },
   "common": {
     "save": "Keep",
@@ -179,7 +191,8 @@
     "cancel": "Cancel",
     "light": "Clear",
     "dark": "Dark",
-    "system": "System"
+    "system": "System",
+    "saving": "Saving..."
   },
   "books": {
     "form": {
@@ -207,7 +220,8 @@
       "completed": "Finished",
       "reading": "Reading",
       "pending": "Earring"
-    }
+    },
+    "addBookShort": "Add"
   },
   "settings": {
     "language": "Language",

@@ -44,7 +44,7 @@ export default function HabitsPage() {
                     />
                 </div>
 
-                <div className="lg:col-span-3 h-full min-h-0 overflow-y-auto pr-1">
+                <div className="lg:col-span-3 h-full min-h-0 overflow-y-auto scrollbar-none pr-1">
                     <HabitsSidebar
                         selectedDate={selectedDate}
                         editingHabit={editingHabit}

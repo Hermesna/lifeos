@@ -67,34 +67,34 @@ export function HabitsCalendar({
     })
 
     return (
-        <div className="h-full flex flex-col min-h-0 rounded-xl border bg-card p-4 shadow-sm">
+        <div className="h-full flex flex-col min-h-0 rounded-2xl border border-border bg-card p-4 shadow-xs">
             <div className="flex items-center justify-between mb-3 shrink-0">
-                <h2 className="text-lg font-bold capitalize">
+                <h2 className="text-sm font-bold capitalize">
                     {currentMonthName} {year}
                 </h2>
                 <div className="flex items-center gap-1">
                     <button
                         onClick={prevMonth}
-                        className="p-1.5 rounded-lg border hover:bg-secondary transition-colors cursor-pointer"
+                        className="p-1.5 rounded-xl border border-border bg-card hover:bg-secondary transition-colors cursor-pointer shadow-xs"
                     >
                         <ChevronLeft className="h-4 w-4" />
                     </button>
                     <button
                         onClick={() => setCurrentMonth(new Date())}
-                        className="px-2.5 py-1 text-xs font-medium border rounded-lg hover:bg-secondary transition-colors cursor-pointer"
+                        className="px-2.5 py-1 text-xs font-medium border border-border bg-card rounded-xl hover:bg-secondary transition-colors cursor-pointer shadow-xs"
                     >
                         {t("habits.calendar.today", "Hoy")}
                     </button>
                     <button
                         onClick={nextMonth}
-                        className="p-1.5 rounded-lg border hover:bg-secondary transition-colors cursor-pointer"
+                        className="p-1.5 rounded-xl border border-border bg-card hover:bg-secondary transition-colors cursor-pointer shadow-xs"
                     >
                         <ChevronRight className="h-4 w-4" />
                     </button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-7 gap-1 text-center font-semibold text-xs text-muted-foreground mb-2 shrink-0">
+            <div className="grid grid-cols-7 gap-1 text-center font-bold text-[10px] text-muted-foreground uppercase tracking-wider mb-2 shrink-0">
                 {weekDays.map((day) => (
                     <div key={day} className="py-1 capitalize">
                         {day}
@@ -126,8 +126,8 @@ export function HabitsCalendar({
                             key={item.dateStr}
                             onClick={() => onSelectDate(item.dateStr)}
                             className={`p-2 rounded-xl border transition-all cursor-pointer flex flex-col justify-between h-full min-h-0 ${isSelected
-                                    ? "border-primary ring-2 ring-primary/20 bg-primary/5 shadow-sm"
-                                    : "border-border/60 hover:border-border bg-card hover:bg-accent/40"
+                                    ? "border-primary ring-2 ring-primary/20 bg-primary/5 shadow-xs"
+                                    : "border-border/60 hover:border-border bg-card hover:bg-accent/40 shadow-xs"
                                 }`}
                         >
                             <div className="flex items-center justify-between shrink-0">
@@ -145,7 +145,7 @@ export function HabitsCalendar({
                                             e.stopPropagation()
                                             onOpenNewForm(item.dateStr)
                                         }}
-                                        className="text-muted-foreground hover:text-primary p-0.5 hover:bg-primary/10 rounded transition-colors cursor-pointer"
+                                        className="hidden md:flex text-muted-foreground hover:text-primary p-0.5 hover:bg-primary/10 rounded-lg transition-colors cursor-pointer"
                                         title={t("habits.calendar.add", "Añadir tarea")}
                                     >
                                         <Plus className="h-3.5 w-3.5" />
@@ -161,7 +161,7 @@ export function HabitsCalendar({
                                             e.stopPropagation()
                                             onSelectHabitToEdit(evt)
                                         }}
-                                        className={`text-[10px] px-1.5 py-0.5 rounded truncate flex items-center justify-between gap-1 border transition-all ${evt.completed
+                                        className={`text-[10px] px-1.5 py-0.5 rounded-lg truncate flex items-center justify-between gap-1 border transition-all ${evt.completed
                                                 ? "bg-secondary/40 text-muted-foreground line-through border-transparent"
                                                 : "bg-primary/10 text-primary font-medium border-primary/20 hover:bg-primary/20"
                                             }`}

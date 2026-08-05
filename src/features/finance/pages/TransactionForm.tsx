@@ -80,18 +80,18 @@ export function TransactionForm() {
     }
 
     return (
-        <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
-            <h3 className="font-semibold text-base flex items-center gap-2">
-                <PlusCircle className="h-4 w-4 text-primary" />
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-xs space-y-4">
+            <h3 className="font-semibold text-sm flex items-center gap-2">
+                <PlusCircle className="h-4 w-4 text-primary shrink-0" />
                 {t("finance.form.title", "Registrar Movimiento")}
             </h3>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5">
-                <div className="grid grid-cols-2 gap-2 p-1 bg-secondary/50 rounded-lg border">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <div className="grid grid-cols-2 gap-1.5 p-1 bg-secondary/50 rounded-xl border border-border/60 shadow-xs">
                     <label
-                        className={`flex justify-center py-1.5 text-xs font-medium rounded-md cursor-pointer transition-all ${currentType === "expense"
-                            ? "bg-card text-destructive font-bold shadow-sm"
-                            : "text-muted-foreground"
+                        className={`flex justify-center py-2 text-xs font-medium rounded-lg cursor-pointer transition-all ${currentType === "expense"
+                                ? "bg-card text-destructive font-bold shadow-xs border border-border/40"
+                                : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         <input
@@ -103,9 +103,9 @@ export function TransactionForm() {
                         {t("finance.form.expense", "Gasto")}
                     </label>
                     <label
-                        className={`flex justify-center py-1.5 text-xs font-medium rounded-md cursor-pointer transition-all ${currentType === "income"
-                            ? "bg-card text-emerald-500 font-bold shadow-sm"
-                            : "text-muted-foreground"
+                        className={`flex justify-center py-2 text-xs font-medium rounded-lg cursor-pointer transition-all ${currentType === "income"
+                                ? "bg-card text-emerald-500 font-bold shadow-xs border border-border/40"
+                                : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         <input
@@ -118,8 +118,8 @@ export function TransactionForm() {
                     </label>
                 </div>
 
-                <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         {t("finance.form.descriptionLabel", "Descripción")}
                     </label>
                     <input
@@ -129,7 +129,7 @@ export function TransactionForm() {
                             "finance.form.descriptionPlaceholder",
                             "Ej. Supermercado, Nómina..."
                         )}
-                        className="h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        className="h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring shadow-xs"
                     />
                     {errors.description && (
                         <p className="text-xs text-destructive">
@@ -138,8 +138,8 @@ export function TransactionForm() {
                     )}
                 </div>
 
-                <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         {t("finance.form.amountLabel", "Importe (€)")}
                     </label>
                     <input
@@ -147,20 +147,20 @@ export function TransactionForm() {
                         step="any"
                         placeholder={t("finance.form.amountPlaceholder", "Ej. 500")}
                         {...register("amount")}
-                        className="h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        className="h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring shadow-xs"
                     />
                     {errors.amount && (
                         <p className="text-xs text-destructive">{errors.amount.message}</p>
                     )}
                 </div>
 
-                <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         {t("finance.form.categoryLabel", "Categoría")}
                     </label>
                     <select
                         {...register("category")}
-                        className="h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        className="h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring shadow-xs"
                     >
                         {currentType === "expense" ? (
                             <>
@@ -195,7 +195,7 @@ export function TransactionForm() {
 
                 <button
                     type="submit"
-                    className="w-full h-9 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm"
+                    className="w-full h-9 rounded-xl bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 transition-colors shadow-xs cursor-pointer mt-2"
                 >
                     {t("finance.form.submitButton", "Guardar Transacción")}
                 </button>

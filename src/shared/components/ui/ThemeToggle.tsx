@@ -9,10 +9,11 @@ export function ThemeToggle() {
     return (
         <div className="flex items-center gap-1 bg-secondary/50 p-1 rounded-xl border backdrop-blur-sm">
             <button
+                type="button"
                 onClick={() => setTheme("light")}
-                className={`p-2 rounded-lg transition-all ${theme === "light"
-                    ? "bg-card text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                className={`p-2 rounded-lg transition-all cursor-pointer ${theme === "light"
+                        ? "bg-card text-foreground shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                 title={t("theme.light")}
                 aria-label={t("theme.light")}
@@ -21,10 +22,11 @@ export function ThemeToggle() {
             </button>
 
             <button
+                type="button"
                 onClick={() => setTheme("dark")}
-                className={`p-2 rounded-lg transition-all ${theme === "dark"
-                    ? "bg-card text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                className={`p-2 rounded-lg transition-all cursor-pointer ${theme === "dark"
+                        ? "bg-card text-foreground shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                 title={t("theme.dark")}
                 aria-label={t("theme.dark")}
@@ -33,10 +35,11 @@ export function ThemeToggle() {
             </button>
 
             <button
+                type="button"
                 onClick={() => setTheme("system")}
-                className={`p-2 rounded-lg transition-all ${theme === "system"
-                    ? "bg-card text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                className={`p-2 rounded-lg transition-all cursor-pointer ${theme === "system"
+                        ? "bg-card text-foreground shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                 title={t("theme.system")}
                 aria-label={t("theme.system")}
