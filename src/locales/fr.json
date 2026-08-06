@@ -17,7 +17,8 @@
   "theme": {
     "light": "Mode clair",
     "dark": "Mode sombre",
-    "system": "Mode système"
+    "system": "Mode système",
+    "label": "changer de thème"
   },
   "travel": {
     "form": {
@@ -273,7 +274,13 @@
     "totalMinutes": "{{minutes}} minutes au total",
     "distribution": "Disposition des studios",
     "level": "Niveau {{niveau}}",
-    "section": "Langues"
+    "section": "Langues",
+    "categories": {
+      "vocabulary": "Vocab",
+      "listening": "Écoute",
+      "grammar": "Grammaire",
+      "speaking": "Parlant"
+    }
   },
   "travelWidget": {
     "manage": "Gérer l'itinéraire et les valises",

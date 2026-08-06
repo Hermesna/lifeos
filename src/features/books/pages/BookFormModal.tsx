@@ -131,7 +131,7 @@ export function BookFormModal({ isOpen, onClose, bookToEdit }: BookFormModalProp
                         />
                         {errors.title?.message && (
                             <p className="text-[11px] text-destructive">
-                                {t(errors.title.message)}
+                                {t(errors.title.message, { defaultValue: "El título es obligatorio" })}
                             </p>
                         )}
                     </div>
@@ -203,8 +203,8 @@ export function BookFormModal({ isOpen, onClose, bookToEdit }: BookFormModalProp
                                         type="button"
                                         onClick={() => setValue("rating", num)}
                                         className={`flex-1 min-w-[32px] py-2 text-xs rounded-xl border transition-all cursor-pointer font-medium ${currentRating === num
-                                                ? "bg-amber-500 text-white border-amber-500 shadow-xs"
-                                                : "bg-background border-border hover:bg-accent text-foreground"
+                                            ? "bg-amber-500 text-white border-amber-500 shadow-xs"
+                                            : "bg-background border-border hover:bg-accent text-foreground"
                                             }`}
                                     >
                                         {num}

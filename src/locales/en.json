@@ -17,7 +17,8 @@
   "theme": {
     "light": "Light mode",
     "dark": "Dark mode",
-    "system": "System mode"
+    "system": "System mode",
+    "label": "change theme"
   },
   "travel": {
     "form": {
@@ -273,7 +274,13 @@
     "totalMinutes": "{{minutes}} min total",
     "distribution": "Studio layout",
     "level": "Level {{level}}",
-    "section": "Languages"
+    "section": "Languages",
+    "categories": {
+      "vocabulary": "Vocab",
+      "listening": "Listening",
+      "grammar": "Grammar",
+      "speaking": "Speaking"
+    }
   },
   "travelWidget": {
     "manage": "Manage itinerary and suitcases",

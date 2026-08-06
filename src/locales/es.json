@@ -17,7 +17,8 @@
   "theme": {
     "light": "Modo claro",
     "dark": "Modo oscuro",
-    "system": "Modo sistema"
+    "system": "Modo sistema",
+    "label": "Cambiar tema"
   },
   "travel": {
     "form": {
@@ -273,7 +274,13 @@
     "totalMinutes": "{{minutes}} min total",
     "distribution": "Distribución de estudio",
     "level": "Nivel {{level}}",
-    "section": "Idiomas"
+    "section": "Idiomas",
+    "categories": {
+      "vocabulary": "Vocab",
+      "listening": "Listening",
+      "grammar": "Grammar",
+      "speaking": "Speaking"
+    }
   },
   "travelWidget": {
     "manage": "Gestionar itinerario y maletas",

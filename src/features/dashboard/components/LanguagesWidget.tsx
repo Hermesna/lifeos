@@ -3,21 +3,20 @@ import { useTranslation } from "react-i18next"
 import { Languages, ArrowRight, BarChart3 } from "lucide-react"
 import { useLanguagesStore, type StudyCategory } from "@/features/languages/stores/useLanguagesStore"
 
-const categoryColors: Record<StudyCategory, { bg: string; label: string }> = {
-    vocabulary: { bg: "bg-blue-500", label: "Vocab" },
-    listening: { bg: "bg-emerald-500", label: "Listening" },
-    grammar: { bg: "bg-amber-500", label: "Grammar" },
-    speaking: { bg: "bg-purple-500", label: "Speaking" },
-}
 
 export function LanguagesWidget() {
     const { t } = useTranslation()
     const targetLanguage = useLanguagesStore((state) => state.targetLanguage)
     const levelsByLanguage = useLanguagesStore((state) => state.levelsByLanguage)
     const sessions = useLanguagesStore((state) => state.sessions)
-
     const currentLevel = levelsByLanguage[targetLanguage] || "A1"
     const targetSessions = sessions.filter((s) => s.language === targetLanguage)
+    const categoryColors: Record<StudyCategory, { bg: string; label: string }> = {
+        vocabulary: { bg: "bg-blue-500", label: t("languagesWidget.categories.vocabulary", { defaultValue: "Vocab" }) },
+        listening: { bg: "bg-emerald-500", label: t("languagesWidget.categories.listening", { defaultValue: "Listening" }) },
+        grammar: { bg: "bg-amber-500", label: t("languagesWidget.categories.grammar", { defaultValue: "Grammar" }) },
+        speaking: { bg: "bg-purple-500", label: t("languagesWidget.categories.speaking", { defaultValue: "Speaking" }) },
+    }
 
     const categoryTotals = targetSessions.reduce((acc, s) => {
         acc[s.category] = (acc[s.category] || 0) + s.duration

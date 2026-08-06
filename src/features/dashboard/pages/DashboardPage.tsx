@@ -78,7 +78,7 @@ export default function DashboardPage() {
     const visibleWidgetIds = widgetOrder.filter((id) => activeWidgets.includes(id))
 
     return (
-        <div className="space-y-6 px-3 py-6 sm:px-6 max-w-7xl mx-auto pb-12">
+        <div className="space-y-6 px-3 py-6 sm:px-6 max-w-7xl mx-auto pb-12 overflow-x-hidden w-full">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4">
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight">
@@ -107,7 +107,7 @@ export default function DashboardPage() {
             </div>
 
             {isCustomizing && (
-                <div className="rounded-2xl border border-border bg-card p-4 space-y-3 animate-in fade-in duration-150 shadow-xs">
+                <div className="rounded-2xl border border-border bg-card p-4 space-y-3 animate-in fade-in duration-150 shadow-xs w-full overflow-hidden">
                     <p className="text-xs font-medium text-foreground">
                         {t("dashboard.customizePrompt", { defaultValue: "Activa u oculta los módulos según tus necesidades:" })}
                     </p>
@@ -126,7 +126,7 @@ export default function DashboardPage() {
                                         }`}
                                 >
                                     {isActive ? <Eye className="h-3.5 w-3.5 shrink-0" /> : <EyeOff className="h-3.5 w-3.5 shrink-0" />}
-                                    <span>{t(widgetMeta.titleKey, { defaultValue: widgetMeta.defaultTitle })}</span>
+                                    <span className="truncate">{t(widgetMeta.titleKey, { defaultValue: widgetMeta.defaultTitle })}</span>
                                 </button>
                             )
                         })}
@@ -151,7 +151,7 @@ export default function DashboardPage() {
             ) : (
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                     <SortableContext items={visibleWidgetIds} strategy={rectSortingStrategy}>
-                        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-stretch">
+                        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-stretch w-full min-w-0">
                             {visibleWidgetIds.map((id) => {
                                 const WidgetComponent = WIDGET_MAP[id].component
                                 return (
@@ -186,7 +186,7 @@ function SortableWidgetContainer({ id, isCustomizing, children }: SortableWidget
     }
 
     return (
-        <div ref={setNodeRef} style={style} className="relative group h-full">
+        <div ref={setNodeRef} style={style} className="relative group h-full w-full min-w-0">
             <div
                 {...attributes}
                 {...listeners}
@@ -197,7 +197,7 @@ function SortableWidgetContainer({ id, isCustomizing, children }: SortableWidget
                 <GripVertical className="h-3.5 w-3.5 shrink-0" />
             </div>
 
-            <div className="h-full [&>*]:h-full">
+            <div className="h-full w-full min-w-0 [&>*]:h-full [&>*]:w-full">
                 {children}
             </div>
         </div>

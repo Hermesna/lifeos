@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { Plus, BookOpen, CheckCircle, Clock, Library, Star } from "lucide-react"
 import { useBooksStore, type Book } from "../stores/useBooksStore"
@@ -21,7 +21,7 @@ const getRatingColor = (rating: number) => {
 
 export function BooksPage() {
     const { t } = useTranslation()
-    const { books } = useBooksStore()
+    const { books, subscribeToBooks } = useBooksStore()
     const [filter, setFilter] = useState<FilterStatus>("all")
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editingBook, setEditingBook] = useState<Book | null>(null)
@@ -59,6 +59,13 @@ export function BooksPage() {
         setIsModalOpen(true)
     }
 
+    useEffect(() => {
+        const unsubscribe = subscribeToBooks()
+        return () => {
+            unsubscribe()
+        }
+    }, [subscribeToBooks])
+
     return (
         <div className="space-y-4 p-3 sm:p-4 max-w-5xl mx-auto">
             <div className="flex items-center justify-between gap-3">
@@ -84,8 +91,8 @@ export function BooksPage() {
                 <button
                     onClick={() => setFilter("all")}
                     className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl transition-colors cursor-pointer shrink-0 ${filter === "all"
-                            ? "bg-accent text-accent-foreground font-semibold shadow-xs"
-                            : "text-muted-foreground hover:bg-accent/50"
+                        ? "bg-accent text-accent-foreground font-semibold shadow-xs"
+                        : "text-muted-foreground hover:bg-accent/50"
                         }`}
                 >
                     <Library className="h-3.5 w-3.5" />
@@ -98,8 +105,8 @@ export function BooksPage() {
                 <button
                     onClick={() => setFilter("reading")}
                     className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl transition-colors cursor-pointer shrink-0 ${filter === "reading"
-                            ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold shadow-xs"
-                            : "text-muted-foreground hover:bg-accent/50"
+                        ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold shadow-xs"
+                        : "text-muted-foreground hover:bg-accent/50"
                         }`}
                 >
                     <BookOpen className="h-3.5 w-3.5 text-blue-500 shrink-0" />
@@ -112,8 +119,8 @@ export function BooksPage() {
                 <button
                     onClick={() => setFilter("completed")}
                     className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl transition-colors cursor-pointer shrink-0 ${filter === "completed"
-                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold shadow-xs"
-                            : "text-muted-foreground hover:bg-accent/50"
+                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold shadow-xs"
+                        : "text-muted-foreground hover:bg-accent/50"
                         }`}
                 >
                     <CheckCircle className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
@@ -126,8 +133,8 @@ export function BooksPage() {
                 <button
                     onClick={() => setFilter("pending")}
                     className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl transition-colors cursor-pointer shrink-0 ${filter === "pending"
-                            ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold shadow-xs"
-                            : "text-muted-foreground hover:bg-accent/50"
+                        ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold shadow-xs"
+                        : "text-muted-foreground hover:bg-accent/50"
                         }`}
                 >
                     <Clock className="h-3.5 w-3.5 text-amber-500 shrink-0" />
@@ -179,10 +186,10 @@ export function BooksPage() {
                                     ) : (
                                         <span
                                             className={`text-[10px] px-2 py-0.5 rounded-full font-medium shrink-0 ${status === "completed"
-                                                    ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                                                    : status === "reading"
-                                                        ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-                                                        : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                                                ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                                : status === "reading"
+                                                    ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                                                    : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
                                                 }`}
                                         >
                                             {status === "completed"
