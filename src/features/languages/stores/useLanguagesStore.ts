@@ -17,12 +17,13 @@ import i18n from "@/i18n"
 export type StudyCategory = "vocabulary" | "listening" | "grammar" | "speaking"
 
 export interface Session {
-    id: string
-    language: string
-    category: StudyCategory
-    duration: number
-    date: string
-    notes?: string
+    id: string;
+    language: string;
+    category: StudyCategory;
+    duration: number;
+    notes?: string;
+    date: string;
+    name?: string;
 }
 
 export interface LanguagesState {

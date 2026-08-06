@@ -126,13 +126,18 @@ export function LanguageForm() {
             ...data,
             language: targetLanguage,
             date: new Date().toISOString().split("T")[0],
+            // Añadimos el nombre dinámico interpolando los valores
+            name: t("languages.sessionActivityName", {
+                language: targetLanguage,
+                duration: data.duration,
+                defaultValue: `Estudio de ${targetLanguage} (${data.duration} min)`,
+            }),
         })
 
         setSeconds(0)
         reset({ category: data.category, duration: 25, notes: "" })
         setIsSaving(false)
     }
-
     const formatTimer = (sec: number) => {
         const m = Math.floor(sec / 60)
         const s = sec % 60

@@ -18,7 +18,7 @@
     "light": "Light mode",
     "dark": "Dark mode",
     "system": "System mode",
-    "label": "change theme"
+    "label": "Change theme"
   },
   "travel": {
     "form": {
@@ -36,8 +36,8 @@
       "budgetInvalid": "Please enter a valid budget.",
       "budgetMin": "Budget must be greater than 0."
     },
-    "title": "Expeditions",
-    "subtitle": "Plan your routes, budgets and packing lists.",
+    "title": "Expeditions & Travel",
+    "subtitle": "Plan your routes, budgets, and packing lists.",
     "nextExpedition": "Next Expedition",
     "deleteTrip": "Delete trip",
     "targetWindow": "Target Window",
@@ -46,17 +46,17 @@
     "packingList": "Packing List",
     "addItemPlaceholder": "Add item (ex: Power adapter)...",
     "noTripsTitle": "There are no active expeditions",
-    "noTripsSubtitle": "Start planning your return to Japan or enter any other getaways in the panel on the right.",
-    "emptyPackingList": "There are no items in the list. \nAdd the first one!",
+    "noTripsSubtitle": "Start planning your return to Japan or add any other getaway in the panel on the right.",
+    "emptyPackingList": "There are no items in the list. Add the first one!",
     "itinerary": {
       "title": "Itinerary / Agenda",
       "activities": "activities",
       "dayLabel": "Day:",
       "titlePlaceholder": "Activity or place...",
       "addBtn": "Add",
-      "empty": "You have not yet planned activities for this trip.",
+      "empty": "You have not planned activities for this trip yet.",
       "dayTag": "Day {{day}}",
-      "delete": "Eliminate"
+      "delete": "Delete"
     }
   },
   "sidebar": {
@@ -65,17 +65,17 @@
   },
   "finance": {
     "title": "Financial Dashboard",
-    "subtitle": "Control your balance, income, expenses and savings goals.",
+    "subtitle": "Control your balance, income, expenses, and savings goals.",
     "totalBalance": "Total Balance",
-    "totalIncomes": "Total Revenue",
+    "totalIncomes": "Total Income",
     "totalExpenses": "Total Expenses",
     "savingsGoals": "Savings Goals",
-    "fundProgress": "{{current}} € from {{target}} €",
+    "fundProgress": "{{current}} € of {{target}} €",
     "addAmountPlaceholder": "Contribute amount (ex. 50)...",
     "saveButton": "Save",
-    "recentTransactions": "Recent Movements",
-    "noTransactions": "There are no transactions recorded yet.",
-    "deleteTransaction": "Delete motion",
+    "recentTransactions": "Recent Transactions",
+    "noTransactions": "No transactions recorded yet.",
+    "deleteTransaction": "Delete transaction",
     "validation": {
       "descriptionMin": "The description must be at least 3 characters.",
       "validNumber": "Please enter a valid number.",
@@ -84,19 +84,19 @@
     },
     "form": {
       "title": "Register Movement",
-      "expense": "Spent",
+      "expense": "Expense",
       "income": "Income",
       "descriptionLabel": "Description",
-      "descriptionPlaceholder": "Ex. Supermarket, Payroll...",
+      "descriptionPlaceholder": "Ex. Supermarket, Salary...",
       "amountLabel": "Amount (€)",
       "amountPlaceholder": "Ex. 500",
       "categoryLabel": "Category",
       "submitButton": "Save Transaction"
     },
     "categories": {
-      "leisure": "Leisure",
-      "transport": "Transportation/Travel",
-      "housing": "Home",
+      "leisure": "Leisure & Dining",
+      "transport": "Transport / Travel",
+      "housing": "Home & Utilities",
       "otherExpenses": "Other Expenses",
       "salary": "Payroll / Salary",
       "investments": "Investments",
@@ -106,7 +106,7 @@
   "habits": {
     "validation": {
       "nameMin": "Minimum 3 characters.",
-      "category": "Select category.",
+      "category": "Select a category.",
       "date": "Select a date.",
       "time": "Select a time."
     },
@@ -115,9 +115,9 @@
       "add": "Add task"
     },
     "form": {
-      "time": "Hour",
+      "time": "Time",
       "editTitle": "Edit Activity",
-      "newTitle": "New Activity/Habit",
+      "newTitle": "New Activity / Habit",
       "cancel": "Cancel",
       "name": "Name",
       "namePlaceholder": "Ex. Train, Study...",
@@ -128,33 +128,33 @@
     },
     "categories": {
       "lifestyle": "Lifestyle",
-      "work": "Job",
-      "health": "Health",
+      "work": "Work",
+      "health": "Health & Sports",
       "languages": "Languages"
     },
     "page": {
-      "title": "Agenda",
-      "subtitle": "View your month and manage your daily activities."
+      "title": "Agenda & Habits",
+      "subtitle": "Visualize your month and manage your daily activities."
     },
     "sidebar": {
       "editTask": "Edit Task",
       "addToSchedule": "Add to Agenda",
       "cancel": "Cancel",
       "namePlaceholder": "Ex. Gym, Study...",
-      "save": "Keep",
+      "save": "Save",
       "addTask": "Add Task",
       "eventsForDate": "Events for {{date}}",
       "noPlans": "No plans for this day.",
       "edit": "Edit",
-      "delete": "Eliminate"
+      "delete": "Delete"
     }
   },
   "languages": {
     "categories": {
       "vocabulary": "Vocabulary",
-      "listening": "Listen",
+      "listening": "Listening",
       "grammar": "Grammar",
-      "speaking": "Oral"
+      "speaking": "Speaking"
     },
     "targetLanguage": "Target Language",
     "placeholder": "Ex: Japanese...",
@@ -164,33 +164,32 @@
       "timeSpent": "Time Spent",
       "hoursAbbr": "hrs",
       "completedBlocks": "Completed Blocks",
-      "skillBalance": "Balance of Skills"
+      "skillBalance": "Skill Balance"
     },
     "historyTitle": "Practice History ({{language}})",
-    "noSessions": "You haven't registered a session for {{language}} yet.",
+    "noSessions": "You haven't registered any sessions for {{language}} yet.",
     "minutesAbbr": "min",
-    "habitName": "Study of ${newSession.language} (${newSession.duration} min)",
-    "habitTitle": "Study of ${newSession.language} (${newSession.duration} min)",
+    "sessionActivityName": "Study of {{language}} ({{duration}} min)",
     "form": {
       "title": "Register Session",
       "subtitle": "Time or add manual blocks.",
       "activeTimer": "Active stopwatch",
-      "stopTimer": "Arrest",
+      "stopTimer": "Stop",
       "startTimer": "Start",
       "categoryLabel": "Category",
       "durationLabel": "Duration",
       "customMinutesPlaceholder": "Custom minutes",
       "notesLabel": "Notes (Optional)",
-      "notesPlaceholder": "Ex. Learned 10 words about business...",
+      "notesPlaceholder": "Ex. Learned 10 business words...",
       "submitButton": "Save Block"
     },
     "noLanguages": "No languages"
   },
   "common": {
-    "save": "Keep",
+    "save": "Save",
     "new": "New",
     "cancel": "Cancel",
-    "light": "Clear",
+    "light": "Light",
     "dark": "Dark",
     "system": "System",
     "saving": "Saving..."
@@ -199,7 +198,7 @@
     "form": {
       "editTitle": "Edit book",
       "addTitle": "Add book",
-      "titleLabel": "Qualification",
+      "titleLabel": "Title",
       "titlePlaceholder": "Ex. Clean Architecture",
       "authorLabel": "Author",
       "authorPlaceholder": "Ex. Robert C. Martin",
@@ -207,20 +206,20 @@
       "readPagesLabel": "Pages read",
       "ratingLabel": "Rating (1 to 10)"
     },
-    "title": "Bookshop",
+    "title": "Library",
     "subtitle": "Manage your readings and progress",
     "addBook": "Add book",
     "filters": {
       "all": "All",
       "reading": "Reading",
-      "completed": "Finished",
-      "pending": "Earrings"
+      "completed": "Completed",
+      "pending": "Pending"
     },
-    "empty": "There are no books in this state.",
+    "empty": "No books in this status.",
     "status": {
-      "completed": "Finished",
+      "completed": "Completed",
       "reading": "Reading",
-      "pending": "Earring"
+      "pending": "Pending"
     },
     "addBookShort": "Add"
   },
@@ -231,9 +230,9 @@
   "profile": {
     "defaultUser": "User",
     "verifiedAccount": "Verified Account",
-    "username": "User name",
+    "username": "Username",
     "email": "Email",
-    "bio": "Biography/Notes",
+    "bio": "Biography / Notes",
     "bioPlaceholder": "Add a brief personal summary..."
   },
   "dashboard": {
@@ -241,30 +240,30 @@
     "subtitle": "General summary of your system and key metrics.",
     "finishEditing": "Finish editing",
     "customizeWidgets": "Customize widgets",
-    "customizePrompt": "Activate or hide the modules according to your needs:",
-    "noVisibleWidgets": "There are no widgets visible on your Dashboard.",
-    "enableWidgets": "Activate widgets",
+    "customizePrompt": "Activate or hide modules according to your needs:",
+    "noVisibleWidgets": "No visible widgets on your Dashboard.",
+    "enableWidgets": "Enable widgets",
     "reorderWidget": "Reorder widget"
   },
   "habitsWidget": {
     "routine": "Daily Routine",
     "title": "Today's Habits",
-    "empty": "There are no habits recorded for today.",
-    "manage": "Manage complete routine"
+    "empty": "No habits recorded for today.",
+    "manage": "Manage full routine"
   },
   "booksWidget": {
-    "manage": "Browse full shelf",
+    "manage": "Browse full bookshelf",
     "pages": "Page {{read}} of {{total}}",
-    "empty": "There are no books on your shelf.",
+    "empty": "No books on your bookshelf.",
     "count": "{{count}} book",
     "title": "Current Reading",
     "library": "Library"
   },
   "savingsWidget": {
     "manage": "View transactions and funds",
-    "empty": "There are no savings funds created.",
-    "generalBalance": "Balance Sheet",
-    "status": "Asset",
+    "empty": "No savings funds created.",
+    "generalBalance": "General Balance",
+    "status": "Active",
     "title": "Financial Health",
     "finance": "Finance"
   },
@@ -272,7 +271,7 @@
     "manage": "Manage sessions",
     "minutes": "{{minutes}}m",
     "totalMinutes": "{{minutes}} min total",
-    "distribution": "Studio layout",
+    "distribution": "Study distribution",
     "level": "Level {{level}}",
     "section": "Languages",
     "categories": {
@@ -283,15 +282,15 @@
     }
   },
   "travelWidget": {
-    "manage": "Manage itinerary and suitcases",
+    "manage": "Manage itinerary and luggage",
     "packed": "{{packed}}/{{total}} ready",
     "luggage": "Luggage",
-    "departure": "Exit",
+    "departure": "Departure",
     "budget": "Budget",
     "destination": "Destination",
-    "empty": "There are no registered expeditions.",
+    "empty": "No registered expeditions.",
     "today": "It's today!",
-    "daysLeft": "{{days}}d missing",
+    "daysLeft": "{{days}}d left",
     "title": "Next Flight",
     "boardingPass": "Boarding Pass"
   }

@@ -18,45 +18,45 @@
     "light": "Mode clair",
     "dark": "Mode sombre",
     "system": "Mode système",
-    "label": "changer de thème"
+    "label": "Changer de thème"
   },
   "travel": {
     "form": {
       "title": "Planifier un nouveau voyage",
       "subtitle": "Ajoutez votre prochaine destination au radar.",
-      "destinationLabel": "Destination/Ville",
+      "destinationLabel": "Destination / Ville",
       "destinationPlaceholder": "Ex : Tokyo, Japon 🇯🇵",
       "startDateLabel": "Date estimée",
       "budgetLabel": "Budget initial (€)",
-      "submitBtn": "Créer un voyage"
+      "submitBtn": "Créer le voyage"
     },
     "validation": {
       "destinationMin": "La destination doit comporter au moins 2 caractères.",
-      "startDateRequired": "Sélectionnez une date de début.",
-      "budgetInvalid": "Saisissez une citation valide.",
+      "startDateRequired": "Veuillez sélectionner une date de début.",
+      "budgetInvalid": "Veuillez entrer un budget valide.",
       "budgetMin": "Le budget doit être supérieur à 0."
     },
-    "title": "Expéditions",
-    "subtitle": "Planifiez vos itinéraires, vos budgets et vos listes de colisage.",
+    "title": "Expéditions & Voyages",
+    "subtitle": "Planifiez vos itinéraires, budgets et listes de bagages.",
     "nextExpedition": "Prochaine expédition",
     "deleteTrip": "Supprimer le voyage",
     "targetWindow": "Fenêtre cible",
-    "budget": "Budget assigné",
-    "packingProgress": "Progrès des bagages",
-    "packingList": "Liste de colisage",
-    "addItemPlaceholder": "Ajouter un article (ex : adaptateur secteur)...",
-    "noTripsTitle": "Il n'y a pas d'expéditions actives",
-    "noTripsSubtitle": "Commencez à planifier votre retour au Japon ou entrez toute autre escapade dans le panneau de droite.",
-    "emptyPackingList": "Il n'y a aucun élément dans la liste. Ajoutez le premier !",
+    "budget": "Budget alloué",
+    "packingProgress": "Progression des bagages",
+    "packingList": "Liste de bagages",
+    "addItemPlaceholder": "Ajouter un article (ex: Adaptateur secteur)...",
+    "noTripsTitle": "Aucune expédition active",
+    "noTripsSubtitle": "Commencez à planifier votre retour au Japon ou ajoutez une autre escapade dans le panneau de droite.",
+    "emptyPackingList": "Il n'y a aucun élément dans la liste. Ajoutez le premier !",
     "itinerary": {
       "title": "Itinéraire / Agenda",
       "activities": "activités",
-      "dayLabel": "Jour:",
-      "addBtn": "Ajouter",
-      "empty": "Vous n'avez pas encore prévu d'activités pour ce voyage.",
+      "dayLabel": "Jour :",
       "titlePlaceholder": "Activité ou lieu...",
-      "dayTag": "Jour {{jour}}",
-      "delete": "Éliminer"
+      "addBtn": "Ajouter",
+      "empty": "Vous n'avez pas encore planifié d'activités pour ce voyage.",
+      "dayTag": "Jour {{day}}",
+      "delete": "Supprimer"
     }
   },
   "sidebar": {
@@ -65,40 +65,40 @@
   },
   "finance": {
     "title": "Tableau de bord financier",
-    "subtitle": "Contrôlez votre solde, vos revenus, vos dépenses et vos objectifs d’épargne.",
+    "subtitle": "Contrôlez votre solde, vos revenus, vos dépenses et vos objectifs d'épargne.",
     "totalBalance": "Solde total",
-    "totalIncomes": "Revenu total",
+    "totalIncomes": "Revenus totaux",
     "totalExpenses": "Dépenses totales",
     "savingsGoals": "Objectifs d'épargne",
-    "fundProgress": "{{current}} € à partir de {{target}} €",
-    "addAmountPlaceholder": "Montant de la cotisation (ex. 50)...",
-    "saveButton": "Sauvegarder",
+    "fundProgress": "{{current}} € sur {{target}} €",
+    "addAmountPlaceholder": "Contribuer (ex. 50)...",
+    "saveButton": "Épargner",
     "recentTransactions": "Mouvements récents",
-    "noTransactions": "Aucune transaction n'a encore été enregistrée.",
+    "noTransactions": "Aucune transaction enregistrée pour le moment.",
     "deleteTransaction": "Supprimer le mouvement",
     "validation": {
       "descriptionMin": "La description doit comporter au moins 3 caractères.",
-      "validNumber": "Veuillez entrer un numéro valide.",
+      "validNumber": "Veuillez entrer un nombre valide.",
       "amountPositive": "Le montant doit être supérieur à zéro.",
       "selectCategory": "Sélectionnez une catégorie."
     },
     "form": {
-      "title": "Enregistrer le mouvement",
-      "expense": "Dépensé",
+      "title": "Enregistrer un mouvement",
+      "expense": "Dépense",
       "income": "Revenu",
       "descriptionLabel": "Description",
-      "descriptionPlaceholder": "Ex. Supermarché, Paie...",
+      "descriptionPlaceholder": "Ex. Supermarché, Salaire...",
       "amountLabel": "Montant (€)",
       "amountPlaceholder": "Ex. 500",
       "categoryLabel": "Catégorie",
       "submitButton": "Enregistrer la transaction"
     },
     "categories": {
-      "leisure": "Loisirs",
-      "transport": "Transport/Voyage",
-      "housing": "Maison",
+      "leisure": "Loisirs & Restauration",
+      "transport": "Transport / Voyage",
+      "housing": "Maison & Charges",
       "otherExpenses": "Autres dépenses",
-      "salary": "Paie / Salaire",
+      "salary": "Salaire / Paie",
       "investments": "Investissements",
       "otherIncome": "Autres revenus"
     }
@@ -106,7 +106,7 @@
   "habits": {
     "validation": {
       "nameMin": "Minimum 3 caractères.",
-      "category": "Sélectionnez la catégorie.",
+      "category": "Sélectionnez une catégorie.",
       "date": "Sélectionnez une date.",
       "time": "Sélectionnez une heure."
     },
@@ -117,42 +117,42 @@
     "form": {
       "time": "Heure",
       "editTitle": "Modifier l'activité",
-      "newTitle": "Nouvelle activité/habitude",
+      "newTitle": "Nouvelle activité / Habitude",
       "cancel": "Annuler",
       "name": "Nom",
-      "namePlaceholder": "Ex. Se former, étudier...",
+      "namePlaceholder": "Ex. Entraînement, Études...",
       "date": "Date",
       "category": "Catégorie",
       "updateButton": "Enregistrer les modifications",
-      "createButton": "Ajouter à l'ordre du jour"
+      "createButton": "Ajouter à l'agenda"
     },
     "categories": {
       "lifestyle": "Mode de vie",
-      "work": "Emploi",
-      "health": "Santé",
+      "work": "Travail",
+      "health": "Santé & Sport",
       "languages": "Langues"
     },
     "page": {
-      "title": "Ordre du jour",
-      "subtitle": "Consultez votre mois et gérez vos activités quotidiennes."
+      "title": "Agenda & Habitudes",
+      "subtitle": "Visualisez votre mois et gérez vos activités quotidiennes."
     },
     "sidebar": {
       "editTask": "Modifier la tâche",
-      "addToSchedule": "Ajouter à l'ordre du jour",
+      "addToSchedule": "Ajouter à l'agenda",
       "cancel": "Annuler",
-      "namePlaceholder": "Ex. Salle de sport, étude...",
-      "save": "Garder",
+      "namePlaceholder": "Ex. Salle de sport, Études...",
+      "save": "Enregistrer",
       "addTask": "Ajouter une tâche",
-      "eventsForDate": "Événements pour {{date}}",
-      "noPlans": "Aucun projet pour cette journée.",
+      "eventsForDate": "Événements pour le {{date}}",
+      "noPlans": "Aucun plan pour cette journée.",
       "edit": "Modifier",
-      "delete": "Éliminer"
+      "delete": "Supprimer"
     }
   },
   "languages": {
     "categories": {
       "vocabulary": "Vocabulaire",
-      "listening": "Écouter",
+      "listening": "Écoute",
       "grammar": "Grammaire",
       "speaking": "Oral"
     },
@@ -161,66 +161,65 @@
     "addNew": "Ajouter une nouvelle langue",
     "level": "Niveau",
     "stats": {
-      "timeSpent": "Temps passé",
-      "hoursAbbr": "heures",
-      "completedBlocks": "Blocs terminés",
+      "timeSpent": "Temps investi",
+      "hoursAbbr": "h",
+      "completedBlocks": "Blocs complétés",
       "skillBalance": "Équilibre des compétences"
     },
-    "historyTitle": "Historique de la pratique ({{langue}})",
-    "noSessions": "Vous n'avez pas encore enregistré de session pour {{langue}}.",
+    "historyTitle": "Historique de pratique ({{language}})",
+    "noSessions": "Vous n'avez enregistré aucune session pour le {{language}} pour le moment.",
     "minutesAbbr": "min",
-    "habitName": "Etude de ${newSession.langue} (${newSession.duration} min)",
-    "habitTitle": "Etude de ${newSession.langue} (${newSession.duration} min)",
+    "sessionActivityName": "Étude de {{language}} ({{duration}} min)",
     "form": {
-      "title": "Session d'inscription",
+      "title": "Enregistrer une session",
       "subtitle": "Chronométrez ou ajoutez des blocs manuels.",
       "activeTimer": "Chronomètre actif",
       "stopTimer": "Arrêter",
-      "startTimer": "Commencer",
+      "startTimer": "Démarrer",
       "categoryLabel": "Catégorie",
       "durationLabel": "Durée",
       "customMinutesPlaceholder": "Minutes personnalisées",
-      "notesLabel": "Remarques (facultatif)",
-      "notesPlaceholder": "Ex. J'ai appris 10 mots sur les affaires...",
+      "notesLabel": "Notes (Optionnel)",
+      "notesPlaceholder": "Ex. Appris 10 mots sur les affaires...",
       "submitButton": "Enregistrer le bloc"
     },
     "noLanguages": "Aucune langue"
   },
   "common": {
-    "save": "Garder",
+    "save": "Enregistrer",
     "new": "Nouveau",
     "cancel": "Annuler",
     "light": "Clair",
     "dark": "Sombre",
     "system": "Système",
-    "saving": "Économie..."
+    "saving": "Enregistrement..."
   },
   "books": {
     "form": {
       "editTitle": "Modifier le livre",
       "addTitle": "Ajouter un livre",
-      "titleLabel": "Qualification",
-      "titlePlaceholder": "Ex. Architecture propre",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Ex. Clean Architecture",
       "authorLabel": "Auteur",
-      "authorPlaceholder": "Ex. Robert C.Martin",
-      "totalPagesLabel": "Nombre total de pages",
+      "authorPlaceholder": "Ex. Robert C. Martin",
+      "totalPagesLabel": "Pages totales",
       "readPagesLabel": "Pages lues",
-      "ratingLabel": "Note (1 à 10)"
+      "ratingLabel": "Évaluation (1 à 10)"
     },
-    "title": "Librairie",
-    "subtitle": "Gérez vos lectures et vos progrès",
+    "title": "Bibliothèque",
+    "subtitle": "Gérez vos lectures et votre progression",
     "addBook": "Ajouter un livre",
     "filters": {
       "all": "Tous",
-      "reading": "En lisant",
-      "completed": "Fini",
-      "pending": "Boucles d'oreilles"
+      "reading": "En cours",
+      "completed": "Terminés",
+      "pending": "À lire"
     },
-    "empty": "Il n'y a aucun livre dans cet état.",
+    "empty": "Aucun livre dans cet état.",
     "status": {
-      "completed": "Fini",
-      "reading": "En lisant",
-      "pending": "Boucle"
+      "completed": "Terminé",
+      "reading": "En cours",
+      "pending": "À lire"
     },
     "addBookShort": "Ajouter"
   },
@@ -233,65 +232,65 @@
     "verifiedAccount": "Compte vérifié",
     "username": "Nom d'utilisateur",
     "email": "E-mail",
-    "bio": "Biographie/Notes",
+    "bio": "Biographie / Notes",
     "bioPlaceholder": "Ajoutez un bref résumé personnel..."
   },
   "dashboard": {
     "title": "Tableau de bord LifeOS",
-    "subtitle": "Résumé général de votre système et des indicateurs clés.",
-    "finishEditing": "Terminer la modification",
+    "subtitle": "Résumé général de votre système et métriques clés.",
+    "finishEditing": "Terminer l'édition",
     "customizeWidgets": "Personnaliser les widgets",
     "customizePrompt": "Activez ou masquez les modules selon vos besoins :",
-    "noVisibleWidgets": "Aucun widget n'est visible sur votre tableau de bord.",
+    "noVisibleWidgets": "Aucun widget visible sur votre tableau de bord.",
     "enableWidgets": "Activer les widgets",
-    "reorderWidget": "Réorganiser le widget"
+    "reorderWidget": "Réordonner le widget"
   },
   "habitsWidget": {
     "routine": "Routine quotidienne",
-    "title": "Les habitudes d'aujourd'hui",
-    "empty": "Aucune habitude n’a été enregistrée pour aujourd’hui.",
-    "manage": "Gérer une routine complète"
+    "title": "Habitudes du jour",
+    "empty": "Aucune habitude enregistrée pour aujourd'hui.",
+    "manage": "Gérer la routine complète"
   },
   "booksWidget": {
-    "manage": "Parcourir l'étagère complète",
-    "pages": "Page {{lecture}} sur {{total}}",
-    "empty": "Il n'y a aucun livre sur votre étagère.",
+    "manage": "Explorer toute la bibliothèque",
+    "pages": "Page {{read}} sur {{total}}",
+    "empty": "Aucun livre dans votre bibliothèque.",
     "count": "{{count}} livre",
-    "title": "Lecture actuelle",
+    "title": "Lecture en cours",
     "library": "Bibliothèque"
   },
   "savingsWidget": {
-    "manage": "Afficher les transactions et les fonds",
-    "empty": "Aucun fonds d'épargne n'est créé.",
-    "generalBalance": "Bilan",
+    "manage": "Voir les transactions et fonds",
+    "empty": "Aucun fonds d'épargne créé.",
+    "generalBalance": "Solde général",
     "status": "Actif",
     "title": "Santé financière",
-    "finance": "Finance"
+    "finance": "Finances"
   },
   "languagesWidget": {
-    "manage": "Gérer les séances",
-    "minutes": "{{minutes}}min",
-    "totalMinutes": "{{minutes}} minutes au total",
-    "distribution": "Disposition des studios",
-    "level": "Niveau {{niveau}}",
+    "manage": "Gérer les sessions",
+    "minutes": "{{minutes}}m",
+    "totalMinutes": "{{minutes}} min au total",
+    "distribution": "Répartition de l'étude",
+    "level": "Niveau {{level}}",
     "section": "Langues",
     "categories": {
       "vocabulary": "Vocab",
       "listening": "Écoute",
       "grammar": "Grammaire",
-      "speaking": "Parlant"
+      "speaking": "Oral"
     }
   },
   "travelWidget": {
-    "manage": "Gérer l'itinéraire et les valises",
-    "packed": "{{packed}}/{{total}} prêt",
-    "luggage": "Bagage",
-    "departure": "Sortie",
+    "manage": "Gérer l'itinéraire et les bagages",
+    "packed": "{{packed}}/{{total}} prêts",
+    "luggage": "Bagages",
+    "departure": "Départ",
     "budget": "Budget",
     "destination": "Destination",
-    "empty": "Il n'y a aucune expédition enregistrée.",
+    "empty": "Aucune expédition enregistrée.",
     "today": "C'est aujourd'hui !",
-    "daysLeft": "{{days}}d manquant",
+    "daysLeft": "Reste {{days}}j",
     "title": "Prochain vol",
     "boardingPass": "Carte d'embarquement"
   }

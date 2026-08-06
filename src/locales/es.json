@@ -169,8 +169,7 @@
     "historyTitle": "Historial de Práctica ({{language}})",
     "noSessions": "No has registrado ninguna sesión para {{language}} todavía.",
     "minutesAbbr": "min",
-    "habitName": "Estudio de ${newSession.language} (${newSession.duration} min)",
-    "habitTitle": "Estudio de ${newSession.language} (${newSession.duration} min)",
+    "sessionActivityName": "Estudio de {{language}} ({{duration}} min)",
     "form": {
       "title": "Registrar Sesión",
       "subtitle": "Cronometra o añade bloques manuales.",

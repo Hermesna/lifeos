@@ -84,18 +84,25 @@ export function BookFormModal({ isOpen, onClose, bookToEdit }: BookFormModalProp
 
     if (!isOpen) return null
 
-    const onSubmit = (data: BookFormOutput) => {
-        const finalData = {
-            ...data,
-            rating: isCompleted ? data.rating : undefined,
-        }
+    const onSubmit = async (data: BookFormOutput) => {
+        try {
+            const finalData: Omit<Book, "id"> = {
+                title: data.title,
+                author: data.author,
+                totalPages: data.totalPages,
+                readPages: data.readPages,
+                ...(isCompleted && data.rating !== undefined ? { rating: data.rating } : {}),
+            }
 
-        if (bookToEdit) {
-            updateBook(bookToEdit.id, finalData)
-        } else {
-            addBook(finalData)
+            if (bookToEdit) {
+                await updateBook(bookToEdit.id, finalData)
+            } else {
+                await addBook(finalData)
+            }
+            onClose()
+        } catch (error) {
+            console.error("Error al guardar el libro:", error)
         }
-        onClose()
     }
 
     return (
