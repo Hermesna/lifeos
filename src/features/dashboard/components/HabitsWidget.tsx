@@ -33,7 +33,8 @@ export function HabitsWidget() {
                 </span>
             </div>
 
-            <div className="p-4 space-y-2 min-h-[120px] flex flex-col justify-center flex-1">
+            {/* Se añade min-h-[170px] para estabilizar la altura y evitar saltos visuales */}
+            <div className="p-4 space-y-2 min-h-[170px] flex flex-col justify-center flex-1">
                 {habits.length === 0 ? (
                     <div className="text-center py-2">
                         <Sparkles className="h-5 w-5 mx-auto text-muted-foreground/50 mb-1" />
@@ -47,10 +48,11 @@ export function HabitsWidget() {
                             key={habit.id}
                             type="button"
                             onClick={() => toggleHabit(habit.id)}
-                            className={`w-full flex items-center justify-between p-2.5 rounded-xl transition-all cursor-pointer text-left group border ${habit.completed
+                            className={`w-full flex items-center justify-between p-2.5 rounded-xl transition-all cursor-pointer text-left group border ${
+                                habit.completed
                                     ? "bg-accent/30 border-border/40 opacity-75"
                                     : "bg-accent/60 border-border/60 hover:bg-accent"
-                                }`}
+                            }`}
                         >
                             <div className="flex items-center gap-2.5 overflow-hidden pr-2">
                                 {habit.completed ? (
@@ -59,10 +61,11 @@ export function HabitsWidget() {
                                     <Circle className="h-4 w-4 text-muted-foreground group-hover:text-foreground shrink-0" />
                                 )}
                                 <span
-                                    className={`text-xs truncate ${habit.completed
+                                    className={`text-xs truncate ${
+                                        habit.completed
                                             ? "line-through text-muted-foreground font-normal"
                                             : "font-semibold text-foreground"
-                                        }`}
+                                    }`}
                                 >
                                     {habit.name}
                                 </span>

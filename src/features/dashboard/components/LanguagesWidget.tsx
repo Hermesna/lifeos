@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next"
 import { Languages, ArrowRight, BarChart3 } from "lucide-react"
 import { useLanguagesStore, type StudyCategory } from "@/features/languages/stores/useLanguagesStore"
 
-
 export function LanguagesWidget() {
     const { t } = useTranslation()
     const targetLanguage = useLanguagesStore((state) => state.targetLanguage)
@@ -11,6 +10,7 @@ export function LanguagesWidget() {
     const sessions = useLanguagesStore((state) => state.sessions)
     const currentLevel = levelsByLanguage[targetLanguage] || "A1"
     const targetSessions = sessions.filter((s) => s.language === targetLanguage)
+    
     const categoryColors: Record<StudyCategory, { bg: string; label: string }> = {
         vocabulary: { bg: "bg-blue-500", label: t("languagesWidget.categories.vocabulary", { defaultValue: "Vocab" }) },
         listening: { bg: "bg-emerald-500", label: t("languagesWidget.categories.listening", { defaultValue: "Listening" }) },
@@ -44,37 +44,40 @@ export function LanguagesWidget() {
                 </span>
             </div>
 
-            <div className="p-4 space-y-3">
-                <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground flex items-center gap-1.5 min-w-0 truncate">
-                        <BarChart3 className="h-3.5 w-3.5 text-indigo-500 shrink-0" />
-                        <span className="truncate">{t("languagesWidget.distribution", { defaultValue: "Distribución de estudio" })}</span>
-                    </span>
-                    <span className="font-bold shrink-0 ml-2">
-                        {t("languagesWidget.totalMinutes", { minutes: totalMinutes, defaultValue: "{{minutes}} min total" })}
-                    </span>
-                </div>
+            {/* min-h añadido para estabilizar el layout y evitar el parpadeo al cargar Firebase */}
+            <div className="p-4 space-y-3 min-h-[190px] flex flex-col justify-between">
+                <div>
+                    <div className="flex items-center justify-between text-xs mb-2">
+                        <span className="text-muted-foreground flex items-center gap-1.5 min-w-0 truncate">
+                            <BarChart3 className="h-3.5 w-3.5 text-indigo-500 shrink-0" />
+                            <span className="truncate">{t("languagesWidget.distribution", { defaultValue: "Distribución de estudio" })}</span>
+                        </span>
+                        <span className="font-bold shrink-0 ml-2">
+                            {t("languagesWidget.totalMinutes", { minutes: totalMinutes, defaultValue: "{{minutes}} min total" })}
+                        </span>
+                    </div>
 
-                <div className="h-2.5 w-full bg-secondary rounded-full overflow-hidden flex gap-0.5 p-0.5">
-                    {totalMinutes === 0 ? (
-                        <div className="h-full w-full bg-muted-foreground/20 rounded-full" />
-                    ) : (
-                        (Object.keys(categoryColors) as StudyCategory[]).map((cat) => {
-                            const minutes = categoryTotals[cat] || 0
-                            if (minutes === 0) return null
-                            const percentage = (minutes / totalMinutes) * 100
-                            const config = categoryColors[cat]
+                    <div className="h-2.5 w-full bg-secondary rounded-full overflow-hidden flex gap-0.5 p-0.5">
+                        {totalMinutes === 0 ? (
+                            <div className="h-full w-full bg-muted-foreground/20 rounded-full" />
+                        ) : (
+                            (Object.keys(categoryColors) as StudyCategory[]).map((cat) => {
+                                const minutes = categoryTotals[cat] || 0
+                                if (minutes === 0) return null
+                                const percentage = (minutes / totalMinutes) * 100
+                                const config = categoryColors[cat]
 
-                            return (
-                                <div
-                                    key={cat}
-                                    className={`h-full ${config.bg} rounded-xs transition-all duration-500`}
-                                    style={{ width: `${percentage}%` }}
-                                    title={`${config.label}: ${minutes} min`}
-                                />
-                            )
-                        })
-                    )}
+                                return (
+                                    <div
+                                        key={cat}
+                                        className={`h-full ${config.bg} rounded-xs transition-all duration-500`}
+                                        style={{ width: `${percentage}%` }}
+                                        title={`${config.label}: ${minutes} min`}
+                                    />
+                                )
+                            })
+                        )}
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 pt-1">

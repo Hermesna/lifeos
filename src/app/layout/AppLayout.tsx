@@ -11,19 +11,22 @@ import { useFinanceStore } from "@/features/finance/stores/useFinanceStore"
 import { useLanguagesStore } from "@/features/languages/stores/useLanguagesStore"
 
 export function AppLayout() {
-    const initTheme = useThemeStore((state) => state.initTheme)
+    const syncTheme = useThemeStore((state) => state.syncTheme)
+    const initThemeFromDB = useThemeStore((state) => state.initThemeFromDB)
     const initAuth = useAuthStore((state) => state.initAuth)
     const isLoading = useAuthStore((state) => state.isLoading)
     const user = useAuthStore((state) => state.user)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     useEffect(() => {
-        initTheme()
+        syncTheme()
         initAuth()
-    }, [initTheme, initAuth])
+    }, [syncTheme, initAuth])
 
     useEffect(() => {
-        if (!user) return
+        if (!user || !user.id) return
+
+        initThemeFromDB(user.id)
 
         const unsubscribeTravel = useTravelStore.getState().subscribeToTrips()
         const unsubscribeBooks = useBooksStore.getState().subscribeToBooks()
@@ -38,7 +41,7 @@ export function AppLayout() {
             unsubscribeFinance()
             unsubscribeLanguages()
         }
-    }, [user])
+    }, [user, initThemeFromDB])
 
     if (isLoading) {
         return (

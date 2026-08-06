@@ -12,7 +12,7 @@ export function BooksWidget() {
         : 0
 
     return (
-        <div className="rounded-2xl border border-border bg-card overflow-hidden flex flex-col justify-between hover:border-border/85 transition-colors shadow-xs">
+        <div className="rounded-2xl border border-border bg-card overflow-hidden flex flex-col justify-between hover:border-border/85 transition-colors shadow-xs min-h-[145px]">
             <div className="bg-blue-500/10 dark:bg-blue-500/5 px-4 py-3 border-b border-blue-500/20 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                     <div className="p-1.5 rounded-xl bg-blue-500 text-white shadow-xs shrink-0">

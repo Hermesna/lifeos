@@ -6,8 +6,7 @@ import { ThemeToggle } from "@/shared/components/ui/ThemeToggle"
 import { LanguageToggle } from "@/shared/components/ui/LanguageToggle"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
 import { ProfileModal } from "./ProfileModal"
-import { SettingsModal } from "./SettingsModal"
-import { User, Settings, LogOut, Menu } from "lucide-react"
+import { User, LogOut, Menu } from "lucide-react"
 
 interface AppHeaderProps {
     onMenuClick?: () => void
@@ -20,7 +19,6 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
 
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
-    const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     const user = useAuthStore((state) => state.user)
@@ -38,11 +36,6 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
     const handleOpenProfileModal = () => {
         setIsProfileDropdownOpen(false)
         setIsProfileModalOpen(true)
-    }
-
-    const handleOpenSettingsModal = () => {
-        setIsProfileDropdownOpen(false)
-        setIsSettingsModalOpen(true)
     }
 
     const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : "U"
@@ -113,14 +106,6 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
                                         <User size={16} className="text-muted-foreground" />
                                         <span>{t("header.profile", { defaultValue: "Perfil" })}</span>
                                     </button>
-
-                                    <button
-                                        onClick={handleOpenSettingsModal}
-                                        className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground text-left cursor-pointer"
-                                    >
-                                        <Settings size={16} className="text-muted-foreground" />
-                                        <span>{t("header.settings", { defaultValue: "Ajustes" })}</span>
-                                    </button>
                                 </div>
 
                                 <div className="my-1 border-t border-border/60" />
@@ -141,11 +126,6 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
             <ProfileModal
                 isOpen={isProfileModalOpen}
                 onClose={() => setIsProfileModalOpen(false)}
-            />
-
-            <SettingsModal
-                isOpen={isSettingsModalOpen}
-                onClose={() => setIsSettingsModalOpen(false)}
             />
         </>
     )

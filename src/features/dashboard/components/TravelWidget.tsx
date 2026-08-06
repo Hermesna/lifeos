@@ -58,61 +58,64 @@ export function TravelWidget() {
                 )}
             </div>
 
-            {!currentTrip ? (
-                <div className="p-5 text-center">
-                    <p className="text-xs text-muted-foreground py-2">
-                        {t("travelWidget.empty", { defaultValue: "No hay expediciones registradas." })}
-                    </p>
-                </div>
-            ) : (
-                <div className="p-4 space-y-3">
-                    <div className="flex items-start justify-between gap-2">
-                        <div className="space-y-0.5 min-w-0">
-                            <span className="text-[10px] text-muted-foreground uppercase font-medium tracking-wide">
-                                {t("travelWidget.destination", { defaultValue: "Destino" })}
-                            </span>
-                            <p className="text-sm font-bold flex items-center gap-1.5 text-foreground truncate">
-                                <MapPin className="h-4 w-4 text-sky-500 shrink-0" />
-                                <span className="truncate">{currentTrip.destination}</span>
-                            </p>
-                        </div>
-                        {currentTrip.budget > 0 && (
-                            <div className="text-right shrink-0">
+            {/* min-h añadido para estabilizar el layout y prevenir saltos visuales al sincronizar con Firebase */}
+            <div className="p-4 space-y-3 min-h-[175px] flex flex-col justify-center">
+                {!currentTrip ? (
+                    <div className="text-center py-2">
+                        <p className="text-xs text-muted-foreground">
+                            {t("travelWidget.empty", { defaultValue: "No hay expediciones registradas." })}
+                        </p>
+                    </div>
+                ) : (
+                    <>
+                        <div className="flex items-start justify-between gap-2">
+                            <div className="space-y-0.5 min-w-0">
                                 <span className="text-[10px] text-muted-foreground uppercase font-medium tracking-wide">
-                                    {t("travelWidget.budget", { defaultValue: "Presupuesto" })}
+                                    {t("travelWidget.destination", { defaultValue: "Destino" })}
                                 </span>
-                                <p className="text-xs font-bold text-foreground mt-0.5">
-                                    {currentTrip.budget.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                                <p className="text-sm font-bold flex items-center gap-1.5 text-foreground truncate">
+                                    <MapPin className="h-4 w-4 text-sky-500 shrink-0" />
+                                    <span className="truncate">{currentTrip.destination}</span>
                                 </p>
                             </div>
-                        )}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2 pt-1 border-t border-border/40">
-                        <div className="bg-accent/40 p-2.5 rounded-xl border border-border/40">
-                            <span className="text-[10px] text-muted-foreground flex items-center gap-1.5 font-medium">
-                                <Calendar className="h-3.5 w-3.5 text-sky-500 shrink-0" />
-                                <span className="truncate">{t("travelWidget.departure", { defaultValue: "Salida" })}</span>
-                            </span>
-                            <p className="text-xs font-semibold mt-1 truncate">{formatDate(currentTrip.startDate)}</p>
+                            {currentTrip.budget > 0 && (
+                                <div className="text-right shrink-0">
+                                    <span className="text-[10px] text-muted-foreground uppercase font-medium tracking-wide">
+                                        {t("travelWidget.budget", { defaultValue: "Presupuesto" })}
+                                    </span>
+                                    <p className="text-xs font-bold text-foreground mt-0.5">
+                                        {currentTrip.budget.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                                    </p>
+                                </div>
+                            )}
                         </div>
 
-                        <div className="bg-accent/40 p-2.5 rounded-xl border border-border/40">
-                            <span className="text-[10px] text-muted-foreground flex items-center gap-1.5 font-medium">
-                                <Luggage className="h-3.5 w-3.5 text-sky-500 shrink-0" />
-                                <span className="truncate">{t("travelWidget.luggage", { defaultValue: "Equipaje" })}</span>
-                            </span>
-                            <p className="text-xs font-semibold mt-1 truncate">
-                                {t("travelWidget.packed", {
-                                    packed: packedCount,
-                                    total: totalPacking,
-                                    defaultValue: "{{packed}}/{{total}} listos",
-                                })}
-                            </p>
+                        <div className="grid grid-cols-2 gap-2 pt-1 border-t border-border/40">
+                            <div className="bg-accent/40 p-2.5 rounded-xl border border-border/40">
+                                <span className="text-[10px] text-muted-foreground flex items-center gap-1.5 font-medium">
+                                    <Calendar className="h-3.5 w-3.5 text-sky-500 shrink-0" />
+                                    <span className="truncate">{t("travelWidget.departure", { defaultValue: "Salida" })}</span>
+                                </span>
+                                <p className="text-xs font-semibold mt-1 truncate">{formatDate(currentTrip.startDate)}</p>
+                            </div>
+
+                            <div className="bg-accent/40 p-2.5 rounded-xl border border-border/40">
+                                <span className="text-[10px] text-muted-foreground flex items-center gap-1.5 font-medium">
+                                    <Luggage className="h-3.5 w-3.5 text-sky-500 shrink-0" />
+                                    <span className="truncate">{t("travelWidget.luggage", { defaultValue: "Equipaje" })}</span>
+                                </span>
+                                <p className="text-xs font-semibold mt-1 truncate">
+                                    {t("travelWidget.packed", {
+                                        packed: packedCount,
+                                        total: totalPacking,
+                                        defaultValue: "{{packed}}/{{total}} listos",
+                                    })}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            )}
+                    </>
+                )}
+            </div>
 
             <Link
                 to="/travel"

@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react"
-import { useTheme } from "@/shared/providers/ThemeContext"
 import { useTranslation } from "react-i18next"
 import { Sun, Moon, Monitor } from "lucide-react"
+import { useThemeStore } from "@/shared/stores/useThemeStore"
 
 export function ThemeToggle() {
-    const { theme, setTheme } = useTheme()
+    const { theme, setTheme } = useThemeStore()
     const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
@@ -20,15 +20,16 @@ export function ThemeToggle() {
     }, [])
 
     const themeConfig = {
-        light: { icon: Sun, label: t("theme.light") },
-        dark: { icon: Moon, label: t("theme.dark") },
-        system: { icon: Monitor, label: t("theme.system") },
+        light: { icon: Sun, label: t("common.light", { defaultValue: "Claro" }) },
+        dark: { icon: Moon, label: t("common.dark", { defaultValue: "Oscuro" }) },
+        system: { icon: Monitor, label: t("common.system", { defaultValue: "Sistema" }) },
     }
 
     const CurrentIcon = themeConfig[theme]?.icon || Monitor
 
     return (
         <div className="relative" ref={dropdownRef}>
+            {/* Vista de escritorio (botones en fila) */}
             <div className="hidden md:flex items-center gap-1 bg-secondary/50 p-1 rounded-xl border backdrop-blur-sm">
                 <button
                     type="button"
@@ -38,8 +39,8 @@ export function ThemeToggle() {
                             ? "bg-card text-foreground shadow-xs"
                             : "text-muted-foreground hover:text-foreground"
                     }`}
-                    title={t("theme.light")}
-                    aria-label={t("theme.light")}
+                    title={t("common.light", { defaultValue: "Claro" })}
+                    aria-label={t("common.light", { defaultValue: "Claro" })}
                 >
                     <Sun className="h-4 w-4" />
                 </button>
@@ -52,8 +53,8 @@ export function ThemeToggle() {
                             ? "bg-card text-foreground shadow-xs"
                             : "text-muted-foreground hover:text-foreground"
                     }`}
-                    title={t("theme.dark")}
-                    aria-label={t("theme.dark")}
+                    title={t("common.dark", { defaultValue: "Oscuro" })}
+                    aria-label={t("common.dark", { defaultValue: "Oscuro" })}
                 >
                     <Moon className="h-4 w-4" />
                 </button>
@@ -66,25 +67,26 @@ export function ThemeToggle() {
                             ? "bg-card text-foreground shadow-xs"
                             : "text-muted-foreground hover:text-foreground"
                     }`}
-                    title={t("theme.system")}
-                    aria-label={t("theme.system")}
+                    title={t("common.system", { defaultValue: "Sistema" })}
+                    aria-label={t("common.system", { defaultValue: "Sistema" })}
                 >
                     <Monitor className="h-4 w-4" />
                 </button>
             </div>
 
+            {/* Vista móvil / desplegable */}
             <div className="flex md:hidden items-center">
                 <button
                     type="button"
                     onClick={() => setIsOpen(!isOpen)}
                     className="flex items-center gap-2 p-2 rounded-xl border bg-secondary/50 text-foreground shadow-xs backdrop-blur-sm cursor-pointer"
-                    aria-label={t("theme.label", "Cambiar tema")}
+                    aria-label={t("theme.label", { defaultValue: "Cambiar tema" })}
                 >
                     <CurrentIcon className="h-4 w-4" />
                 </button>
 
                 {isOpen && (
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-36 bg-card border border-border rounded-xl shadow-lg p-1 z-50 flex flex-col gap-1 animate-in fade-in-80 zoom-in-95">
+                    <div className="absolute right-0 top-full mt-2 w-36 bg-card border border-border rounded-xl shadow-lg p-1 z-50 flex flex-col gap-1 animate-in fade-in-80 zoom-in-95">
                         {(["light", "dark", "system"] as const).map((tKey) => {
                             const Icon = themeConfig[tKey].icon
                             const isSelected = theme === tKey

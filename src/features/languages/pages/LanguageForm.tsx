@@ -126,7 +126,6 @@ export function LanguageForm() {
             ...data,
             language: targetLanguage,
             date: new Date().toISOString().split("T")[0],
-            // Añadimos el nombre dinámico interpolando los valores
             name: t("languages.sessionActivityName", {
                 language: targetLanguage,
                 duration: data.duration,

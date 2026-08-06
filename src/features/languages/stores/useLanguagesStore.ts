@@ -48,7 +48,6 @@ export const useLanguagesStore = create<LanguagesState>()(
             userLanguages: [],
             levelsByLanguage: {},
 
-            // 🔄 Sincronización en tiempo real con Firestore
             subscribeToLanguages: () => {
                 const userId = useAuthStore.getState().user?.id
                 if (!userId) return () => {}
@@ -56,7 +55,6 @@ export const useLanguagesStore = create<LanguagesState>()(
                 const sessionsRef = collection(db, "users", userId, "language_sessions")
                 const settingsRef = doc(db, "users", userId, "settings", "languages")
 
-                // 1. Escuchar sesiones de estudio
                 const unsubscribeSessions = onSnapshot(query(sessionsRef), (snapshot) => {
                     const sessionsData = snapshot.docs.map((docSnap) => ({
                         ...(docSnap.data() as Session),
@@ -65,7 +63,6 @@ export const useLanguagesStore = create<LanguagesState>()(
                     set({ sessions: sessionsData })
                 })
 
-                // 2. Escuchar la configuración general (idiomas, niveles, target)
                 const unsubscribeSettings = onSnapshot(settingsRef, (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data()
