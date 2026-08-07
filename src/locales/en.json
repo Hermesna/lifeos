@@ -101,7 +101,18 @@
       "salary": "Payroll / Salary",
       "investments": "Investments",
       "otherIncome": "Other Income"
-    }
+    },
+    "fundForm": {
+      "title": "Create New Objective",
+      "namePlaceholder": "Ex. Trip to Japan, Car...",
+      "targetLabel": "Target Amount (€)",
+      "nameLabel": "Objective Name",
+      "targetPlaceholder": "Ex. 1500",
+      "submitButton": "Create Goal"
+    },
+    "noFunds": "There are no savings goals created.",
+    "tabForms": "New Registration",
+    "tabDashboard": "Summary"
   },
   "habits": {
     "validation": {
@@ -233,7 +244,8 @@
     "username": "Username",
     "email": "Email",
     "bio": "Biography / Notes",
-    "bioPlaceholder": "Add a brief personal summary..."
+    "bioPlaceholder": "Add a brief personal summary...",
+    "changePhoto": "Change photo"
   },
   "dashboard": {
     "title": "LifeOS Dashboard",

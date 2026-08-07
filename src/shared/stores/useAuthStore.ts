@@ -31,7 +31,7 @@ interface AuthState {
     register: (email: string, pass: string) => Promise<void>
     loginWithGoogle: () => Promise<void>
     logout: () => Promise<void>
-    updateUser: (updatedData: Partial<UserProfile>) => Promise<void>
+    updateUser: (updatedData: Partial<UserProfile> & { photoURL?: string | null }) => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -146,11 +146,20 @@ export const useAuthStore = create<AuthState>()(
                 const currentUser = get().user
                 if (!currentUser) return
 
-                const updatedProfile = { ...currentUser, ...updatedData }
+                const { photoURL, ...restData } = updatedData as Partial<UserProfile> & { photoURL?: string | null }
+
+                const dataToSave: Partial<UserProfile> = {
+                    ...restData,
+                    ...(photoURL !== undefined && {
+                        avatarUrl: photoURL || undefined,
+                    }),
+                }
+
+                const updatedProfile = { ...currentUser, ...dataToSave }
                 set({ user: updatedProfile })
 
                 const userRef = doc(db, "users", currentUser.id)
-                await setDoc(userRef, updatedData, { merge: true })
+                await setDoc(userRef, dataToSave, { merge: true })
             },
         }),
         {

@@ -29,7 +29,6 @@ export function ThemeToggle() {
 
     return (
         <div className="relative" ref={dropdownRef}>
-            {/* Vista de escritorio (botones en fila) */}
             <div className="hidden md:flex items-center gap-1 bg-secondary/50 p-1 rounded-xl border backdrop-blur-sm">
                 <button
                     type="button"
@@ -74,7 +73,6 @@ export function ThemeToggle() {
                 </button>
             </div>
 
-            {/* Vista móvil / desplegable */}
             <div className="flex md:hidden items-center">
                 <button
                     type="button"

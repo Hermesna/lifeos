@@ -33,7 +33,6 @@ export function HabitsWidget() {
                 </span>
             </div>
 
-            {/* Se añade min-h-[170px] para estabilizar la altura y evitar saltos visuales */}
             <div className="p-4 space-y-2 min-h-[170px] flex flex-col justify-center flex-1">
                 {habits.length === 0 ? (
                     <div className="text-center py-2">

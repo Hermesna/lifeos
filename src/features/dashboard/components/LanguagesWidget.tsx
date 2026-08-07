@@ -44,7 +44,6 @@ export function LanguagesWidget() {
                 </span>
             </div>
 
-            {/* min-h añadido para estabilizar el layout y evitar el parpadeo al cargar Firebase */}
             <div className="p-4 space-y-3 min-h-[190px] flex flex-col justify-between">
                 <div>
                     <div className="flex items-center justify-between text-xs mb-2">

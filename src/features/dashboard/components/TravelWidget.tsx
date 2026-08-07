@@ -58,7 +58,6 @@ export function TravelWidget() {
                 )}
             </div>
 
-            {/* min-h añadido para estabilizar el layout y prevenir saltos visuales al sincronizar con Firebase */}
             <div className="p-4 space-y-3 min-h-[175px] flex flex-col justify-center">
                 {!currentTrip ? (
                     <div className="text-center py-2">

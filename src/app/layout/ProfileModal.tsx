@@ -1,29 +1,55 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useTranslation } from "react-i18next"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
-import { X, User, Mail, Shield, Save, Loader2 } from "lucide-react"
+import { X, User, Mail, Shield, Save, Loader2, Camera } from "lucide-react"
 
 interface ProfileModalProps {
     isOpen: boolean
     onClose: () => void
 }
 
+const stringToColor = (string: string) => {
+    let hash = 0
+    for (let i = 0; i < string.length; i++) {
+        hash = string.charCodeAt(i) + ((hash << 5) - hash)
+    }
+    let color = "#"
+    for (let i = 0; i < 3; i++) {
+        const value = (hash >> (i * 8)) & 0xff
+        color += ("00" + value.toString(16)).slice(-2)
+    }
+    return color
+}
+
 export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     const { t } = useTranslation()
     const { user, updateUser } = useAuthStore()
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
     const [name, setName] = useState(user?.name || "")
     const [bio, setBio] = useState(user?.bio || "")
+    const [photo, setPhoto] = useState<string | null>(user?.avatarUrl || null)
     const [isLoading, setIsLoading] = useState(false)
 
     if (!isOpen) return null
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (file) {
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setPhoto(reader.result as string)
+            }
+            reader.readAsDataURL(file)
+        }
+    }
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
 
         try {
-            await updateUser({ name, bio })
+            await updateUser({ name, bio, avatarUrl: photo || undefined })
             onClose()
         } catch (error) {
             console.error("Error al actualizar el perfil:", error)
@@ -33,6 +59,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     }
 
     const userInitial = name ? name.charAt(0).toUpperCase() : "U"
+    const avatarColor = user ? stringToColor(user.id || user.email || "default") : "#3b82f6"
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-in fade-in duration-150">
@@ -55,9 +82,36 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                 </div>
 
                 <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-border bg-accent/30">
-                    <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-lg sm:text-xl font-bold shrink-0 shadow-sm">
-                        {userInitial}
+                    <div className="relative group shrink-0">
+                        <div
+                            className="h-12 w-12 sm:h-14 sm:w-14 rounded-full flex items-center justify-center text-lg sm:text-xl font-bold overflow-hidden shadow-sm border-2 border-background"
+                            style={{ backgroundColor: photo ? "transparent" : avatarColor }}
+                        >
+                            {photo ? (
+                                <img src={photo} alt="Avatar" className="h-full w-full object-cover" />
+                            ) : (
+                                <span className="text-white drop-shadow-md select-none">
+                                    {userInitial}
+                                </span>
+                            )}
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="absolute -bottom-1 -right-1 p-1 bg-primary text-primary-foreground rounded-full border-2 border-background shadow-sm cursor-pointer hover:bg-primary/90 transition-transform active:scale-95"
+                            title={t("profile.changePhoto", { defaultValue: "Cambiar foto" })}
+                        >
+                            <Camera className="h-3 w-3" />
+                        </button>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            className="hidden"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                        />
                     </div>
+
                     <div className="space-y-0.5 overflow-hidden flex-1">
                         <p className="text-sm font-semibold truncate">
                             {name || t("profile.defaultUser", { defaultValue: "Usuario" })}

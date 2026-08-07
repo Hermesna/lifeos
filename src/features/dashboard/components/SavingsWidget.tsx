@@ -33,7 +33,6 @@ export function SavingsWidget() {
                 </span>
             </div>
 
-            {/* min-h añadido para estabilizar el layout y prevenir saltos visuales al sincronizar con Firebase */}
             <div className="p-4 space-y-3 min-h-[175px] flex flex-col justify-center">
                 <div className="flex items-baseline justify-between bg-accent/40 p-3 rounded-xl border border-border/40">
                     <div className="space-y-0.5">

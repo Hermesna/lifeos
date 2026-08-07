@@ -19,6 +19,7 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
 
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+    const [imgErrorUrl, setImgErrorUrl] = useState<string | null>(null)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     const user = useAuthStore((state) => state.user)
@@ -39,6 +40,9 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
     }
 
     const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : "U"
+
+    const photo = user?.avatarUrl && user.avatarUrl.trim() !== "" ? user.avatarUrl : null
+    const hasValidPhoto = photo && imgErrorUrl !== photo
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -76,11 +80,25 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
                     <div className="relative" ref={dropdownRef}>
                         <button
                             onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                            className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring/50 cursor-pointer"
+                            className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold shadow-sm transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring/55 cursor-pointer overflow-hidden border border-border ${hasValidPhoto ? "bg-transparent text-foreground" : "bg-primary text-primary-foreground"
+                                }`}
                             aria-haspopup="true"
                             aria-expanded={isProfileDropdownOpen}
                         >
-                            {userInitial}
+                            {hasValidPhoto ? (
+                                <img
+                                    src={photo}
+                                    alt=""
+                                    className="h-full w-full object-cover"
+                                    onError={() => {
+                                        if (photo) setImgErrorUrl(photo)
+                                    }}
+                                />
+                            ) : (
+                                <span className="drop-shadow-sm select-none">
+                                    {userInitial}
+                                </span>
+                            )}
                         </button>
 
                         {isProfileDropdownOpen && (

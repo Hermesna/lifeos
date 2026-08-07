@@ -101,7 +101,18 @@
       "salary": "Salaire / Paie",
       "investments": "Investissements",
       "otherIncome": "Autres revenus"
-    }
+    },
+    "fundForm": {
+      "title": "Créer un nouvel objectif",
+      "namePlaceholder": "Ex. Voyage au Japon, Voiture...",
+      "targetLabel": "Montant cible (€)",
+      "nameLabel": "Nom de l'objectif",
+      "targetPlaceholder": "Ex. 1500",
+      "submitButton": "Créer un objectif"
+    },
+    "noFunds": "Aucun objectif d’épargne n’est créé.",
+    "tabForms": "Nouvelle inscription",
+    "tabDashboard": "Résumé"
   },
   "habits": {
     "validation": {
@@ -233,7 +244,8 @@
     "username": "Nom d'utilisateur",
     "email": "E-mail",
     "bio": "Biographie / Notes",
-    "bioPlaceholder": "Ajoutez un bref résumé personnel..."
+    "bioPlaceholder": "Ajoutez un bref résumé personnel...",
+    "changePhoto": "Changer de photo"
   },
   "dashboard": {
     "title": "Tableau de bord LifeOS",
