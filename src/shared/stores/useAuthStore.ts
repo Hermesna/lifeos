@@ -7,6 +7,7 @@ import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
+    sendPasswordResetEmail,
     type User as FirebaseUser
 } from "firebase/auth"
 import { auth, db } from "@/shared/lib/firebase"
@@ -31,6 +32,7 @@ interface AuthState {
     register: (email: string, pass: string) => Promise<void>
     loginWithGoogle: () => Promise<void>
     logout: () => Promise<void>
+    resetPassword: (email: string) => Promise<void>
     updateUser: (updatedData: Partial<UserProfile> & { photoURL?: string | null }) => Promise<void>
 }
 
@@ -140,6 +142,10 @@ export const useAuthStore = create<AuthState>()(
             logout: async () => {
                 await signOut(auth)
                 set({ user: null, token: null, isAuthenticated: false })
+            },
+
+            resetPassword: async (email) => {
+                await sendPasswordResetEmail(auth, email)
             },
 
             updateUser: async (updatedData) => {
