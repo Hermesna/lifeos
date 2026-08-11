@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { useTranslation } from "react-i18next"
-import { BookOpen, ArrowRight, BookmarkCheck, Star } from "lucide-react"
+import { BookOpen, ArrowRight, BookmarkCheck, Star, BookMarked } from "lucide-react"
 import { useBooksStore } from "@/features/books/stores/useBooksStore"
 
 export function BooksWidget() {
@@ -10,6 +10,12 @@ export function BooksWidget() {
     const progress = currentBook && currentBook.totalPages > 0
         ? Math.min(Math.round((currentBook.readPages / currentBook.totalPages) * 100), 100)
         : 0
+
+    const getBookStatusLabel = (read: number, total: number) => {
+        if (read >= total) return t("books.status.completed", { defaultValue: "Terminado" })
+        if (read > 0) return t("books.status.reading", { defaultValue: "Leyendo" })
+        return t("books.status.pending", { defaultValue: "Pendiente" })
+    }
 
     return (
         <div className="rounded-2xl border border-border bg-card overflow-hidden flex flex-col justify-between hover:border-border/85 transition-colors shadow-xs min-h-[145px]">
@@ -56,15 +62,19 @@ export function BooksWidget() {
 
                     <div className="space-y-2.5 flex-1 min-w-0">
                         <div className="space-y-0.5">
-                            <p className="text-xs font-bold truncate text-foreground">{currentBook.title}</p>
-                            <p className="text-[11px] text-muted-foreground truncate">{currentBook.author}</p>
+                            <p className="text-xs font-bold truncate text-foreground" title={currentBook.title}>
+                                {currentBook.title}
+                            </p>
+                            <p className="text-[11px] text-muted-foreground truncate" title={currentBook.author}>
+                                {currentBook.author}
+                            </p>
                         </div>
 
                         <div className="space-y-1.5">
-                            <div className="flex justify-between text-[11px] text-muted-foreground font-medium">
-                                <span className="flex items-center gap-1 min-w-0 truncate">
+                            <div className="flex justify-between items-center text-[11px] text-muted-foreground font-medium gap-2">
+                                <span className="flex items-center gap-1 shrink-0">
                                     <BookmarkCheck className="h-3 w-3 text-blue-500 shrink-0" />
-                                    <span className="truncate">
+                                    <span>
                                         {t("booksWidget.pages", {
                                             read: currentBook.readPages,
                                             total: currentBook.totalPages,
@@ -72,10 +82,16 @@ export function BooksWidget() {
                                         })}
                                     </span>
                                 </span>
-                                {currentBook.rating && (
-                                    <span className="flex items-center gap-0.5 text-amber-500 font-semibold shrink-0 ml-2">
+
+                                {currentBook.rating ? (
+                                    <span className="flex items-center gap-0.5 text-amber-500 font-semibold shrink-0">
                                         <Star className="h-2.5 w-2.5 fill-amber-500 shrink-0" />
                                         {currentBook.rating}
+                                    </span>
+                                ) : (
+                                    <span className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0">
+                                        <BookMarked className="h-2.5 w-2.5 shrink-0" />
+                                        {getBookStatusLabel(currentBook.readPages, currentBook.totalPages)}
                                     </span>
                                 )}
                             </div>

@@ -3,6 +3,8 @@ import { ChevronLeft, ChevronRight, Plus } from "lucide-react"
 import { useHabitsStore, type HabitEvent } from "../stores/useHabitsStore"
 import { useTranslation } from "react-i18next"
 
+const NO_TIME_PLACEHOLDER = "--:--"
+
 interface HabitsCalendarProps {
     selectedDate: string
     onSelectDate: (date: string) => void
@@ -119,26 +121,39 @@ export function HabitsCalendar({
 
                     const dayEvents = habits
                         .filter((h) => h.date === item.dateStr)
-                        .sort((a, b) => a.time.localeCompare(b.time))
+                        .sort((a, b) => {
+                            const timeA = a.time || NO_TIME_PLACEHOLDER
+                            const timeB = b.time || NO_TIME_PLACEHOLDER
+
+                            if (timeA === NO_TIME_PLACEHOLDER && timeB === NO_TIME_PLACEHOLDER) return 0
+                            if (timeA === NO_TIME_PLACEHOLDER) return 1
+                            if (timeB === NO_TIME_PLACEHOLDER) return -1
+                            return timeA.localeCompare(timeB)
+                        })
 
                     return (
                         <div
                             key={item.dateStr}
                             onClick={() => onSelectDate(item.dateStr)}
                             className={`p-2 rounded-xl border transition-all cursor-pointer flex flex-col justify-between h-full min-h-0 ${isSelected
-                                    ? "border-primary ring-2 ring-primary/20 bg-primary/5 shadow-xs"
-                                    : "border-border/60 hover:border-border bg-card hover:bg-accent/40 shadow-xs"
+                                ? "border-primary ring-2 ring-primary/20 bg-primary/5 shadow-xs"
+                                : "border-border/60 hover:border-border bg-card hover:bg-accent/40 shadow-xs"
                                 }`}
                         >
                             <div className="flex items-center justify-between shrink-0">
                                 <span
                                     className={`text-xs font-bold h-5 w-5 flex items-center justify-center rounded-full ${isToday
-                                            ? "bg-primary text-primary-foreground"
-                                            : "text-foreground hover:bg-secondary"
+                                        ? "bg-primary text-primary-foreground"
+                                        : "text-foreground hover:bg-secondary"
                                         }`}
                                 >
                                     {item.dayNumber}
                                 </span>
+
+                                {dayEvents.length > 0 && (
+                                    <div className="md:hidden h-1.5 w-1.5 rounded-full bg-primary" />
+                                )}
+
                                 {isSelected && (
                                     <button
                                         onClick={(e) => {
@@ -153,23 +168,32 @@ export function HabitsCalendar({
                                 )}
                             </div>
 
-                            <div className="space-y-1 mt-1 overflow-y-auto flex-1 scrollbar-none pr-0.5">
-                                {dayEvents.map((evt) => (
-                                    <div
-                                        key={evt.id}
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            onSelectHabitToEdit(evt)
-                                        }}
-                                        className={`text-[10px] px-1.5 py-0.5 rounded-lg truncate flex items-center justify-between gap-1 border transition-all ${evt.completed
+                            <div className="hidden md:flex flex-col space-y-1 mt-1 overflow-y-auto flex-1 scrollbar-none pr-0.5">
+                                {dayEvents.map((evt) => {
+                                    const hasTime = evt.time && evt.time !== NO_TIME_PLACEHOLDER
+
+                                    return (
+                                        <div
+                                            key={evt.id}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                onSelectHabitToEdit(evt)
+                                            }}
+                                            className={`text-[10px] px-1.5 py-0.5 rounded-lg truncate flex items-center justify-between gap-1 border transition-all ${evt.completed
                                                 ? "bg-secondary/40 text-muted-foreground line-through border-transparent"
                                                 : "bg-primary/10 text-primary font-medium border-primary/20 hover:bg-primary/20"
-                                            }`}
-                                    >
-                                        <span className="font-semibold shrink-0">{evt.time}</span>
-                                        <span className="truncate">{evt.name}</span>
-                                    </div>
-                                ))}
+                                                }`}
+                                        >
+                                            {hasTime && (
+                                                <span className="font-semibold shrink-0">
+                                                    {evt.time}
+                                                    {evt.timeEnd ? ` - ${evt.timeEnd}` : ""}
+                                                </span>
+                                            )}
+                                            <span className="truncate">{evt.name}</span>
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </div>
                     )

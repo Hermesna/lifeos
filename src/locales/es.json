@@ -135,7 +135,11 @@
       "date": "Fecha",
       "category": "Categoría",
       "updateButton": "Guardar Cambios",
-      "createButton": "Añadir a la Agenda"
+      "createButton": "Añadir a la Agenda",
+      "timeEnd": "Hora fin (opcional)",
+      "timeStart": "Hora inicio",
+      "daysOfWeek": "Días de la semana",
+      "recurrence": "Repetición"
     },
     "categories": {
       "lifestyle": "Estilo de vida",
@@ -157,7 +161,14 @@
       "eventsForDate": "Eventos para {{date}}",
       "noPlans": "Sin planes para este día.",
       "edit": "Editar",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "timeStart": "Hora inicio",
+      "timeEnd": "Hora fin"
+    },
+    "recurrence": {
+      "none": "No repetir",
+      "daily": "Diariamente",
+      "weekly": "Semanalmente"
     }
   },
   "languages": {
@@ -203,7 +214,8 @@
     "light": "Claro",
     "dark": "Oscuro",
     "system": "Sistema",
-    "saving": "Guardando..."
+    "saving": "Guardando...",
+    "delete": "Eliminar"
   },
   "books": {
     "form": {
@@ -232,7 +244,10 @@
       "reading": "Leyendo",
       "pending": "Pendiente"
     },
-    "addBookShort": "Añadir"
+    "addBookShort": "Añadir",
+    "delete": "Eliminar libro",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar este libro?",
+    "confirmDeleteTitle": "¿Eliminar libro?"
   },
   "settings": {
     "language": "Idioma",

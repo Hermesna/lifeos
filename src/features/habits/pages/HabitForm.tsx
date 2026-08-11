@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useHabitsStore, type HabitEvent } from "../stores/useHabitsStore"
@@ -14,7 +14,10 @@ const getHabitSchema = (t: TFunction) =>
             .min(3, t("habits.validation.nameMin", "Mínimo 3 caracteres.")),
         category: z.string().min(1, t("habits.validation.category", "Selecciona categoría.")),
         date: z.string().min(1, t("habits.validation.date", "Selecciona una fecha.")),
-        time: z.string().min(1, t("habits.validation.time", "Selecciona una hora.")),
+        time: z.string().min(1, t("habits.validation.time", "Selecciona una hora de inicio.")),
+        timeEnd: z.string().optional(),
+        recurrence: z.enum(["none", "daily", "weekly"]),
+        daysOfWeek: z.array(z.number()).optional(),
     })
 
 type HabitSchemaType = ReturnType<typeof getHabitSchema>
@@ -42,6 +45,7 @@ export function HabitForm({
         handleSubmit,
         reset,
         setValue,
+        control,
         formState: { errors, isSubmitting },
     } = useForm<HabitInput, object, HabitOutput>({
         resolver: zodResolver(habitSchema),
@@ -50,8 +54,21 @@ export function HabitForm({
             category: "lifestyle",
             date: selectedDate,
             time: "09:00",
+            timeEnd: "",
+            recurrence: "none",
+            daysOfWeek: [],
         },
     })
+
+    const recurrence = useWatch({
+        control,
+        name: "recurrence",
+    })
+
+    const watchedDaysOfWeek = useWatch({
+        control,
+        name: "daysOfWeek",
+    }) || []
 
     useEffect(() => {
         if (!editingHabit) {
@@ -65,7 +82,10 @@ export function HabitForm({
                 name: editingHabit.name,
                 category: editingHabit.category,
                 date: editingHabit.date,
-                time: editingHabit.time,
+                time: editingHabit.time || "09:00",
+                timeEnd: editingHabit.timeEnd || "",
+                recurrence: "none",
+                daysOfWeek: [],
             })
         }
     }, [editingHabit, reset])
@@ -75,13 +95,43 @@ export function HabitForm({
             editHabit(editingHabit.id, data)
             if (onCancelEdit) onCancelEdit()
         } else {
-            addHabit(data)
+            if (data.recurrence === "none") {
+                addHabit(data)
+            } else {
+                const startDate = new Date(data.date + "T00:00:00")
+                const iterations = data.recurrence === "daily" ? 14 : 28
+
+                for (let i = 0; i < iterations; i++) {
+                    const currentDate = new Date(startDate)
+                    currentDate.setDate(startDate.getDate() + i)
+
+                    if (data.recurrence === "weekly") {
+                        const dayIndex = currentDate.getDay()
+                        const selectedDays = data.daysOfWeek || []
+                        if (!selectedDays.includes(dayIndex)) continue
+                    }
+
+                    const year = currentDate.getFullYear()
+                    const month = String(currentDate.getMonth() + 1).padStart(2, "0")
+                    const day = String(currentDate.getDate()).padStart(2, "0")
+                    const formattedDate = `${year}-${month}-${day}`
+
+                    addHabit({
+                        ...data,
+                        date: formattedDate,
+                    })
+                }
+            }
         }
+
         reset({
             name: "",
             category: data.category,
             date: selectedDate,
             time: "09:00",
+            timeEnd: "",
+            recurrence: "none",
+            daysOfWeek: [],
         })
     }
 
@@ -126,27 +176,55 @@ export function HabitForm({
                     )}
                 </div>
 
+                <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                        {t("habits.form.date", "Fecha")}
+                    </label>
+                    <input
+                        type="date"
+                        {...register("date")}
+                        className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    />
+                    {errors.date && (
+                        <p className="text-xs font-medium text-destructive">
+                            {errors.date.message}
+                        </p>
+                    )}
+                </div>
+
                 <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-1.5">
                         <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                            {t("habits.form.date", "Fecha")}
-                        </label>
-                        <input
-                            type="date"
-                            {...register("date")}
-                            className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                        />
-                    </div>
-
-                    <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                            {t("habits.form.time", "Hora")}
+                            {t("habits.form.timeStart", "Hora inicio")}
                         </label>
                         <input
                             type="time"
                             {...register("time")}
                             className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         />
+                        {errors.time && (
+                            <p className="text-xs font-medium text-destructive">
+                                {errors.time.message}
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="space-y-1.5">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                            {t("habits.form.timeEnd", "Hora fin (opcional)")}
+                        </label>
+                        <input
+                            type="time"
+                            {...register("timeEnd", {
+                                setValueAs: (v) => (v === "" ? undefined : v),
+                            })}
+                            className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        />
+                        {errors.timeEnd && (
+                            <p className="text-xs font-medium text-destructive">
+                                {errors.timeEnd.message}
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -172,6 +250,75 @@ export function HabitForm({
                         </option>
                     </select>
                 </div>
+
+                {!editingHabit && (
+                    <div className="space-y-2 pt-1 border-t border-border/50">
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                                {t("habits.form.recurrence", "Repetición")}
+                            </label>
+                            <select
+                                {...register("recurrence")}
+                                className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                            >
+                                <option value="none">{t("habits.recurrence.none", "No repetir")}</option>
+                                <option value="daily">{t("habits.recurrence.daily", "Diariamente")}</option>
+                                <option value="weekly">{t("habits.recurrence.weekly", "Semanalmente")}</option>
+                            </select>
+                        </div>
+
+                        {recurrence === "weekly" && (
+                            <div className="space-y-1.5 pt-1">
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                                    {t("habits.form.daysOfWeek", "Días de la semana")}
+                                </label>
+                                <div className="grid grid-cols-7 gap-1">
+                                    {[
+                                        { label: "D", val: 0 },
+                                        { label: "L", val: 1 },
+                                        { label: "M", val: 2 },
+                                        { label: "X", val: 3 },
+                                        { label: "J", val: 4 },
+                                        { label: "V", val: 5 },
+                                        { label: "S", val: 6 },
+                                    ].map((day) => {
+                                        const isChecked = watchedDaysOfWeek.includes(day.val)
+
+                                        return (
+                                            <label
+                                                key={day.val}
+                                                className={`flex flex-col items-center justify-center h-8 rounded-lg border text-[10px] font-medium cursor-pointer select-none transition-colors ${isChecked
+                                                        ? "border-primary bg-primary text-primary-foreground shadow-xs"
+                                                        : "border-input bg-background hover:bg-accent hover:text-accent-foreground text-foreground"
+                                                    }`}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    value={day.val}
+                                                    checked={isChecked}
+                                                    onChange={(e) => {
+                                                        const current = watchedDaysOfWeek
+                                                        if (e.target.checked) {
+                                                            setValue("daysOfWeek", [...current, day.val], { shouldValidate: true })
+                                                        } else {
+                                                            setValue(
+                                                                "daysOfWeek",
+                                                                current.filter((v) => v !== day.val),
+                                                                { shouldValidate: true }
+                                                            )
+                                                        }
+                                                    }}
+                                                    className="sr-only"
+                                                />
+                                                {day.label}
+                                            </label>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
 
             <button

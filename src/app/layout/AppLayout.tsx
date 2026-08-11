@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Outlet } from "react-router-dom"
 import { AppHeader } from "@/app/layout/AppHeader"
 import { AppSidebar } from "@/app/layout/AppSidebar"
+import { AppFooter } from "@/app/layout/AppFooter"
 import { useThemeStore } from "@/shared/stores/useThemeStore"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
 import { useTravelStore } from "@/features/travel/stores/useTravelStore"
@@ -62,12 +63,15 @@ export function AppLayout() {
             />
 
             <div className="flex flex-1 flex-col overflow-hidden">
-                <AppHeader 
-                    onMenuClick={() => setIsSidebarOpen((prev) => !prev)} 
+                <AppHeader
+                    onMenuClick={() => setIsSidebarOpen((prev) => !prev)}
                 />
 
-                <main className="flex-1 overflow-y-auto p-4 md:p-6">
-                    <Outlet />
+                <main className="flex-1 overflow-y-auto flex flex-col justify-between">
+                    <div className="p-4 md:p-6 flex-1">
+                        <Outlet />
+                    </div>
+                    <AppFooter />
                 </main>
             </div>
         </div>

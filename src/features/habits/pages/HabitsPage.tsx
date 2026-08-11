@@ -12,9 +12,18 @@ export default function HabitsPage() {
     const [editingHabit, setEditingHabit] = useState<HabitEvent | null>(null)
     const [shouldFocusName, setShouldFocusName] = useState(false)
 
-    const handleAddNewForDate = (dateStr: string) => {
+    const handleSelectDate = (dateStr: string) => {
+        if (editingHabit) {
+            setEditingHabit(null)
+        }
         setSelectedDate(dateStr)
-        setEditingHabit(null)
+    }
+
+    const handleAddNewForDate = (dateStr: string) => {
+        if (editingHabit) {
+            setEditingHabit(null)
+        }
+        setSelectedDate(dateStr)
         setShouldFocusName(true)
     }
 
@@ -38,7 +47,7 @@ export default function HabitsPage() {
                 <div className="lg:col-span-9 h-full min-h-0">
                     <HabitsCalendar
                         selectedDate={selectedDate}
-                        onSelectDate={setSelectedDate}
+                        onSelectDate={handleSelectDate}
                         onSelectHabitToEdit={(habit) => setEditingHabit(habit)}
                         onOpenNewForm={handleAddNewForDate}
                     />

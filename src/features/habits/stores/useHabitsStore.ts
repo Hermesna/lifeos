@@ -2,13 +2,14 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
 import { db } from "@/shared/lib/firebase"
-import { 
-    collection, 
-    doc, 
-    setDoc, 
-    deleteDoc, 
-    onSnapshot, 
-    query 
+import {
+    collection,
+    doc,
+    setDoc,
+    deleteDoc,
+    onSnapshot,
+    query,
+    writeBatch
 } from "firebase/firestore"
 
 export interface HabitEvent {
@@ -17,7 +18,10 @@ export interface HabitEvent {
     category: string
     date: string
     time: string
+    timeEnd?: string
     completed: boolean
+    recurrence?: "none" | "daily" | "weekly"
+    daysOfWeek?: number[]
 }
 
 interface HabitsState {
@@ -36,7 +40,7 @@ export const useHabitsStore = create<HabitsState>()(
 
             subscribeToHabits: () => {
                 const userId = useAuthStore.getState().user?.id
-                if (!userId) return () => {}
+                if (!userId) return () => { }
 
                 const habitsRef = collection(db, "users", userId, "habits")
                 const q = query(habitsRef)
@@ -57,16 +61,56 @@ export const useHabitsStore = create<HabitsState>()(
                 const userId = useAuthStore.getState().user?.id
                 if (!userId) return
 
-                const id = data.id || crypto.randomUUID()
-                const habitRef = doc(db, "users", userId, "habits", id)
+                const recurrence = data.recurrence || "none"
 
-                const habitData: HabitEvent = {
-                    ...data,
-                    id,
-                    completed: false,
+                if (recurrence === "none") {
+                    const id = data.id || crypto.randomUUID()
+                    const habitRef = doc(db, "users", userId, "habits", id)
+
+                    const habitData: HabitEvent = {
+                        ...data,
+                        timeEnd: data.timeEnd || "",
+                        id,
+                        completed: false,
+                    }
+
+                    await setDoc(habitRef, habitData)
+                } else {
+                    const batch = writeBatch(db)
+                    const startDate = new Date(data.date + "T00:00:00")
+                    const iterations = recurrence === "daily" ? 14 : 28
+
+                    for (let i = 0; i < iterations; i++) {
+                        const currentDate = new Date(startDate)
+                        currentDate.setDate(startDate.getDate() + i)
+
+                        if (recurrence === "weekly") {
+                            const dayIndex = currentDate.getDay()
+                            const selectedDays = data.daysOfWeek || []
+                            if (!selectedDays.includes(dayIndex)) continue
+                        }
+
+                        const year = currentDate.getFullYear()
+                        const month = String(currentDate.getMonth() + 1).padStart(2, "0")
+                        const day = String(currentDate.getDate()).padStart(2, "0")
+                        const formattedDate = `${year}-${month}-${day}`
+
+                        const id = crypto.randomUUID()
+                        const habitRef = doc(db, "users", userId, "habits", id)
+
+                        const habitData: HabitEvent = {
+                            ...data,
+                            date: formattedDate,
+                            timeEnd: data.timeEnd || "",
+                            id,
+                            completed: false,
+                        }
+
+                        batch.set(habitRef, habitData)
+                    }
+
+                    await batch.commit()
                 }
-
-                await setDoc(habitRef, habitData)
             },
 
             editHabit: async (id, updated) => {
