@@ -91,3 +91,9 @@ To run LifeOS locally, follow these steps:
 * **Optimized Mobile View:** Fully adapted UI layout featuring collapsible navigation, fluid spacing, and touch-friendly interactive targets for a native-like mobile experience.
 
 * **Robust Type Safety:** Strict TypeScript interfaces across all data models, stores, and Firestore document references.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
