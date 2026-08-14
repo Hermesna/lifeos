@@ -46,8 +46,48 @@ Built with a performance-first, server-agnostic (SPA) client-side approach:
 
 ---
 
+## 🚀 Getting Started
+
+To run LifeOS locally, follow these steps:
+
+### Prerequisites
+* [Node.js](https://nodejs.org/) (v18 or higher recommended)
+* [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+* A [Firebase Project](https://console.firebase.google.com/)
+
+### Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/Hermesna/lifeos.git](https://github.com/Hermesna/lifeos.git)
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Configure Environment Variables. Create a .env file in the root directory and add your Firebase configuration:**
+   ```bash
+   VITE_FIREBASE_API_KEY=your_api_key
+   VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+   VITE_FIREBASE_PROJECT_ID=your_project_id
+   VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+   VITE_FIREBASE_APP_ID=your_app_id
+   ```
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+5. **Firebase Setup:**
+   - Enable Authentication (Email/Password & Google) in your Firebase Console.
+   - Enable Cloud Firestore in your Firebase Console and set up your security rules.
+
+---
+
 ## Architectural Highlights
 
 * **Feature-First Structure:** Each domain (`habits`, `finances`, `languages`, `travel`, `auth`) encapsulates its own components, hooks, stores, and types, ensuring high maintainability and decoupled scalability.
+
 * **Optimized Mobile View:** Fully adapted UI layout featuring collapsible navigation, fluid spacing, and touch-friendly interactive targets for a native-like mobile experience.
+
 * **Robust Type Safety:** Strict TypeScript interfaces across all data models, stores, and Firestore document references.
