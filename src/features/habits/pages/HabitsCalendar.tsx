@@ -171,6 +171,7 @@ export function HabitsCalendar({
                             <div className="hidden md:flex flex-col space-y-1 mt-1 overflow-y-auto flex-1 scrollbar-none pr-0.5">
                                 {dayEvents.map((evt) => {
                                     const hasTime = evt.time && evt.time !== NO_TIME_PLACEHOLDER
+                                    const customColor = evt.color || "#3b82f6"
 
                                     return (
                                         <div
@@ -179,9 +180,14 @@ export function HabitsCalendar({
                                                 e.stopPropagation()
                                                 onSelectHabitToEdit(evt)
                                             }}
+                                            style={{
+                                                backgroundColor: evt.completed ? undefined : `${customColor}15`,
+                                                borderColor: evt.completed ? undefined : `${customColor}40`,
+                                                color: evt.completed ? undefined : customColor,
+                                            }}
                                             className={`text-[10px] px-1.5 py-0.5 rounded-lg truncate flex items-center justify-between gap-1 border transition-all ${evt.completed
                                                 ? "bg-secondary/40 text-muted-foreground line-through border-transparent"
-                                                : "bg-primary/10 text-primary font-medium border-primary/20 hover:bg-primary/20"
+                                                : "font-medium hover:opacity-80"
                                                 }`}
                                         >
                                             {hasTime && (

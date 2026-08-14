@@ -9,7 +9,6 @@ import {
     deleteDoc,
     onSnapshot,
     query,
-    writeBatch
 } from "firebase/firestore"
 
 export interface HabitEvent {
@@ -20,8 +19,7 @@ export interface HabitEvent {
     time: string
     timeEnd?: string
     completed: boolean
-    recurrence?: "none" | "daily" | "weekly"
-    daysOfWeek?: number[]
+    color?: string
 }
 
 interface HabitsState {
@@ -61,56 +59,21 @@ export const useHabitsStore = create<HabitsState>()(
                 const userId = useAuthStore.getState().user?.id
                 if (!userId) return
 
-                const recurrence = data.recurrence || "none"
+                const id = data.id || crypto.randomUUID()
+                const habitRef = doc(db, "users", userId, "habits", id)
 
-                if (recurrence === "none") {
-                    const id = data.id || crypto.randomUUID()
-                    const habitRef = doc(db, "users", userId, "habits", id)
-
-                    const habitData: HabitEvent = {
-                        ...data,
-                        timeEnd: data.timeEnd || "",
-                        id,
-                        completed: false,
-                    }
-
-                    await setDoc(habitRef, habitData)
-                } else {
-                    const batch = writeBatch(db)
-                    const startDate = new Date(data.date + "T00:00:00")
-                    const iterations = recurrence === "daily" ? 14 : 28
-
-                    for (let i = 0; i < iterations; i++) {
-                        const currentDate = new Date(startDate)
-                        currentDate.setDate(startDate.getDate() + i)
-
-                        if (recurrence === "weekly") {
-                            const dayIndex = currentDate.getDay()
-                            const selectedDays = data.daysOfWeek || []
-                            if (!selectedDays.includes(dayIndex)) continue
-                        }
-
-                        const year = currentDate.getFullYear()
-                        const month = String(currentDate.getMonth() + 1).padStart(2, "0")
-                        const day = String(currentDate.getDate()).padStart(2, "0")
-                        const formattedDate = `${year}-${month}-${day}`
-
-                        const id = crypto.randomUUID()
-                        const habitRef = doc(db, "users", userId, "habits", id)
-
-                        const habitData: HabitEvent = {
-                            ...data,
-                            date: formattedDate,
-                            timeEnd: data.timeEnd || "",
-                            id,
-                            completed: false,
-                        }
-
-                        batch.set(habitRef, habitData)
-                    }
-
-                    await batch.commit()
+                const habitData: HabitEvent = {
+                    name: data.name,
+                    category: data.category,
+                    date: data.date,
+                    time: data.time,
+                    timeEnd: data.timeEnd || "",
+                    id,
+                    completed: false,
+                    color: data.color || "#3b82f6",
                 }
+
+                await setDoc(habitRef, habitData)
             },
 
             editHabit: async (id, updated) => {

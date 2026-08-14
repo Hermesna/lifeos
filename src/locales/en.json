@@ -139,7 +139,11 @@
       "timeEnd": "End time (optional)",
       "timeStart": "Start time",
       "daysOfWeek": "days of the week",
-      "recurrence": "Repetition"
+      "recurrence": "Repetition",
+      "extendMonths": "Extend (months)",
+      "monthsToExtend": "Extend (additional months)",
+      "repeatWeekly": "Repeat this day every week",
+      "color": "Label color"
     },
     "categories": {
       "lifestyle": "Lifestyle",

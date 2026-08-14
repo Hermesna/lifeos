@@ -139,7 +139,11 @@
       "timeEnd": "Heure de fin (facultatif)",
       "timeStart": "Heure de début",
       "daysOfWeek": "jours de la semaine",
-      "recurrence": "Répétition"
+      "recurrence": "Répétition",
+      "extendMonths": "Prolonger (mois)",
+      "monthsToExtend": "Prolonger (mois supplémentaires)",
+      "repeatWeekly": "Répétez cette journée chaque semaine",
+      "color": "Couleur de l'étiquette"
     },
     "categories": {
       "lifestyle": "Mode de vie",

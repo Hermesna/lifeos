@@ -16,18 +16,29 @@ import {
 import { useTranslation } from "react-i18next"
 import type { TFunction } from "i18next"
 
-const getHabitSchema = (t: TFunction) =>
+const HABIT_COLORS = [
+    { name: "Blue", value: "#3b82f6" },
+    { name: "Emerald", value: "#10b981" },
+    { name: "Violet", value: "#8b5cf6" },
+    { name: "Rose", value: "#f43f5e" },
+    { name: "Amber", value: "#f59e0b" },
+    { name: "Cyan", value: "#06b6d4" },
+]
+
+const habitSchema = (t: TFunction) =>
     z.object({
         name: z.string().min(3, t("habits.validation.nameMin", "Mínimo 3 caracteres.")),
         category: z.string().min(1, t("habits.validation.category", "Selecciona categoría.")),
         date: z.string().min(1, t("habits.validation.date", "Selecciona una fecha.")),
         time: z.string().optional(),
         timeEnd: z.string().optional(),
-        recurrence: z.enum(["none", "daily", "weekly"]),
-        daysOfWeek: z.array(z.number()).optional(),
+        color: z.string().default("#3b82f6"),
+        repeatWeekly: z.boolean().default(false),
+        monthsToExtend: z.coerce.number().min(0).default(0),
     })
 
-type HabitFormValues = z.infer<ReturnType<typeof getHabitSchema>>
+type HabitFormValues = z.input<ReturnType<typeof habitSchema>>
+type HabitFormOutput = z.output<ReturnType<typeof habitSchema>>
 
 const NO_TIME_PLACEHOLDER = "--:--"
 
@@ -52,7 +63,7 @@ export function HabitsSidebar({
     const { habits, addHabit, editHabit, deleteHabit, toggleHabit } =
         useHabitsStore()
 
-    const habitSchema = getHabitSchema(t)
+    const schema = habitSchema(t)
 
     const {
         register,
@@ -60,23 +71,30 @@ export function HabitsSidebar({
         reset,
         setFocus,
         control,
+        setValue,
         formState: { errors },
     } = useForm<HabitFormValues>({
-        resolver: zodResolver(habitSchema),
+        resolver: zodResolver(schema),
         defaultValues: {
             name: "",
             category: "lifestyle",
             date: selectedDate,
             time: "",
             timeEnd: "",
-            recurrence: "none",
-            daysOfWeek: [],
+            color: "#3b82f6",
+            repeatWeekly: false,
+            monthsToExtend: 0,
         },
     })
 
-    const recurrence = useWatch({
+    const repeatWeekly = useWatch({
         control,
-        name: "recurrence",
+        name: "repeatWeekly",
+    })
+
+    const selectedColor = useWatch({
+        control,
+        name: "color",
     })
 
     useEffect(() => {
@@ -100,8 +118,9 @@ export function HabitsSidebar({
                     editingHabit.timeEnd === NO_TIME_PLACEHOLDER || !editingHabit.timeEnd
                         ? ""
                         : editingHabit.timeEnd,
-                recurrence: "none",
-                daysOfWeek: [],
+                color: editingHabit.color || "#3b82f6",
+                repeatWeekly: false,
+                monthsToExtend: 0,
             })
         } else {
             reset({
@@ -110,35 +129,74 @@ export function HabitsSidebar({
                 date: selectedDate,
                 time: "",
                 timeEnd: "",
-                recurrence: "none",
-                daysOfWeek: [],
+                color: "#3b82f6",
+                repeatWeekly: false,
+                monthsToExtend: 0,
             })
         }
     }, [selectedDate, editingHabit, reset])
 
-    const onSubmit = (data: HabitFormValues) => {
+    const onSubmit = (rawValues: HabitFormValues) => {
+        const data = schema.parse(rawValues) as HabitFormOutput
+        const { repeatWeekly, monthsToExtend, ...restData } = data
+
         const baseEventData = {
-            ...data,
+            ...restData,
+            category: data.category || "lifestyle",
             time: data.time || NO_TIME_PLACEHOLDER,
             timeEnd: data.timeEnd || "",
+            color: data.color || "#3b82f6",
         }
 
         if (editingHabit) {
             editHabit(editingHabit.id, baseEventData)
             onClearEditing()
         } else {
-            addHabit(baseEventData)
+            if (repeatWeekly) {
+                const startDate = new Date(baseEventData.date + "T00:00:00")
+                const targetDay = startDate.getDay()
+                const extraMonths = Number(monthsToExtend) || 0
+                const totalMonths = extraMonths + 1
 
-            reset({
-                name: "",
-                category: data.category,
-                date: selectedDate,
-                time: "",
-                timeEnd: "",
-                recurrence: "none",
-                daysOfWeek: [],
-            })
+                for (let m = 0; m < totalMonths; m++) {
+                    const currentMonth = new Date(startDate.getFullYear(), startDate.getMonth() + m, 1)
+                    const monthEnd = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
+
+                    const d = new Date(currentMonth)
+                    while (d <= monthEnd) {
+                        if (d.getDay() === targetDay && d >= startDate) {
+                            const year = d.getFullYear()
+                            const month = String(d.getMonth() + 1).padStart(2, "0")
+                            const day = String(d.getDate()).padStart(2, "0")
+                            const formattedDate = `${year}-${month}-${day}`
+
+                            addHabit({
+                                ...baseEventData,
+                                date: formattedDate,
+                            })
+                        }
+                        d.setDate(d.getDate() + 1)
+                    }
+                }
+            } else {
+                addHabit(baseEventData)
+            }
         }
+
+        reset({
+            name: "",
+            category: data.category,
+            date: selectedDate,
+            time: "",
+            timeEnd: "",
+            color: data.color,
+            repeatWeekly: false,
+            monthsToExtend: 0,
+        })
+    }
+
+    const onError = (formErrors: typeof errors) => {
+        console.log("Errores de validación en formulario:", formErrors)
     }
 
     const dayEvents = habits
@@ -156,7 +214,7 @@ export function HabitsSidebar({
     return (
         <div className="space-y-4">
             <form
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmit, onError)}
                 className="rounded-2xl border border-border bg-card p-4 shadow-xs space-y-3.5"
             >
                 <div className="flex items-center justify-between">
@@ -176,8 +234,9 @@ export function HabitsSidebar({
                                     date: selectedDate,
                                     time: "",
                                     timeEnd: "",
-                                    recurrence: "none",
-                                    daysOfWeek: [],
+                                    color: "#3b82f6",
+                                    repeatWeekly: false,
+                                    monthsToExtend: 0,
                                 })
                             }}
                             className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer transition-colors"
@@ -225,53 +284,62 @@ export function HabitsSidebar({
                     />
                 </div>
 
-                {!editingHabit && (
-                    <div className="space-y-2 pt-1 border-t border-border/50">
-                        <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                                {t("habits.form.recurrence", "Repetición")}
-                            </label>
-                            <select
-                                {...register("recurrence")}
-                                className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                        {t("habits.form.color", "Color de etiqueta")}
+                    </label>
+                    <div className="flex items-center gap-2">
+                        {HABIT_COLORS.map((col) => (
+                            <button
+                                key={col.value}
+                                type="button"
+                                onClick={() => setValue("color", col.value)}
+                                style={{ backgroundColor: col.value }}
+                                className={`h-6 w-6 rounded-full transition-all cursor-pointer flex items-center justify-center ${selectedColor === col.value
+                                    ? "ring-2 ring-offset-2 ring-primary scale-110"
+                                    : "opacity-75 hover:opacity-100"
+                                    }`}
                             >
-                                <option value="none">{t("habits.recurrence.none", "No repetir")}</option>
-                                <option value="daily">{t("habits.recurrence.daily", "Diariamente")}</option>
-                                <option value="weekly">{t("habits.recurrence.weekly", "Semanalmente")}</option>
-                            </select>
+                                {selectedColor === col.value && (
+                                    <Check className="h-3 w-3 text-white shrink-0" />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {!editingHabit && (
+                    <div className="space-y-3 pt-2 border-t border-border/50">
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="repeatWeeklySidebar"
+                                {...register("repeatWeekly")}
+                                className="h-4 w-4 rounded border-input text-primary focus:ring-ring cursor-pointer"
+                            />
+                            <label
+                                htmlFor="repeatWeeklySidebar"
+                                className="text-xs font-medium text-foreground cursor-pointer select-none"
+                            >
+                                {t(
+                                    "habits.form.repeatWeekly",
+                                    "Repetir este día todas las semanas"
+                                )}
+                            </label>
                         </div>
 
-                        {recurrence === "weekly" && (
-                            <div className="space-y-1.5 pt-1">
+                        {repeatWeekly && (
+                            <div className="space-y-1.5 pl-6">
                                 <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                                    {t("habits.form.daysOfWeek", "Días de la semana")}
+                                    {t("habits.form.monthsToExtend", "Extender (meses adicionales)")}
                                 </label>
-                                <div className="grid grid-cols-7 gap-1">
-                                    {[
-                                        { label: "D", val: 0 },
-                                        { label: "L", val: 1 },
-                                        { label: "M", val: 2 },
-                                        { label: "X", val: 3 },
-                                        { label: "J", val: 4 },
-                                        { label: "V", val: 5 },
-                                        { label: "S", val: 6 },
-                                    ].map((day) => (
-                                        <label
-                                            key={day.val}
-                                            className="flex flex-col items-center justify-center h-8 rounded-lg border border-input bg-background hover:bg-accent hover:text-accent-foreground text-[10px] font-medium cursor-pointer select-none transition-colors"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                value={day.val}
-                                                {...register("daysOfWeek", {
-                                                    setValueAs: (v) => (Array.isArray(v) ? v.map(Number) : []),
-                                                })}
-                                                className="sr-only"
-                                            />
-                                            {day.label}
-                                        </label>
-                                    ))}
-                                </div>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="12"
+                                    {...register("monthsToExtend")}
+                                    className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                />
                             </div>
                         )}
                     </div>
@@ -322,6 +390,10 @@ export function HabitsSidebar({
                                             <Circle className="h-4 w-4 text-muted-foreground shrink-0" />
                                         )}
                                     </button>
+                                    <div
+                                        className="h-2.5 w-2.5 rounded-full shrink-0"
+                                        style={{ backgroundColor: item.color || "#3b82f6" }}
+                                    />
                                     {item.time && item.time !== NO_TIME_PLACEHOLDER && (
                                         <span className="font-bold text-primary shrink-0">
                                             {item.time}

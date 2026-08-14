@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -16,8 +16,8 @@ const getHabitSchema = (t: TFunction) =>
         date: z.string().min(1, t("habits.validation.date", "Selecciona una fecha.")),
         time: z.string().min(1, t("habits.validation.time", "Selecciona una hora de inicio.")),
         timeEnd: z.string().optional(),
-        recurrence: z.enum(["none", "daily", "weekly"]),
-        daysOfWeek: z.array(z.number()).optional(),
+        repeatWeekly: z.boolean().default(false),
+        monthsToExtend: z.coerce.number().min(0).default(0),
     })
 
 type HabitSchemaType = ReturnType<typeof getHabitSchema>
@@ -38,7 +38,7 @@ export function HabitForm({
     const { t } = useTranslation()
     const { addHabit, editHabit } = useHabitsStore()
 
-    const habitSchema = getHabitSchema(t)
+    const habitSchema = useMemo(() => getHabitSchema(t), [t])
 
     const {
         register,
@@ -55,20 +55,15 @@ export function HabitForm({
             date: selectedDate,
             time: "09:00",
             timeEnd: "",
-            recurrence: "none",
-            daysOfWeek: [],
+            repeatWeekly: false,
+            monthsToExtend: 0,
         },
     })
 
-    const recurrence = useWatch({
+    const repeatWeekly = useWatch({
         control,
-        name: "recurrence",
+        name: "repeatWeekly",
     })
-
-    const watchedDaysOfWeek = useWatch({
-        control,
-        name: "daysOfWeek",
-    }) || []
 
     useEffect(() => {
         if (!editingHabit) {
@@ -84,43 +79,47 @@ export function HabitForm({
                 date: editingHabit.date,
                 time: editingHabit.time || "09:00",
                 timeEnd: editingHabit.timeEnd || "",
-                recurrence: "none",
-                daysOfWeek: [],
+                repeatWeekly: false,
+                monthsToExtend: 0,
             })
         }
     }, [editingHabit, reset])
 
-    const onSubmit = (data: HabitOutput) => {
+    const onSubmit = async (data: HabitOutput) => {
+        const { repeatWeekly, monthsToExtend, ...baseData } = data
+
         if (editingHabit) {
-            editHabit(editingHabit.id, data)
+            await editHabit(editingHabit.id, baseData)
             if (onCancelEdit) onCancelEdit()
         } else {
-            if (data.recurrence === "none") {
-                addHabit(data)
-            } else {
-                const startDate = new Date(data.date + "T00:00:00")
-                const iterations = data.recurrence === "daily" ? 14 : 28
+            if (repeatWeekly) {
+                const startDate = new Date(baseData.date + "T00:00:00")
+                const targetDay = startDate.getDay()
+                const extraMonths = Number(monthsToExtend) || 0
+                const totalMonths = extraMonths + 1
 
-                for (let i = 0; i < iterations; i++) {
-                    const currentDate = new Date(startDate)
-                    currentDate.setDate(startDate.getDate() + i)
+                for (let m = 0; m < totalMonths; m++) {
+                    const currentMonth = new Date(startDate.getFullYear(), startDate.getMonth() + m, 1)
+                    const monthEnd = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
 
-                    if (data.recurrence === "weekly") {
-                        const dayIndex = currentDate.getDay()
-                        const selectedDays = data.daysOfWeek || []
-                        if (!selectedDays.includes(dayIndex)) continue
+                    const d = new Date(currentMonth)
+                    while (d <= monthEnd) {
+                        if (d.getDay() === targetDay && d >= startDate) {
+                            const year = d.getFullYear()
+                            const month = String(d.getMonth() + 1).padStart(2, "0")
+                            const day = String(d.getDate()).padStart(2, "0")
+                            const formattedDate = `${year}-${month}-${day}`
+
+                            await addHabit({
+                                ...baseData,
+                                date: formattedDate,
+                            })
+                        }
+                        d.setDate(d.getDate() + 1)
                     }
-
-                    const year = currentDate.getFullYear()
-                    const month = String(currentDate.getMonth() + 1).padStart(2, "0")
-                    const day = String(currentDate.getDate()).padStart(2, "0")
-                    const formattedDate = `${year}-${month}-${day}`
-
-                    addHabit({
-                        ...data,
-                        date: formattedDate,
-                    })
                 }
+            } else {
+                await addHabit(baseData)
             }
         }
 
@@ -130,8 +129,8 @@ export function HabitForm({
             date: selectedDate,
             time: "09:00",
             timeEnd: "",
-            recurrence: "none",
-            daysOfWeek: [],
+            repeatWeekly: false,
+            monthsToExtend: 0,
         })
     }
 
@@ -228,6 +227,43 @@ export function HabitForm({
                     </div>
                 </div>
 
+                {!editingHabit && (
+                    <div className="space-y-3 pt-2 border-t border-border/50">
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="repeatWeekly"
+                                {...register("repeatWeekly")}
+                                className="h-4 w-4 rounded border-input text-primary focus:ring-ring cursor-pointer"
+                            />
+                            <label
+                                htmlFor="repeatWeekly"
+                                className="text-xs font-medium text-foreground cursor-pointer select-none"
+                            >
+                                {t(
+                                    "habits.form.repeatWeekly",
+                                    "Repetir este día todas las semanas"
+                                )}
+                            </label>
+                        </div>
+
+                        {repeatWeekly && (
+                            <div className="space-y-1.5 pl-6">
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                                    {t("habits.form.monthsToExtend", "Extender (meses adicionales)")}
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="12"
+                                    {...register("monthsToExtend")}
+                                    className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                />
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 <div className="space-y-1.5">
                     <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         {t("habits.form.category", "Categoría")}
@@ -250,75 +286,6 @@ export function HabitForm({
                         </option>
                     </select>
                 </div>
-
-                {!editingHabit && (
-                    <div className="space-y-2 pt-1 border-t border-border/50">
-                        <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                                {t("habits.form.recurrence", "Repetición")}
-                            </label>
-                            <select
-                                {...register("recurrence")}
-                                className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                            >
-                                <option value="none">{t("habits.recurrence.none", "No repetir")}</option>
-                                <option value="daily">{t("habits.recurrence.daily", "Diariamente")}</option>
-                                <option value="weekly">{t("habits.recurrence.weekly", "Semanalmente")}</option>
-                            </select>
-                        </div>
-
-                        {recurrence === "weekly" && (
-                            <div className="space-y-1.5 pt-1">
-                                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                                    {t("habits.form.daysOfWeek", "Días de la semana")}
-                                </label>
-                                <div className="grid grid-cols-7 gap-1">
-                                    {[
-                                        { label: "D", val: 0 },
-                                        { label: "L", val: 1 },
-                                        { label: "M", val: 2 },
-                                        { label: "X", val: 3 },
-                                        { label: "J", val: 4 },
-                                        { label: "V", val: 5 },
-                                        { label: "S", val: 6 },
-                                    ].map((day) => {
-                                        const isChecked = watchedDaysOfWeek.includes(day.val)
-
-                                        return (
-                                            <label
-                                                key={day.val}
-                                                className={`flex flex-col items-center justify-center h-8 rounded-lg border text-[10px] font-medium cursor-pointer select-none transition-colors ${isChecked
-                                                        ? "border-primary bg-primary text-primary-foreground shadow-xs"
-                                                        : "border-input bg-background hover:bg-accent hover:text-accent-foreground text-foreground"
-                                                    }`}
-                                            >
-                                                <input
-                                                    type="checkbox"
-                                                    value={day.val}
-                                                    checked={isChecked}
-                                                    onChange={(e) => {
-                                                        const current = watchedDaysOfWeek
-                                                        if (e.target.checked) {
-                                                            setValue("daysOfWeek", [...current, day.val], { shouldValidate: true })
-                                                        } else {
-                                                            setValue(
-                                                                "daysOfWeek",
-                                                                current.filter((v) => v !== day.val),
-                                                                { shouldValidate: true }
-                                                            )
-                                                        }
-                                                    }}
-                                                    className="sr-only"
-                                                />
-                                                {day.label}
-                                            </label>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
             </div>
 
             <button
