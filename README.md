@@ -52,7 +52,7 @@ To run LifeOS locally, follow these steps:
 
 ### Prerequisites
 * [Node.js](https://nodejs.org/) (v18 or higher recommended)
-* [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+* [pnpm](https://pnpm.io/) (Recommended) or [npm](https://www.npmjs.com/)
 * A [Firebase Project](https://console.firebase.google.com/)
 
 ### Installation & Setup
@@ -63,7 +63,7 @@ To run LifeOS locally, follow these steps:
    ```
 2. **Install dependencies:**
    ```bash
-   npm install
+   pnpm install
    ```
 3. **Configure Environment Variables. Create a .env file in the root directory and add your Firebase configuration:**
    ```bash
@@ -76,7 +76,7 @@ To run LifeOS locally, follow these steps:
    ```
 4. **Run the development server:**
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 5. **Firebase Setup:**
    - Enable Authentication (Email/Password & Google) in your Firebase Console.
