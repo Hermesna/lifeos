@@ -2,6 +2,14 @@
 .env
 .env.*
 
+# Firebase local state
+.firebase
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
 # Logs
 logs
 *.log
