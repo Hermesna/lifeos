@@ -16,7 +16,7 @@ import { CreateFundForm } from "./CreateFundForm"
 
 export function FinancePage() {
     const { t } = useTranslation()
-    const { transactions, funds, getBalance, deleteTransaction, addFundsToFund, subscribeToFinance } =
+    const { transactions, funds, getBalance, deleteTransaction, addFundsToFund, deleteFund, subscribeToFinance } =
         useFinanceStore()
     const [fundingAmount, setFundingAmount] = useState<string>("")
     const [userSelectedId, setUserSelectedId] = useState<string>("")
@@ -67,8 +67,8 @@ export function FinancePage() {
                     <button
                         onClick={() => setActiveTab("dashboard")}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${activeTab === "dashboard"
-                                ? "bg-background text-foreground shadow-xs"
-                                : "text-muted-foreground hover:text-foreground"
+                            ? "bg-background text-foreground shadow-xs"
+                            : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         <LayoutDashboard className="h-3.5 w-3.5" />
@@ -77,8 +77,8 @@ export function FinancePage() {
                     <button
                         onClick={() => setActiveTab("forms")}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${activeTab === "forms"
-                                ? "bg-background text-foreground shadow-xs"
-                                : "text-muted-foreground hover:text-foreground"
+                            ? "bg-background text-foreground shadow-xs"
+                            : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         <PlusCircle className="h-3.5 w-3.5" />
@@ -158,13 +158,31 @@ export function FinancePage() {
                                     return (
                                         <div
                                             key={fund.id}
-                                            className="space-y-1 border border-border/60 p-2.5 rounded-lg bg-accent/20"
+                                            className="space-y-1.5 border border-border/60 p-2.5 rounded-lg bg-accent/20"
                                         >
                                             <div className="flex justify-between items-center text-xs">
-                                                <span className="font-medium truncate">{fund.name}</span>
-                                                <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full">
-                                                    {progress}%
-                                                </span>
+                                                <div>
+                                                    <span className="font-medium truncate block">
+                                                        {fund.name}
+                                                    </span>
+                                                    <span className="text-[10px] text-muted-foreground">
+                                                        {fund.current.toFixed(2)} € / {fund.target.toFixed(2)} €
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                                                        {progress}%
+                                                    </span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => deleteFund(fund.id)}
+                                                        className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10 cursor-pointer transition-colors"
+                                                        title={t("finance.deleteFund", "Eliminar objetivo")}
+                                                    >
+                                                        <Trash2 className="h-3 w-3" />
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
                                                 <div
@@ -240,8 +258,8 @@ export function FinancePage() {
                                         <div className="flex items-center gap-2 shrink-0">
                                             <span
                                                 className={`text-xs font-semibold ${tx.type === "income"
-                                                        ? "text-emerald-500"
-                                                        : "text-destructive"
+                                                    ? "text-emerald-500"
+                                                    : "text-destructive"
                                                     }`}
                                             >
                                                 {tx.type === "income" ? "+" : "-"}

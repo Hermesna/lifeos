@@ -2,14 +2,14 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
 import { db } from "@/shared/lib/firebase"
-import { 
-    collection, 
-    doc, 
-    setDoc, 
-    deleteDoc, 
-    onSnapshot, 
+import {
+    collection,
+    doc,
+    setDoc,
+    deleteDoc,
+    onSnapshot,
     query,
-    type Unsubscribe 
+    type Unsubscribe
 } from "firebase/firestore"
 
 export interface Transaction {
@@ -32,10 +32,11 @@ interface FinanceState {
     transactions: Transaction[]
     funds: SavingsFund[]
     subscribeToFinance: () => Unsubscribe
-    addTransaction: (tx: Omit<Transaction, "id" | "date">) => Promise<void>
+    addTransaction: (tx: Omit<Transaction, "id">) => Promise<void>
     deleteTransaction: (id: string) => Promise<void>
     createFund: (fund: Omit<SavingsFund, "id" | "current">) => Promise<void>
     addFundsToFund: (fundId: string, amount: number) => Promise<void>
+    deleteFund: (id: string) => Promise<void>
     getBalance: () => number
     getTotalSavings: () => number
     getTargetSavings: () => number
@@ -49,7 +50,7 @@ export const useFinanceStore = create<FinanceState>()(
 
             subscribeToFinance: () => {
                 const userId = useAuthStore.getState().user?.id
-                if (!userId) return () => {}
+                if (!userId) return () => { }
 
                 const transactionsRef = collection(db, "users", userId, "transactions")
                 const fundsRef = collection(db, "users", userId, "funds")
@@ -86,7 +87,7 @@ export const useFinanceStore = create<FinanceState>()(
                 const transactionData: Transaction = {
                     ...tx,
                     id,
-                    date: new Date().toISOString().split("T")[0],
+                    date: tx.date || new Date().toISOString().split("T")[0],
                 }
 
                 await setDoc(txRef, transactionData)
@@ -127,6 +128,14 @@ export const useFinanceStore = create<FinanceState>()(
                 const fundRef = doc(db, "users", userId, "funds", fundId)
 
                 await setDoc(fundRef, { current: newCurrent }, { merge: true })
+            },
+
+            deleteFund: async (id) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const fundRef = doc(db, "users", userId, "funds", id)
+                await deleteDoc(fundRef)
             },
 
             getBalance: () => {

@@ -8,6 +8,9 @@ import {
     Square,
     Trash2,
     Plus,
+    Pencil,
+    X,
+    Check,
 } from "lucide-react"
 import { useTravelStore } from "../stores/useTravelStore"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
@@ -23,10 +26,20 @@ export function TravelPage() {
     const activeTripId = useTravelStore((state) => state.activeTripId)
     const setActiveTrip = useTravelStore((state) => state.setActiveTrip)
     const deleteTrip = useTravelStore((state) => state.deleteTrip)
+    const updateTrip = useTravelStore((state) => state.updateTrip)
     const togglePackingItem = useTravelStore((state) => state.togglePackingItem)
     const addPackingItem = useTravelStore((state) => state.addPackingItem)
+    const deletePackingItem = useTravelStore((state) => state.deletePackingItem)
+    const updatePackingItem = useTravelStore((state) => state.updatePackingItem)
 
     const [newItemName, setNewItemName] = useState("")
+    const [editingPackingId, setEditingPackingId] = useState<string | null>(null)
+    const [editingPackingName, setEditingPackingName] = useState("")
+
+    const [isEditingTrip, setIsEditingTrip] = useState(false)
+    const [editDestination, setEditDestination] = useState("")
+    const [editStartDate, setEditStartDate] = useState("")
+    const [editBudget, setEditBudget] = useState(0)
 
     const userTrips = trips.filter((trip) => trip.userId === currentUserId)
 
@@ -54,6 +67,26 @@ export function TravelPage() {
         setActiveTrip(remainingTrips.length > 0 ? remainingTrips[0].id : null)
     }
 
+    const handleStartEditingTrip = () => {
+        if (!activeTrip) return
+        setEditDestination(activeTrip.destination)
+        setEditStartDate(activeTrip.startDate)
+        setEditBudget(activeTrip.budget)
+        setIsEditingTrip(true)
+    }
+
+    const handleSaveTrip = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!activeTrip) return
+
+        await updateTrip(activeTrip.id, {
+            destination: editDestination.trim(),
+            startDate: editStartDate.trim(),
+            budget: Number(editBudget),
+        })
+        setIsEditingTrip(false)
+    }
+
     return (
         <div className="max-w-6xl mx-auto space-y-6 p-4">
             <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b pb-4">
@@ -69,7 +102,10 @@ export function TravelPage() {
                 {userTrips.length > 1 && (
                     <select
                         value={activeTrip?.id || ""}
-                        onChange={(e) => setActiveTrip(e.target.value || null)}
+                        onChange={(e) => {
+                            setActiveTrip(e.target.value || null)
+                            setIsEditingTrip(false)
+                        }}
                         className="rounded-lg border bg-card px-3 py-1.5 text-sm font-medium shadow-xs focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer"
                     >
                         {userTrips.map((trip) => (
@@ -86,59 +122,143 @@ export function TravelPage() {
                     {activeTrip ? (
                         <>
                             <div className="rounded-xl border bg-card p-6 shadow-xs space-y-5">
-                                <div className="flex items-start justify-between">
-                                    <div>
-                                        <div className="flex items-center gap-2 text-primary font-medium text-xs uppercase tracking-wider mb-1">
-                                            <Compass className="h-3.5 w-3.5" />
-                                            {t("travel.nextExpedition")}
+                                {isEditingTrip ? (
+                                    <form onSubmit={handleSaveTrip} className="space-y-4">
+                                        <div className="flex items-center justify-between border-b pb-3">
+                                            <div className="flex items-center gap-2 text-primary font-medium text-xs uppercase tracking-wider">
+                                                <Compass className="h-3.5 w-3.5" />
+                                                <span>Editando Expedición</span>
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <button
+                                                    type="submit"
+                                                    className="p-1.5 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
+                                                    title="Guardar cambios"
+                                                >
+                                                    <Check className="h-4 w-4" />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setIsEditingTrip(false)}
+                                                    className="p-1.5 text-muted-foreground hover:text-foreground border rounded-lg transition-colors cursor-pointer"
+                                                    title="Cancelar"
+                                                >
+                                                    <X className="h-4 w-4" />
+                                                </button>
+                                            </div>
                                         </div>
-                                        <h2 className="text-xl font-bold tracking-tight">
-                                            {activeTrip.destination}
-                                        </h2>
-                                    </div>
-                                    <button
-                                        onClick={() => handleDeleteTrip(activeTrip.id)}
-                                        className="text-muted-foreground hover:text-destructive p-1.5 rounded-lg transition-colors border bg-background/50 hover:bg-destructive/10 cursor-pointer"
-                                        title={t("travel.deleteTrip")}
-                                        type="button"
-                                    >
-                                        <Trash2 className="h-4 w-4" />
-                                    </button>
-                                </div>
 
-                                <div className="grid gap-4 sm:grid-cols-2 border-t pt-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2.5 bg-secondary rounded-lg text-muted-foreground">
-                                            <Calendar className="h-4 w-4" />
-                                        </div>
-                                        <div>
-                                            <p className="text-[11px] font-medium text-muted-foreground uppercase">
-                                                {t("travel.targetWindow")}
-                                            </p>
-                                            <p className="text-sm font-semibold">
-                                                {activeTrip.startDate}
-                                            </p>
-                                        </div>
-                                    </div>
+                                        <div className="space-y-3">
+                                            <div>
+                                                <label className="text-xs font-medium text-muted-foreground uppercase">
+                                                    Título / Destino
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={editDestination}
+                                                    onChange={(e) => setEditDestination(e.target.value)}
+                                                    required
+                                                    className="w-full mt-1 rounded-lg border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 font-semibold"
+                                                />
+                                            </div>
 
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2.5 bg-secondary rounded-lg text-muted-foreground">
-                                            <Wallet className="h-4 w-4" />
+                                            <div className="grid gap-3 sm:grid-cols-2">
+                                                <div>
+                                                    <label className="text-xs font-medium text-muted-foreground uppercase">
+                                                        {t("travel.targetWindow")}
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        value={editStartDate}
+                                                        onChange={(e) => setEditStartDate(e.target.value)}
+                                                        required
+                                                        className="w-full mt-1 rounded-lg border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 font-semibold"
+                                                    />
+                                                </div>
+
+                                                <div>
+                                                    <label className="text-xs font-medium text-muted-foreground uppercase">
+                                                        {t("travel.budget")} (€)
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        value={editBudget}
+                                                        onChange={(e) => setEditBudget(Number(e.target.value))}
+                                                        required
+                                                        min="0"
+                                                        className="w-full mt-1 rounded-lg border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 font-semibold"
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-[11px] font-medium text-muted-foreground uppercase">
-                                                {t("travel.budget")}
-                                            </p>
-                                            <p className="text-sm font-semibold">
-                                                {new Intl.NumberFormat("es-ES", {
-                                                    style: "currency",
-                                                    currency: "EUR",
-                                                    maximumFractionDigits: 0,
-                                                }).format(activeTrip.budget)}
-                                            </p>
+                                    </form>
+                                ) : (
+                                    <>
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <div className="flex items-center gap-2 text-primary font-medium text-xs uppercase tracking-wider mb-1">
+                                                    <Compass className="h-3.5 w-3.5" />
+                                                    {t("travel.nextExpedition")}
+                                                </div>
+                                                <h2 className="text-xl font-bold tracking-tight">
+                                                    {activeTrip.destination}
+                                                </h2>
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <button
+                                                    onClick={handleStartEditingTrip}
+                                                    className="text-muted-foreground hover:text-foreground p-1.5 rounded-lg transition-colors border bg-background/50 hover:bg-muted cursor-pointer"
+                                                    title="Editar expedición"
+                                                    type="button"
+                                                >
+                                                    <Pencil className="h-4 w-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeleteTrip(activeTrip.id)}
+                                                    className="text-muted-foreground hover:text-destructive p-1.5 rounded-lg transition-colors border bg-background/50 hover:bg-destructive/10 cursor-pointer"
+                                                    title={t("travel.deleteTrip")}
+                                                    type="button"
+                                                >
+                                                    <Trash2 className="h-4 w-4" />
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+
+                                        <div className="grid gap-4 sm:grid-cols-2 border-t pt-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="p-2.5 bg-secondary rounded-lg text-muted-foreground">
+                                                    <Calendar className="h-4 w-4" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-[11px] font-medium text-muted-foreground uppercase">
+                                                        {t("travel.targetWindow")}
+                                                    </p>
+                                                    <p className="text-sm font-semibold">
+                                                        {activeTrip.startDate}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-3">
+                                                <div className="p-2.5 bg-secondary rounded-lg text-muted-foreground">
+                                                    <Wallet className="h-4 w-4" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-[11px] font-medium text-muted-foreground uppercase">
+                                                        {t("travel.budget")}
+                                                    </p>
+                                                    <p className="text-sm font-semibold">
+                                                        {new Intl.NumberFormat("es-ES", {
+                                                            style: "currency",
+                                                            currency: "EUR",
+                                                            maximumFractionDigits: 0,
+                                                        }).format(activeTrip.budget)}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
 
                                 <div className="space-y-2 border-t pt-4">
                                     <div className="flex justify-between text-xs font-medium">
@@ -191,30 +311,100 @@ export function TravelPage() {
                                             {t("travel.emptyPackingList")}
                                         </p>
                                     ) : (
-                                        activeTrip.packingList?.map((item) => (
-                                            <button
-                                                key={item.id}
-                                                type="button"
-                                                onClick={() =>
-                                                    togglePackingItem(activeTrip.id, item.id)
-                                                }
-                                                className="w-full flex items-center gap-3 p-2.5 border rounded-lg bg-background/40 hover:bg-background transition-colors text-left cursor-pointer"
-                                            >
-                                                {item.packed ? (
-                                                    <CheckSquare className="h-4 w-4 text-emerald-500 shrink-0" />
-                                                ) : (
-                                                    <Square className="h-4 w-4 text-muted-foreground shrink-0" />
-                                                )}
-                                                <span
-                                                    className={`text-sm ${item.packed
-                                                            ? "line-through text-muted-foreground"
-                                                            : "font-medium"
-                                                        }`}
+                                        activeTrip.packingList?.map((item) => {
+                                            const isEditing = editingPackingId === item.id
+
+                                            return (
+                                                <div
+                                                    key={item.id}
+                                                    className="w-full flex items-center justify-between gap-2 p-2.5 border rounded-lg bg-background/40 hover:bg-background transition-colors"
                                                 >
-                                                    {item.name}
-                                                </span>
-                                            </button>
-                                        ))
+                                                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => togglePackingItem(activeTrip.id, item.id)}
+                                                            className="flex items-center gap-2 text-left cursor-pointer shrink-0"
+                                                        >
+                                                            {item.packed ? (
+                                                                <CheckSquare className="h-4 w-4 text-emerald-500" />
+                                                            ) : (
+                                                                <Square className="h-4 w-4 text-muted-foreground" />
+                                                            )}
+                                                        </button>
+
+                                                        {isEditing ? (
+                                                            <input
+                                                                type="text"
+                                                                value={editingPackingName}
+                                                                onChange={(e) => setEditingPackingName(e.target.value)}
+                                                                onKeyDown={(e) => {
+                                                                    if (e.key === "Enter") {
+                                                                        e.preventDefault()
+                                                                        if (editingPackingName.trim()) {
+                                                                            updatePackingItem(activeTrip.id, item.id, editingPackingName.trim())
+                                                                            setEditingPackingId(null)
+                                                                        }
+                                                                    } else if (e.key === "Escape") {
+                                                                        setEditingPackingId(null)
+                                                                    }
+                                                                }}
+                                                                autoFocus
+                                                                className="flex-1 rounded border bg-background px-2 py-0.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                                                            />
+                                                        ) : (
+                                                            <span
+                                                                onClick={() => togglePackingItem(activeTrip.id, item.id)}
+                                                                className={`text-sm truncate cursor-pointer flex-1 ${item.packed
+                                                                        ? "line-through text-muted-foreground"
+                                                                        : "font-medium"
+                                                                    }`}
+                                                            >
+                                                                {item.name}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="flex items-center gap-1 shrink-0">
+                                                        {isEditing ? (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    if (editingPackingName.trim()) {
+                                                                        updatePackingItem(activeTrip.id, item.id, editingPackingName.trim())
+                                                                        setEditingPackingId(null)
+                                                                    }
+                                                                }}
+                                                                className="px-2 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors cursor-pointer"
+                                                            >
+                                                                {t("common.save") || "Guardar"}
+                                                            </button>
+                                                        ) : (
+                                                            <>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        setEditingPackingId(item.id)
+                                                                        setEditingPackingName(item.name)
+                                                                    }}
+                                                                    className="p-1.5 text-muted-foreground hover:text-foreground rounded transition-colors cursor-pointer"
+                                                                    title="Editar"
+                                                                >
+                                                                    <Pencil className="h-3.5 w-3.5" />
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => deletePackingItem(activeTrip.id, item.id)}
+                                                                    className="p-1.5 text-muted-foreground hover:text-destructive rounded transition-colors cursor-pointer"
+                                                                    title="Eliminar"
+                                                                >
+                                                                    <Trash2 className="h-3.5 w-3.5" />
+                                                                </button>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
                                     )}
                                 </div>
                             </div>

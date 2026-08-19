@@ -2,13 +2,13 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useAuthStore } from "@/shared/stores/useAuthStore"
 import { db } from "@/shared/lib/firebase"
-import { 
-    collection, 
-    doc, 
-    setDoc, 
-    deleteDoc, 
-    onSnapshot, 
-    query 
+import {
+    collection,
+    doc,
+    setDoc,
+    deleteDoc,
+    onSnapshot,
+    query
 } from "firebase/firestore"
 
 export type ActivityCategory =
@@ -51,6 +51,10 @@ interface TravelState {
     addTrip: (
         trip: Omit<Trip, "id" | "userId" | "itinerary" | "packingList">,
     ) => Promise<string | null>
+    updateTrip: (
+        tripId: string,
+        fields: { destination?: string; startDate?: string; budget?: number }
+    ) => Promise<void>
     deleteTrip: (id: string) => Promise<void>
     setActiveTrip: (id: string | null) => void
     addItineraryItem: (
@@ -59,9 +63,18 @@ interface TravelState {
         activity: string,
         extra?: Omit<ItineraryItem, "id" | "day" | "activity">,
     ) => Promise<void>
+    updateItineraryItem: (
+        tripId: string,
+        itemId: string,
+        day: number,
+        activity: string,
+        extra?: Omit<ItineraryItem, "id" | "day" | "activity">
+    ) => Promise<void>
     deleteItineraryItem: (tripId: string, itemId: string) => Promise<void>
     togglePackingItem: (tripId: string, itemId: string) => Promise<void>
     addPackingItem: (tripId: string, name: string) => Promise<void>
+    deletePackingItem: (tripId: string, itemId: string) => Promise<void>
+    updatePackingItem: (tripId: string, itemId: string, name: string) => Promise<void>
     getUserTrips: (userId?: string) => Trip[]
 }
 
@@ -73,7 +86,7 @@ export const useTravelStore = create<TravelState>()(
 
             subscribeToTrips: () => {
                 const userId = useAuthStore.getState().user?.id
-                if (!userId) return () => {}
+                if (!userId) return () => { }
 
                 const tripsRef = collection(db, "users", userId, "trips")
                 const q = query(tripsRef)
@@ -111,6 +124,14 @@ export const useTravelStore = create<TravelState>()(
                 await setDoc(tripRef, tripData)
                 set({ activeTripId: id })
                 return id
+            },
+
+            updateTrip: async (tripId, fields) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const tripRef = doc(db, "users", userId, "trips", tripId)
+                await setDoc(tripRef, fields, { merge: true })
             },
 
             deleteTrip: async (id) => {
@@ -156,6 +177,23 @@ export const useTravelStore = create<TravelState>()(
                 await setDoc(tripRef, { itinerary: updatedItinerary }, { merge: true })
             },
 
+            updateItineraryItem: async (tripId, itemId, day, activity, extra = {}) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const trip = get().trips.find((t) => t.id === tripId)
+                if (!trip) return
+
+                const updatedItinerary = (trip.itinerary ?? []).map((item) =>
+                    item.id === itemId
+                        ? { ...item, day, activity, ...extra }
+                        : item
+                ).sort((a, b) => a.day - b.day)
+
+                const tripRef = doc(db, "users", userId, "trips", tripId)
+                await setDoc(tripRef, { itinerary: updatedItinerary }, { merge: true })
+            },
+
             deleteItineraryItem: async (tripId, itemId) => {
                 const userId = useAuthStore.getState().user?.id
                 if (!userId) return
@@ -185,6 +223,36 @@ export const useTravelStore = create<TravelState>()(
                 }
 
                 const updatedPackingList = [...(trip.packingList ?? []), newItem]
+
+                const tripRef = doc(db, "users", userId, "trips", tripId)
+                await setDoc(tripRef, { packingList: updatedPackingList }, { merge: true })
+            },
+
+            deletePackingItem: async (tripId, itemId) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const trip = get().trips.find((t) => t.id === tripId)
+                if (!trip) return
+
+                const updatedPackingList = (trip.packingList ?? []).filter(
+                    (item) => item.id !== itemId,
+                )
+
+                const tripRef = doc(db, "users", userId, "trips", tripId)
+                await setDoc(tripRef, { packingList: updatedPackingList }, { merge: true })
+            },
+
+            updatePackingItem: async (tripId, itemId, name) => {
+                const userId = useAuthStore.getState().user?.id
+                if (!userId) return
+
+                const trip = get().trips.find((t) => t.id === tripId)
+                if (!trip) return
+
+                const updatedPackingList = (trip.packingList ?? []).map((item) =>
+                    item.id === itemId ? { ...item, name } : item,
+                )
 
                 const tripRef = doc(db, "users", userId, "trips", tripId)
                 await setDoc(tripRef, { packingList: updatedPackingList }, { merge: true })

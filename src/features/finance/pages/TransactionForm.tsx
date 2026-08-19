@@ -35,6 +35,9 @@ const getTransactionSchema = (t: TFunction) =>
         category: z
             .string()
             .min(1, t("finance.validation.selectCategory", "Selecciona una categoría.")),
+        date: z
+            .string()
+            .min(1, t("finance.validation.selectDate", "Selecciona una fecha.")),
     })
 
 type TransactionSchemaType = ReturnType<typeof getTransactionSchema>
@@ -60,6 +63,7 @@ export function TransactionForm() {
             amount: 0,
             type: "expense",
             category: "Ocio",
+            date: new Date().toISOString().split("T")[0],
         },
     })
 
@@ -76,6 +80,7 @@ export function TransactionForm() {
             amount: 0,
             type: currentType,
             category: data.category,
+            date: new Date().toISOString().split("T")[0],
         })
     }
 
@@ -90,8 +95,8 @@ export function TransactionForm() {
                 <div className="grid grid-cols-2 gap-1.5 p-1 bg-secondary/50 rounded-xl border border-border/60 shadow-xs">
                     <label
                         className={`flex justify-center py-2 text-xs font-medium rounded-lg cursor-pointer transition-all ${currentType === "expense"
-                                ? "bg-card text-destructive font-bold shadow-xs border border-border/40"
-                                : "text-muted-foreground hover:text-foreground"
+                            ? "bg-card text-destructive font-bold shadow-xs border border-border/40"
+                            : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         <input
@@ -104,8 +109,8 @@ export function TransactionForm() {
                     </label>
                     <label
                         className={`flex justify-center py-2 text-xs font-medium rounded-lg cursor-pointer transition-all ${currentType === "income"
-                                ? "bg-card text-emerald-500 font-bold shadow-xs border border-border/40"
-                                : "text-muted-foreground hover:text-foreground"
+                            ? "bg-card text-emerald-500 font-bold shadow-xs border border-border/40"
+                            : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         <input
@@ -151,6 +156,20 @@ export function TransactionForm() {
                     />
                     {errors.amount && (
                         <p className="text-xs text-destructive">{errors.amount.message}</p>
+                    )}
+                </div>
+
+                <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                        {t("finance.form.dateLabel", "Fecha")}
+                    </label>
+                    <input
+                        type="date"
+                        {...register("date")}
+                        className="h-9 w-full rounded-xl border border-input bg-background px-3 py-1 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring shadow-xs"
+                    />
+                    {errors.date && (
+                        <p className="text-xs text-destructive">{errors.date.message}</p>
                     )}
                 </div>
 

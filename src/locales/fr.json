@@ -56,7 +56,8 @@
       "addBtn": "Ajouter",
       "empty": "Vous n'avez pas encore planifié d'activités pour ce voyage.",
       "dayTag": "Jour {{day}}",
-      "delete": "Supprimer"
+      "delete": "Supprimer",
+      "edit": "Modifier"
     }
   },
   "sidebar": {
@@ -80,7 +81,8 @@
       "descriptionMin": "La description doit comporter au moins 3 caractères.",
       "validNumber": "Veuillez entrer un nombre valide.",
       "amountPositive": "Le montant doit être supérieur à zéro.",
-      "selectCategory": "Sélectionnez une catégorie."
+      "selectCategory": "Sélectionnez une catégorie.",
+      "selectDate": "Sélectionnez une date."
     },
     "form": {
       "title": "Enregistrer un mouvement",
@@ -91,7 +93,8 @@
       "amountLabel": "Montant (€)",
       "amountPlaceholder": "Ex. 500",
       "categoryLabel": "Catégorie",
-      "submitButton": "Enregistrer la transaction"
+      "submitButton": "Enregistrer la transaction",
+      "dateLabel": "Date"
     },
     "categories": {
       "leisure": "Loisirs & Restauration",
@@ -112,7 +115,8 @@
     },
     "noFunds": "Aucun objectif d’épargne n’est créé.",
     "tabForms": "Nouvelle inscription",
-    "tabDashboard": "Résumé"
+    "tabDashboard": "Résumé",
+    "deleteFund": "Supprimer la cible"
   },
   "habits": {
     "validation": {
@@ -209,7 +213,11 @@
       "notesPlaceholder": "Ex. Appris 10 mots sur les affaires...",
       "submitButton": "Enregistrer le bloc"
     },
-    "noLanguages": "Aucune langue"
+    "noLanguages": "Aucune langue",
+    "editName": "Modifier le nom de la langue",
+    "deleteLanguage": "Supprimer la langue",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ${targetLanguage} et toutes ses sessions ?",
+    "deleteWarning": "Êtes-vous sûr de vouloir supprimer ? Toutes les sessions d’étude et habitudes associées seront définitivement supprimées. Cette action ne peut pas être annulée."
   },
   "common": {
     "save": "Enregistrer",
@@ -219,7 +227,8 @@
     "dark": "Sombre",
     "system": "Système",
     "saving": "Enregistrement...",
-    "delete": "Éliminer"
+    "delete": "Éliminer",
+    "confirm": "Éliminer"
   },
   "books": {
     "form": {
@@ -280,7 +289,9 @@
     "routine": "Routine quotidienne",
     "title": "Habitudes du jour",
     "empty": "Aucune habitude enregistrée pour aujourd'hui.",
-    "manage": "Gérer la routine complète"
+    "manage": "Gérer la routine complète",
+    "upcomingTitle": "Habitudes suivantes",
+    "upcoming": "Jours suivants"
   },
   "booksWidget": {
     "manage": "Explorer toute la bibliothèque",

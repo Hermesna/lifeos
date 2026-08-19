@@ -67,12 +67,13 @@ export function AppLayout() {
                     onMenuClick={() => setIsSidebarOpen((prev) => !prev)}
                 />
 
-                <main className="flex-1 overflow-y-auto flex flex-col justify-between">
-                    <div className="p-4 md:p-6 flex-1">
+                <div className="flex flex-1 flex-col overflow-hidden">
+                    <main className="flex-1 overflow-y-auto p-4 md:p-6">
                         <Outlet />
-                    </div>
+                    </main>
+
                     <AppFooter />
-                </main>
+                </div>
             </div>
         </div>
     )

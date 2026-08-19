@@ -3,27 +3,27 @@ import { useAuthStore } from "@/shared/stores/useAuthStore"
 import { db } from "@/shared/lib/firebase"
 import { create } from "zustand"
 import { persist, createJSONStorage } from "zustand/middleware"
-import { 
-    collection, 
-    doc, 
-    setDoc, 
-    deleteDoc, 
-    onSnapshot, 
+import {
+    collection,
+    doc,
+    setDoc,
+    deleteDoc,
+    onSnapshot,
     query,
-    type Unsubscribe 
+    type Unsubscribe
 } from "firebase/firestore"
 import i18n from "@/i18n"
 
 export type StudyCategory = "vocabulary" | "listening" | "grammar" | "speaking"
 
 export interface Session {
-    id: string;
-    language: string;
-    category: StudyCategory;
-    duration: number;
-    notes?: string;
-    date: string;
-    name?: string;
+    id: string
+    language: string
+    category: StudyCategory
+    duration: number
+    notes?: string
+    date: string
+    name?: string
 }
 
 export interface LanguagesState {
@@ -38,6 +38,8 @@ export interface LanguagesState {
     setTargetLanguage: (language: string) => Promise<void>
     addUserLanguage: (language: string) => Promise<void>
     setCurrentLevel: (language: string, level: string) => Promise<void>
+    updateLanguageName: (oldName: string, newName: string) => Promise<void>
+    deleteLanguage: (language: string) => Promise<void>
 }
 
 export const useLanguagesStore = create<LanguagesState>()(
@@ -50,7 +52,7 @@ export const useLanguagesStore = create<LanguagesState>()(
 
             subscribeToLanguages: () => {
                 const userId = useAuthStore.getState().user?.id
-                if (!userId) return () => {}
+                if (!userId) return () => { }
 
                 const sessionsRef = collection(db, "users", userId, "language_sessions")
                 const settingsRef = doc(db, "users", userId, "settings", "languages")
@@ -86,7 +88,7 @@ export const useLanguagesStore = create<LanguagesState>()(
 
                 if (userId) {
                     const settingsRef = doc(db, "users", userId, "settings", "languages")
-                    await setDoc(settingsRef, { 
+                    await setDoc(settingsRef, {
                         targetLanguage: language,
                         userLanguages: get().userLanguages,
                         levelsByLanguage: get().levelsByLanguage
@@ -98,16 +100,17 @@ export const useLanguagesStore = create<LanguagesState>()(
                 const { userLanguages, levelsByLanguage } = get()
                 const userId = useAuthStore.getState().user?.id
 
-                if (!userLanguages.includes(language)) {
-                    const updatedLanguages = [...userLanguages, language]
+                const trimmedLanguage = language.trim()
+                if (trimmedLanguage && !userLanguages.includes(trimmedLanguage)) {
+                    const updatedLanguages = [...userLanguages, trimmedLanguage]
                     const updatedLevels = {
                         ...levelsByLanguage,
-                        [language]: "A1",
+                        [trimmedLanguage]: "A1",
                     }
 
                     set({
                         userLanguages: updatedLanguages,
-                        targetLanguage: language,
+                        targetLanguage: trimmedLanguage,
                         levelsByLanguage: updatedLevels,
                     })
 
@@ -115,7 +118,7 @@ export const useLanguagesStore = create<LanguagesState>()(
                         const settingsRef = doc(db, "users", userId, "settings", "languages")
                         await setDoc(settingsRef, {
                             userLanguages: updatedLanguages,
-                            targetLanguage: language,
+                            targetLanguage: trimmedLanguage,
                             levelsByLanguage: updatedLevels,
                         }, { merge: true })
                     }
@@ -136,6 +139,86 @@ export const useLanguagesStore = create<LanguagesState>()(
                 if (userId) {
                     const settingsRef = doc(db, "users", userId, "settings", "languages")
                     await setDoc(settingsRef, { levelsByLanguage: updatedLevels }, { merge: true })
+                }
+            },
+
+            updateLanguageName: async (oldName: string, newName: string) => {
+                const { userLanguages, targetLanguage, levelsByLanguage, sessions } = get()
+                const userId = useAuthStore.getState().user?.id
+
+                const trimmedNewName = newName.trim()
+                if (!trimmedNewName || userLanguages.includes(trimmedNewName) || oldName === trimmedNewName) return
+
+                const updatedLanguages = userLanguages.map(lang => lang === oldName ? trimmedNewName : lang)
+                const updatedTarget = targetLanguage === oldName ? trimmedNewName : targetLanguage
+
+                const updatedLevels = { ...levelsByLanguage }
+                if (updatedLevels[oldName]) {
+                    updatedLevels[trimmedNewName] = updatedLevels[oldName]
+                    delete updatedLevels[oldName]
+                }
+
+                const updatedSessions = sessions.map(s => s.language === oldName ? { ...s, language: trimmedNewName } : s)
+
+                set({
+                    userLanguages: updatedLanguages,
+                    targetLanguage: updatedTarget,
+                    levelsByLanguage: updatedLevels,
+                    sessions: updatedSessions,
+                })
+
+                if (userId) {
+                    const settingsRef = doc(db, "users", userId, "settings", "languages")
+                    await setDoc(settingsRef, {
+                        userLanguages: updatedLanguages,
+                        targetLanguage: updatedTarget,
+                        levelsByLanguage: updatedLevels,
+                    }, { merge: true })
+
+                    const affectedSessions = sessions.filter(s => s.language === oldName)
+                    for (const session of affectedSessions) {
+                        const sessionRef = doc(db, "users", userId, "language_sessions", session.id)
+                        await setDoc(sessionRef, { language: trimmedNewName }, { merge: true })
+                    }
+                }
+            },
+
+            deleteLanguage: async (language: string) => {
+                const { userLanguages, targetLanguage, levelsByLanguage, sessions } = get()
+                const userId = useAuthStore.getState().user?.id
+
+                const updatedLanguages = userLanguages.filter(lang => lang !== language)
+                
+                const updatedTarget = targetLanguage === language 
+                    ? (updatedLanguages[0] || "") 
+                    : targetLanguage
+
+                const updatedLevels = { ...levelsByLanguage }
+                delete updatedLevels[language]
+
+                const sessionsToDelete = sessions.filter(s => s.language === language)
+                const remainingSessions = sessions.filter(s => s.language !== language)
+
+                set({
+                    userLanguages: updatedLanguages,
+                    targetLanguage: updatedTarget,
+                    levelsByLanguage: updatedLevels,
+                    sessions: remainingSessions,
+                })
+
+                if (userId) {
+                    const settingsRef = doc(db, "users", userId, "settings", "languages")
+                    await setDoc(settingsRef, {
+                        userLanguages: updatedLanguages,
+                        targetLanguage: updatedTarget,
+                        levelsByLanguage: updatedLevels,
+                    }, { merge: true })
+
+                    for (const session of sessionsToDelete) {
+                        const sessionRef = doc(db, "users", userId, "language_sessions", session.id)
+                        await deleteDoc(sessionRef)
+                        await useHabitsStore.getState().deleteHabit(session.id)
+                    }
                 }
             },
 

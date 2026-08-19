@@ -10,6 +10,7 @@ import {
     Trophy,
     Plus,
     X,
+    Pencil,
 } from "lucide-react"
 import {
     useLanguagesStore,
@@ -29,6 +30,8 @@ export function LanguagesPage() {
         levelsByLanguage,
         setCurrentLevel,
         deleteSession,
+        updateLanguageName,
+        deleteLanguage
     } = useLanguagesStore()
 
     const currentLevel = levelsByLanguage?.[targetLanguage] || "A1"
@@ -36,6 +39,10 @@ export function LanguagesPage() {
 
     const [isCreating, setIsCreating] = useState(false)
     const [newLangInput, setNewLangInput] = useState("")
+
+    const [isEditing, setIsEditing] = useState(false)
+    const [editLangInput, setEditLangInput] = useState("")
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
     const categoryConfig: Record<
         StudyCategory,
@@ -71,6 +78,11 @@ export function LanguagesPage() {
         (s) => s.language === targetLanguage
     )
 
+    const confirmDelete = () => {
+        deleteLanguage(targetLanguage)
+        setShowDeleteConfirm(false)
+    }
+
     const totalMinutes = filteredSessions.reduce((acc, s) => acc + s.duration, 0)
     const totalHours = (totalMinutes / 60).toFixed(1)
 
@@ -85,6 +97,18 @@ export function LanguagesPage() {
         addUserLanguage(newLangInput)
         setNewLangInput("")
         setIsCreating(false)
+    }
+
+    const handleStartEditing = () => {
+        setEditLangInput(targetLanguage)
+        setIsEditing(true)
+    }
+
+    const handleUpdateLanguage = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!editLangInput.trim()) return
+        updateLanguageName(targetLanguage, editLangInput)
+        setIsEditing(false)
     }
 
     return (
@@ -125,6 +149,32 @@ export function LanguagesPage() {
                                     <X className="h-3.5 w-3.5" />
                                 </button>
                             </form>
+                        ) : isEditing ? (
+                            <form
+                                onSubmit={handleUpdateLanguage}
+                                className="flex items-center gap-1.5"
+                            >
+                                <input
+                                    type="text"
+                                    value={editLangInput}
+                                    onChange={(e) => setEditLangInput(e.target.value)}
+                                    autoFocus
+                                    className="px-2 py-0.5 text-xs font-semibold bg-background border rounded-md focus:outline-none focus:ring-1 focus:ring-primary"
+                                />
+                                <button
+                                    type="submit"
+                                    className="px-2 py-0.5 bg-primary text-primary-foreground text-xs font-medium rounded-md hover:bg-primary/90 transition-colors"
+                                >
+                                    {t("common.save", { defaultValue: "Guardar" })}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsEditing(false)}
+                                    className="p-0.5 text-muted-foreground hover:text-foreground transition-colors"
+                                >
+                                    <X className="h-3.5 w-3.5" />
+                                </button>
+                            </form>
                         ) : (
                             <>
                                 {(!userLanguages || userLanguages.length === 0) ? (
@@ -132,25 +182,45 @@ export function LanguagesPage() {
                                         {t("languages.noLanguages", { defaultValue: "Sin idiomas" })}
                                     </span>
                                 ) : (
-                                    <select
-                                        value={targetLanguage || ""}
-                                        onChange={(e) => setTargetLanguage(e.target.value)}
-                                        className="text-lg font-extrabold tracking-tight bg-transparent border-b border-dashed border-muted-foreground/40 hover:border-primary focus:outline-none focus:border-primary cursor-pointer pr-1 py-0.5"
-                                    >
-                                        {userLanguages.map((lang) => (
-                                            <option
-                                                key={lang}
-                                                value={lang}
-                                                className="bg-popover text-popover-foreground text-sm font-normal"
-                                            >
-                                                {lang}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <div className="flex items-center gap-1.5">
+                                        <select
+                                            value={targetLanguage || ""}
+                                            onChange={(e) => setTargetLanguage(e.target.value)}
+                                            className="text-lg font-extrabold tracking-tight bg-transparent border-b border-dashed border-muted-foreground/40 hover:border-primary focus:outline-none focus:border-primary cursor-pointer pr-1 py-0.5"
+                                        >
+                                            {userLanguages.map((lang) => (
+                                                <option
+                                                    key={lang}
+                                                    value={lang}
+                                                    className="bg-popover text-popover-foreground text-sm font-normal"
+                                                >
+                                                    {lang}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {targetLanguage && (
+                                            <div className="flex items-center gap-1">
+                                                <button
+                                                    onClick={handleStartEditing}
+                                                    className="p-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                                                    title={t("languages.editName", { defaultValue: "Editar nombre del idioma" })}
+                                                >
+                                                    <Pencil className="h-3.5 w-3.5" />
+                                                </button>
+                                                <button
+                                                    onClick={() => setShowDeleteConfirm(true)}
+                                                    className="p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
+                                                    title={t("languages.deleteLanguage", { defaultValue: "Eliminar idioma" })}
+                                                >
+                                                    <Trash2 className="h-3.5 w-3.5" />
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
                                 )}
                                 <button
                                     onClick={() => setIsCreating(true)}
-                                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:text-primary/80 bg-primary/10 px-2 py-0.5 rounded-md transition-colors cursor-pointer"
+                                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:text-primary/80 bg-primary/10 px-2 py-0.5 rounded-md transition-colors cursor-pointer ml-1"
                                     title={t("languages.addNew", { defaultValue: "Añadir nuevo idioma" })}
                                 >
                                     <Plus className="h-3 w-3" />
@@ -322,6 +392,36 @@ export function LanguagesPage() {
                     <LanguageForm />
                 </div>
             </div>
+
+            {showDeleteConfirm && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="bg-card border p-5 rounded-xl shadow-lg max-w-sm w-full space-y-4">
+                        <h3 className="font-bold text-lg">
+                            {t("languages.deleteTitle", { defaultValue: "¿Eliminar idioma?" })}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                            {t("languages.deleteWarning", {
+                                defaultValue: `¿Estás seguro de que quieres eliminar ${targetLanguage}? Se borrarán permanentemente todas las sesiones de estudio y hábitos asociados. Esta acción no se puede deshacer.`
+                            })}
+                        </p>
+                        <div className="flex gap-2 justify-end">
+                            <button
+                                onClick={() => setShowDeleteConfirm(false)}
+                                className="px-4 py-2 text-xs font-semibold rounded-lg hover:bg-secondary transition-colors"
+                            >
+                                {t("common.cancel", { defaultValue: "Cancelar" })}
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                className="px-4 py-2 text-xs font-semibold bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors"
+                            >
+                                {t("common.confirm", { defaultValue: "Eliminar" })}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 }
